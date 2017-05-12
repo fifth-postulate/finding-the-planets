@@ -10,3 +10,6 @@ Trappist-1 appeared in the news because it was [announced][press-release] that i
 
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
+
+## Workshop
+During this workshop you will discover the planets around Trappist-1 on your own.
