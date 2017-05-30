@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ImageTest {
     @Test
-    public void createAnPngImage() throws IOException {
+    public void createAnBlankAndWhitePngImage() throws IOException {
         int m = 5;
         int n = 5;
         BufferedImage image = new BufferedImage(m, n, BufferedImage.TYPE_BYTE_BINARY);
@@ -23,7 +23,25 @@ public class ImageTest {
             }
         }
 
-        File output = new File("src/test/resources/png-test.png");
+        File output = new File("src/test/resources/png-test.black-white.png");
+        ImageIO.write(image, "png", output);
+    }
+
+    @Test
+    public void createAnGrayPngImage() throws IOException {
+        int m = 5;
+        int n = 5;
+        BufferedImage image = new BufferedImage(m, n, BufferedImage.TYPE_BYTE_GRAY);
+        WritableRaster raster = image.getRaster();
+
+        for (int x = 0; x < m; x++) {
+            for (int y = 0; y < m; y++) {
+                int index = 51 * x + 10*y;
+                raster.setPixel(x, y, new int[]{ index });
+            }
+        }
+
+        File output = new File("src/test/resources/png-test.gray.png");
         ImageIO.write(image, "png", output);
     }
 }
