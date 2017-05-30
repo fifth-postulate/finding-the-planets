@@ -26,6 +26,8 @@ has made some interesting tools to analyze the data.
 ### Images
 ![First image created](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/67b084085e476b2d43aff269dc272996e8b0a4ed/java/src/main/resources/first-image.png)
 
+![Collage made the number of images is 59*61](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/fd091991ad956f572d583f902b635a572d509968/java/src/main/resources/collage.png)
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
