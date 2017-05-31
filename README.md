@@ -24,9 +24,19 @@ has made some interesting tools to analyze the data.
 
 ## Results
 ### Images
+#### First image created
+Below you find the first image that I created from the *long cadence* FITS data.
+To me it is still amazing that from a series of these 11 by 11 images one can
+obtain so much information.
+
 ![First image created](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/67b084085e476b2d43aff269dc272996e8b0a4ed/java/src/main/resources/first-image.png)
 
-![Collage made the number of images is 59*61](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/fd091991ad956f572d583f902b635a572d509968/java/src/main/resources/collage.png)
+#### Collage
+There are 3599 such images which fit nicely into a 61 times 59 rectangle.
+Starring at the image you could start to notice certain peculiarities. Which do
+you see? 
+
+![Collage made the number of images is 61*59](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/fd091991ad956f572d583f902b635a572d509968/java/src/main/resources/collage.png)
 
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
