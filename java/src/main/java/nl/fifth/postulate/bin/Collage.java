@@ -14,7 +14,12 @@ import static java.lang.Math.floor;
 
 public class Collage {
     public static void main(String[] args) throws FitsException, IOException {
-        Fits f = new Fits("../k2-trappist1-unofficial-tpf-long-cadence.fits");
+        String filename = "../k2-trappist1-unofficial-tpf-short-cadence.fits";
+        String pathname = "src/main/resources/collage-short.png";
+        int htile = 482;
+        int vtile = 448;
+
+        Fits f = new Fits(filename);
         BinaryTableHDU hdu = (BinaryTableHDU) f.getHDU(1);
         float[][][] rows = (float[][][]) hdu.getColumn("FLUX");
 
@@ -33,10 +38,7 @@ public class Collage {
             }
         }
 
-        // 3599 = (60 - 1) * (60 + 1) = 59 * 61
         int size = 11;
-        int htile = 61;
-        int vtile = 59;
         int width = htile * size;
         int height = vtile * size;
         BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
@@ -55,7 +57,7 @@ public class Collage {
                 }
             }
         }
-        File output = new File("src/main/resources/collage.png");
+        File output = new File(pathname);
         ImageIO.write(outputImage, "png", output);
 
     }
