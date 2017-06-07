@@ -22,6 +22,79 @@ NASA's [K2/Kepler telescope][K2]. The mission is
 The [Trappist-1 data][data] is publicly accessible. [Geert Barentsen][barentsen]
 has made some interesting tools to analyze the data. 
 
+## Info
+The following information is presented in the headers of the data
+
+### Long
+
+```plain
+  Binary Table
+      Header Information:
+          12 fields, 3599 rows of length 2932
+           1:Name=TIME; Format=D; 
+           2:Name=TIMECORR; Format=E; 
+           3:Name=CADENCENO; Format=J; 
+           4:Name=RAW_CNTS; Format=121J; Dimens=(11,11); 
+           5:Name=FLUX; Format=121E; Dimens=(11,11); 
+           6:Name=FLUX_ERR; Format=121E; Dimens=(11,11); 
+           7:Name=FLUX_BKG; Format=121E; Dimens=(11,11); 
+           8:Name=FLUX_BKG_ERR; Format=121E; Dimens=(11,11); 
+           9:Name=COSMIC_RAYS; Format=121E; Dimens=(11,11); 
+           10:Name=QUALITY; Format=J; 
+           11:Name=POS_CORR1; Format=E; 
+           12:Name=POS_CORR2; Format=E; 
+      Data Information:
+          Number of rows=3599
+          Number of columns=12
+           0:double[3599]
+           1:float[3599]
+           2:int[3599]
+           3:int[435479]
+           4:float[435479]
+           5:float[435479]
+           6:float[435479]
+           7:float[435479]
+           8:float[435479]
+           9:int[3599]
+           10:float[3599]
+           11:float[3599]
+```
+
+
+### Short
+
+```plain
+  Binary Table
+      Header Information:
+          12 fields, 107968 rows of length 2932
+           1:Name=TIME; Format=D; 
+           2:Name=TIMECORR; Format=E; 
+           3:Name=CADENCENO; Format=J; 
+           4:Name=RAW_CNTS; Format=121J; Dimens=(11,11); 
+           5:Name=FLUX; Format=121E; Dimens=(11,11); 
+           6:Name=FLUX_ERR; Format=121E; Dimens=(11,11); 
+           7:Name=FLUX_BKG; Format=121E; Dimens=(11,11); 
+           8:Name=FLUX_BKG_ERR; Format=121E; Dimens=(11,11); 
+           9:Name=COSMIC_RAYS; Format=121E; Dimens=(11,11); 
+           10:Name=QUALITY; Format=J; 
+           11:Name=POS_CORR1; Format=E; 
+           12:Name=POS_CORR2; Format=E; 
+      Data Information:
+          Number of rows=107968
+          Number of columns=12
+           0:double[107968]
+           1:float[107968]
+           2:int[107968]
+           3:int[13064128]
+           4:float[13064128]
+           5:float[13064128]
+           6:float[13064128]
+           7:float[13064128]
+           8:float[13064128]
+           9:int[107968]
+           10:float[107968]
+           11:float[107968]
+```
 ## Results
 ### Images
 #### First image created
