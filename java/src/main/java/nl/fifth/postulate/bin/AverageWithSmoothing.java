@@ -47,7 +47,7 @@ public class AverageWithSmoothing {
                 smoothed = average;
             }
 
-            averageDataPoint[row] = new AverageDataPoint(timeRows[row], average, smoothed);
+            averageDataPoint[row] = new AverageDataPoint(timeRows[row], average, smoothed, average - smoothed);
         }
 
         return averageDataPoint;
@@ -58,14 +58,16 @@ class AverageDataPoint {
     private final double time;
     private final float average;
     private final float smoothed;
+    private final float detrended;
 
-    public AverageDataPoint(double time, float average, float smoothed) {
+    public AverageDataPoint(double time, float average, float smoothed, float detrended) {
         this.time = time;
         this.average = average;
         this.smoothed = smoothed;
+        this.detrended = detrended;
     }
 
     public String toString() {
-        return String.format("%10.6f, %10.6f, %10.6f", time, average, smoothed);
+        return String.format("%10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended);
     }
 }
