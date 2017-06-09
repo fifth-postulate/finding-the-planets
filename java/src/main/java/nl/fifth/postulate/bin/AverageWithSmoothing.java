@@ -6,29 +6,29 @@ import nom.tam.fits.FitsException;
 
 import java.io.*;
 
-public class Average {
+public class AverageWithSmoothing {
     public static void main(String[] args) throws FitsException, IOException {
         String filename = args[0];
         String pathName = args[1];
+        float alpha = Float.valueOf(args[2]);
+
+        AverageDataPoint[] average = calculateAverage(filename, alpha);
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
-
-
-        AverageDataPair[] average = calculateAverage(filename);
-
         for (int index = 0, limit = average.length; index < limit; index++) {
             output.printf("%4d, %s\n", index, average[index]);
         }
 
     }
 
-    private static AverageDataPair[] calculateAverage(String filename) throws FitsException, IOException {
+    private static AverageDataPoint[] calculateAverage(String filename, float alpha) throws FitsException, IOException {
         Fits f = new Fits(filename);
         BinaryTableHDU hdu = (BinaryTableHDU) f.getHDU(1);
         double[] timeRows = (double[]) hdu.getColumn("TIME");
         float[][][] fluxRows = (float[][][]) hdu.getColumn("FLUX");
 
-        AverageDataPair[] averageDataPair = new AverageDataPair[fluxRows.length];
+        AverageDataPoint[] averageDataPoint = new AverageDataPoint[fluxRows.length];
+        float smoothed = 0.0f;
         for (int row = 0, rowLimit = fluxRows.length; row < rowLimit; row++ ) {
             float sum = 0.0f;
             int count = 0;
@@ -41,23 +41,31 @@ public class Average {
             }
             float average = sum / count;
 
-            averageDataPair[row] = new AverageDataPair(timeRows[row], average);
+            if (row != 0) {
+                smoothed = alpha * average + (1 - alpha) * smoothed;
+            } else {
+                smoothed = average;
+            }
+
+            averageDataPoint[row] = new AverageDataPoint(timeRows[row], average, smoothed);
         }
 
-        return averageDataPair;
+        return averageDataPoint;
     }
 }
 
-class AverageDataPair {
+class AverageDataPoint {
     private final double time;
     private final float average;
+    private final float smoothed;
 
-    public AverageDataPair(double time, float average) {
+    public AverageDataPoint(double time, float average, float smoothed) {
         this.time = time;
         this.average = average;
+        this.smoothed = smoothed;
     }
 
     public String toString() {
-        return String.format("%10.6f, %10.6f", time, average);
+        return String.format("%10.6f, %10.6f, %10.6f", time, average, smoothed);
     }
 }
