@@ -116,6 +116,11 @@ The average brightness, as can be seen from the collage, seems to steadily incre
 
 ![The average brightness](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/5a3fd3fb99d0ff60a7bf567c2e3eedf1ea69ff88/java/src/main/resources/average.png)
 
+### Smoothed Average
+The average brightness and the exponentially smoothed average, plotted against the time.
+
+![The smoothed average brightness against time](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/2fdd37a4ce17afb97dca1752fbcd530ee1f6c58a/java/src/main/resources/average-long.png)
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
