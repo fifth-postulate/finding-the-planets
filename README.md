@@ -121,6 +121,11 @@ The average brightness and the exponentially smoothed average, plotted against t
 
 ![The smoothed average brightness against time](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/2fdd37a4ce17afb97dca1752fbcd530ee1f6c58a/java/src/main/resources/average-long.png)
 
+### Detrended
+Detrending the light curve produces the following images
+
+![Detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/417e873f6901d7f428e158187872af6aff741f00/java/src/main/resources/detrended-long.png)
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
