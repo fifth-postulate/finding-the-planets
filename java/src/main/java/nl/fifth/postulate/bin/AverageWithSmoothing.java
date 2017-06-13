@@ -3,11 +3,16 @@ package nl.fifth.postulate.bin;
 import nom.tam.fits.BinaryTableHDU;
 import nom.tam.fits.Fits;
 import nom.tam.fits.FitsException;
+import org.jtransforms.fft.FloatFFT_1D;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AverageWithSmoothing {
     public static void main(String[] args) throws FitsException, IOException {
@@ -15,11 +20,12 @@ public class AverageWithSmoothing {
         String pathName = args[1];
         float alpha = Float.valueOf(args[2]);
 
-        DataPointCollection average = calculateAverage(filename, alpha);
+        DataPointCollection dataPointCollection = calculateAverage(filename, alpha);
+        dataPointCollection.calculateFFT();
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
         int index = 0;
-        for (AverageDataPoint dataPoint : average) {
+        for (AverageDataPoint dataPoint : dataPointCollection) {
             output.printf("%4d, %s\n", index++, dataPoint);
         }
 
@@ -59,10 +65,11 @@ public class AverageWithSmoothing {
 }
 
 class AverageDataPoint {
-    private final double time;
-    private final float average;
-    private final float smoothed;
-    private final float detrended;
+    public final double time;
+    public final float average;
+    public final float smoothed;
+    public final float detrended;
+    private float norm;
 
     public AverageDataPoint(double time, float average, float smoothed, float detrended) {
         this.time = time;
@@ -72,11 +79,23 @@ class AverageDataPoint {
     }
 
     public String toString() {
-        return String.format("%10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended);
+        return String.format("%10.6f, %10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended, norm);
+    }
+
+    public void setNorm(float norm) {
+        this.norm = norm;
     }
 }
 
 class DataPointCollection implements Iterable<AverageDataPoint> {
+    private static float[] convert(Float[] input) {
+        float[] output = new float[input.length];
+        for (int index = 0, limit = input.length; index < limit; index++) {
+            output[index] = input[index].floatValue();
+        }
+        return output;
+
+    }
     private final List<AverageDataPoint> dataPoints = new ArrayList<AverageDataPoint>();
 
     public void add(AverageDataPoint dataPoint){
@@ -87,5 +106,34 @@ class DataPointCollection implements Iterable<AverageDataPoint> {
     @Override
     public Iterator<AverageDataPoint> iterator() {
         return dataPoints.iterator();
+    }
+
+    public void calculateFFT() {
+        float[] input = convert(dataPoints.stream()
+                .map(dp -> dp.detrended)
+                .collect(Collectors.toList())
+                .toArray(new Float[]{}));
+        int n = input.length;
+        final float[] coefficients = Arrays.copyOf(input, 2*n);
+        FloatFFT_1D fft = new FloatFFT_1D(n);
+        fft.realForwardFull(coefficients);
+        float[] norms = calculateNorms(coefficients, n);
+
+        int index = 0;
+        for (AverageDataPoint dataPoint : this.dataPoints) {
+            dataPoint.setNorm(norms[index++]);
+        }
+    }
+
+    private float[] calculateNorms(float[] coefficients, int n) {
+        float[] norms = new float[n];
+
+        for (int index = 0; index < n; index++) {
+            float u = coefficients[2*index + 0];
+            float v = coefficients[2*index + 1];
+            norms[index] = (float) Math.sqrt(u*u + v*v);
+        }
+
+        return norms;
     }
 }
