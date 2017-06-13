@@ -126,6 +126,11 @@ Detrending the light curve produces the following images
 
 ![Detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/417e873f6901d7f428e158187872af6aff741f00/java/src/main/resources/detrended-long.png)
 
+### Discrete Fourier Transform
+Calculating the discrete Fourier transform produces
+
+![Discrete Fourier Transform](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/7b49b7a7a6d2f785a3f978ce7082f00a0f7e45ea/java/src/main/resources/fft.png)
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
