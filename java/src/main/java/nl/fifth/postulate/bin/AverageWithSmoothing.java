@@ -5,6 +5,9 @@ import nom.tam.fits.Fits;
 import nom.tam.fits.FitsException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AverageWithSmoothing {
     public static void main(String[] args) throws FitsException, IOException {
@@ -12,22 +15,23 @@ public class AverageWithSmoothing {
         String pathName = args[1];
         float alpha = Float.valueOf(args[2]);
 
-        AverageDataPoint[] average = calculateAverage(filename, alpha);
+        DataPointCollection average = calculateAverage(filename, alpha);
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
-        for (int index = 0, limit = average.length; index < limit; index++) {
-            output.printf("%4d, %s\n", index, average[index]);
+        int index = 0;
+        for (AverageDataPoint dataPoint : average) {
+            output.printf("%4d, %s\n", index++, dataPoint);
         }
 
     }
 
-    private static AverageDataPoint[] calculateAverage(String filename, float alpha) throws FitsException, IOException {
+    private static DataPointCollection calculateAverage(String filename, float alpha) throws FitsException, IOException {
         Fits f = new Fits(filename);
         BinaryTableHDU hdu = (BinaryTableHDU) f.getHDU(1);
         double[] timeRows = (double[]) hdu.getColumn("TIME");
         float[][][] fluxRows = (float[][][]) hdu.getColumn("FLUX");
 
-        AverageDataPoint[] averageDataPoint = new AverageDataPoint[fluxRows.length];
+        DataPointCollection dataPointCollection = new DataPointCollection();
         float smoothed = 0.0f;
         for (int row = 0, rowLimit = fluxRows.length; row < rowLimit; row++ ) {
             float sum = 0.0f;
@@ -47,10 +51,10 @@ public class AverageWithSmoothing {
                 smoothed = average;
             }
 
-            averageDataPoint[row] = new AverageDataPoint(timeRows[row], average, smoothed, average - smoothed);
+            dataPointCollection.add(new AverageDataPoint(timeRows[row], average, smoothed, average - smoothed));
         }
 
-        return averageDataPoint;
+        return dataPointCollection;
     }
 }
 
@@ -69,5 +73,19 @@ class AverageDataPoint {
 
     public String toString() {
         return String.format("%10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended);
+    }
+}
+
+class DataPointCollection implements Iterable<AverageDataPoint> {
+    private final List<AverageDataPoint> dataPoints = new ArrayList<AverageDataPoint>();
+
+    public void add(AverageDataPoint dataPoint){
+        dataPoints.add(dataPoint);
+    }
+
+
+    @Override
+    public Iterator<AverageDataPoint> iterator() {
+        return dataPoints.iterator();
     }
 }
