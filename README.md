@@ -95,6 +95,26 @@ The following information is presented in the headers of the data
            10:float[107968]
            11:float[107968]
 ```
+
+## Table Column Formats
+```plain
+FITS format code         Description                     8-bit bytes
+
+L                        logical (Boolean)               1
+X                        bit                             *
+B                        Unsigned byte                   1
+I                        16-bit integer                  2
+J                        32-bit integer                  4
+K                        64-bit integer                  4
+A                        character                       1
+E                        single precision floating point 4
+D                        double precision floating point 8
+C                        single precision complex        8
+M                        double precision complex        16
+P                        array descriptor                8
+Q                        array descriptor                16
+```
+
 ## Results
 ### Images
 #### First image created
