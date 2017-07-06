@@ -21,7 +21,7 @@ public class AverageWithSmoothing {
         float alpha = Float.valueOf(args[2]);
 
         DataPointCollection dataPointCollection = calculateAverage(filename, alpha);
-        dataPointCollection.calculateFFT();
+        dataPointCollection.calculateFFT(100);
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
         int index = 0;
@@ -70,6 +70,7 @@ class AverageDataPoint {
     public final float smoothed;
     public final float detrended;
     private float norm;
+    private float inverseFFT;
 
     public AverageDataPoint(double time, float average, float smoothed, float detrended) {
         this.time = time;
@@ -79,11 +80,15 @@ class AverageDataPoint {
     }
 
     public String toString() {
-        return String.format("%10.6f, %10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended, norm);
+        return String.format("%10.6f, %10.6f, %10.6f, %10.6f, %10.6f, %10.6f", time, average, smoothed, detrended, norm, inverseFFT);
     }
 
     public void setNorm(float norm) {
         this.norm = norm;
+    }
+
+    public void setInverseFFT(float inverseFFT) {
+        this.inverseFFT = inverseFFT;
     }
 }
 
@@ -108,7 +113,7 @@ class DataPointCollection implements Iterable<AverageDataPoint> {
         return dataPoints.iterator();
     }
 
-    public void calculateFFT() {
+    public void calculateFFT(int cutoff) {
         float[] input = convert(dataPoints.stream()
                 .map(dp -> dp.detrended)
                 .collect(Collectors.toList())
@@ -119,9 +124,21 @@ class DataPointCollection implements Iterable<AverageDataPoint> {
         fft.realForwardFull(coefficients);
         float[] norms = calculateNorms(coefficients, n);
 
+        final float[] output = Arrays.copyOf(coefficients, coefficients.length);
+        for (int midpoint = coefficients.length/2, index = midpoint - 2*cutoff;
+                index < midpoint+2*cutoff;
+                index += 2) {
+            output[index + 0] = 0.0f;
+            output[index + 1] = 0.0f;
+        }
+        fft.realInverse(output, false);
+
+
         int index = 0;
         for (AverageDataPoint dataPoint : this.dataPoints) {
-            dataPoint.setNorm(norms[index++]);
+            dataPoint.setNorm(norms[index]);
+            dataPoint.setInverseFFT(output[index]);
+            index += 1;
         }
     }
 
