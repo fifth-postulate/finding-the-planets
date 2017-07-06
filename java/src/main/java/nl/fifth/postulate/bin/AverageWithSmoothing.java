@@ -21,7 +21,7 @@ public class AverageWithSmoothing {
         float alpha = Float.valueOf(args[2]);
 
         DataPointCollection dataPointCollection = calculateAverage(filename, alpha);
-        dataPointCollection.calculateFFT(100);
+        dataPointCollection.calculateFFT(1500);
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
         int index = 0;
@@ -131,7 +131,7 @@ class DataPointCollection implements Iterable<AverageDataPoint> {
             output[index + 0] = 0.0f;
             output[index + 1] = 0.0f;
         }
-        fft.realInverse(output, false);
+        fft.realInverse(output, true);
 
 
         int index = 0;
