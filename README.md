@@ -152,7 +152,11 @@ Calculating the discrete Fourier transform produces
 
 ![Discrete Fourier Transform](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/7b49b7a7a6d2f785a3f978ce7082f00a0f7e45ea/java/src/main/resources/fft.png)
 
-Filtering is the next step.
+### Detrended Filtered
+Removing how frequency components from the Fourier transform and inverting the
+transformation produces a filtered sequence.
+
+![Filtered detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/5b87ce9d3985ce7699a1d26afaa2996840fae089/java/src/main/resources/ifft.png)
 
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
