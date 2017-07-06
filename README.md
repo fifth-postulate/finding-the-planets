@@ -158,6 +158,8 @@ transformation produces a filtered sequence.
 
 ![Filtered detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/5b87ce9d3985ce7699a1d26afaa2996840fae089/java/src/main/resources/ifft.png)
 
+![Zoomed in filtered detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/f4e3162d44bdb22a438589e7dc9371aa241e2d71/java/src/main/resources/ifft-zoom.png)
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
