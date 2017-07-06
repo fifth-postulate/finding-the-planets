@@ -20,7 +20,8 @@ NASA's [K2/Kepler telescope][K2]. The mission is
 > search for Earth-like planets around Sun-like stars
 
 The [Trappist-1 data][data] is publicly accessible. [Geert Barentsen][barentsen]
-has made some interesting tools to analyze the data. 
+has made some interesting tools to analyze the data. For example, take a look at
+this [IPython notebook][notebook].
 
 ## Info
 The following information is presented in the headers of the data
@@ -158,3 +159,4 @@ Filtering is the next step.
 [K2]: https://keplerscience.arc.nasa.gov/
 [data]: https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html
 [barentsen]: https://github.com/barentsen
+[notebook]: https://github.com/mrtommyb/trappist-lc/blob/master/TRAPPIST-1-transit-code.ipynb
