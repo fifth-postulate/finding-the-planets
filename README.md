@@ -160,6 +160,9 @@ transformation produces a filtered sequence.
 
 ![Zoomed in filtered detrended light curve](https://cdn.rawgit.com/fifth-postulate/finding-the-planets/f4e3162d44bdb22a438589e7dc9371aa241e2d71/java/src/main/resources/ifft-zoom.png)
 
+### Median filter
+undetrend is the next step
+
 [trappist]: www.trappist.one
 [press-release]: https://www.nasa.gov/press-release/nasa-telescope-reveals-largest-batch-of-earth-size-habitable-zone-planets-around
 [K2]: https://keplerscience.arc.nasa.gov/
