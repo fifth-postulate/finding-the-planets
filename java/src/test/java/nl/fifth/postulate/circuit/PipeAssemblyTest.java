@@ -15,4 +15,19 @@ public class PipeAssemblyTest {
 
         verify(mockPipe).process();
     }
+
+    @Test
+    public void shouldCallMultiplePipesInARow() {
+        Pipe firstMockPipe = mock(Pipe.class);
+        Pipe secondMockPipe = mock(Pipe.class);
+        PipeAssembly pipeAssembly = Assembly
+                .with(firstMockPipe)
+                .andThen(secondMockPipe)
+                .build();
+
+        pipeAssembly.process();
+
+        verify(firstMockPipe).process();
+        verify(secondMockPipe).process();
+    }
 }
