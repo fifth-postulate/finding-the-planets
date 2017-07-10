@@ -1,9 +1,6 @@
 package nl.fifth.postulate.circuit;
 
 public interface Pipe {
-    Result process();
+    TrappistData process(TrappistData trappistData);
 }
 
-interface Result {
-
-}

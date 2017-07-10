@@ -15,11 +15,12 @@ public class PipeAssembly implements Pipe {
     }
 
     @Override
-    public Result process() {
+    public TrappistData process(TrappistData trappistData) {
+        TrappistData current = trappistData;
         for (Pipe pipe : pipes) {
-            pipe.process();
+            current = pipe.process(current);
         }
-        return null;
+        return current;
     }
 }
 
