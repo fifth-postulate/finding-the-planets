@@ -1,9 +1,11 @@
 package nl.fifth.postulate.circuit;
 
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.inOrder;
 
 public class PipeAssemblyTest {
     @Test
@@ -24,10 +26,11 @@ public class PipeAssemblyTest {
                 .with(firstMockPipe)
                 .andThen(secondMockPipe)
                 .build();
+        InOrder inOrder = inOrder(firstMockPipe, secondMockPipe);
 
         pipeAssembly.process();
 
-        verify(firstMockPipe).process();
-        verify(secondMockPipe).process();
+        inOrder.verify(firstMockPipe).process();
+        inOrder.verify(secondMockPipe).process();
     }
 }
