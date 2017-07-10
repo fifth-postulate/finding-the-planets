@@ -28,7 +28,8 @@ public class DataCircuit {
 
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
-        Formatter.format(output, result, "%4d, %10.6f, %10.6f, %10.6f, %10.6f\n",
+        Formatter.format(output, result, "%4d, %10.6f, %10.6f, %10.6f, %10.6f, %10.6f\n",
+                "TIME",
                 Average.COLUMN_NAME,
                 Smooth.COLUMN_NAME,
                 Detrend.COLUMN_NAME,
@@ -53,16 +54,24 @@ class Formatter {
     public static void format(PrintStream stream, TrappistData data, String template, String... columnNames) {
         Map<String, float[]> dataPoints = new HashMap<>();
         for (String columnName : columnNames) {
-            dataPoints.put(columnName, (float[]) data.dataFor(columnName));
+            if (!columnName.equals("TIME")) {
+                dataPoints.put(columnName, (float[]) data.dataFor(columnName));
+            }
         }
 
-        for (int row = 0, limit = dataPoints.get(columnNames[0]).length; row < limit; row++) {
+        for (int row = 0, limit = dataPoints.get(columnNames[1]).length; row < limit; row++) {
+            System.out.println(row);
             Object[] dataPoint = new Object[1 + columnNames.length];
             dataPoint[0] = row;
             for (int index = 0; index < columnNames.length; index++) {
                 String columnName = columnNames[index];
-                float value = dataPoints.get(columnName)[row];
-                dataPoint[1 + index] = value;
+                if (columnName.equals("TIME")) {
+                    double value = ((double[]) data.dataFor(columnName))[row];
+                    dataPoint[1 + index] = value;
+                } else {
+                    float value = (float) dataPoints.get(columnName)[row];
+                    dataPoint[1 + index] = value;
+                }
             }
             stream.format(template, dataPoint);
         }
