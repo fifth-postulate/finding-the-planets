@@ -1,6 +1,6 @@
 package nl.fifth.postulate.circuit;
 
-interface TrappistData {
+public interface TrappistData {
 
     boolean hasColumn(String columnName);
 

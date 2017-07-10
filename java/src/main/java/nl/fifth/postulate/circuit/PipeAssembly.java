@@ -24,19 +24,3 @@ public class PipeAssembly implements Pipe {
     }
 }
 
-class Assembly {
-    private List<Pipe> pipes = new ArrayList<>();
-
-    Assembly(Pipe pipe) {
-        pipes.add(pipe);
-    }
-
-    public Assembly andThen(Pipe pipe) {
-        pipes.add(pipe);
-        return this;
-    }
-
-    public PipeAssembly build() {
-        return new PipeAssembly(pipes);
-    }
-}
