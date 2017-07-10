@@ -11,7 +11,7 @@ public class PipeAssemblyTest {
     @Test
     public void shouldCallPipes() {
         Pipe mockPipe = mock(Pipe.class);
-        PipeAssembly pipeAssembly = Assembly.with(mockPipe).build();
+        PipeAssembly pipeAssembly = PipeAssembly.with(mockPipe).build();
 
         pipeAssembly.process();
 
@@ -22,7 +22,7 @@ public class PipeAssemblyTest {
     public void shouldCallMultiplePipesInARow() {
         Pipe firstMockPipe = mock(Pipe.class);
         Pipe secondMockPipe = mock(Pipe.class);
-        PipeAssembly pipeAssembly = Assembly
+        PipeAssembly pipeAssembly = PipeAssembly
                 .with(firstMockPipe)
                 .andThen(secondMockPipe)
                 .build();

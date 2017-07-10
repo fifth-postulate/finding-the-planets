@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PipeAssembly implements Pipe {
+    public static Assembly with(Pipe pipe) {
+        return new Assembly(pipe);
+    }
+
     private final List<Pipe> pipes = new ArrayList<>();
 
     PipeAssembly(List<Pipe> pipes) {
@@ -20,13 +24,9 @@ public class PipeAssembly implements Pipe {
 }
 
 class Assembly {
-    public static Assembly with(Pipe pipe) {
-        return new Assembly(pipe);
-    }
-
     private List<Pipe> pipes = new ArrayList<>();
 
-    private Assembly(Pipe pipe) {
+    Assembly(Pipe pipe) {
         pipes.add(pipe);
     }
 
