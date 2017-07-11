@@ -18,13 +18,14 @@ import static nl.fifth.postulate.circuit.pipe.Average.average;
 import static nl.fifth.postulate.circuit.pipe.Detrend.detrend;
 import static nl.fifth.postulate.circuit.pipe.FFTFilter.fftFilter;
 import static nl.fifth.postulate.circuit.pipe.Smooth.smooth;
+import static nl.fifth.postulate.circuit.pipe.TimeProxy.floatTime;
 
 public class DataCircuit {
     public static void main(String[] args) throws FileNotFoundException {
         String filename = args[0];
         String pathName = args[1];
 
-        TrappistData result = process(BaseTrappistData.from(filename));
+        TrappistData result = process(floatTime(BaseTrappistData.from(filename)));
 
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
@@ -54,24 +55,16 @@ class Formatter {
     public static void format(PrintStream stream, TrappistData data, String template, String... columnNames) {
         Map<String, float[]> dataPoints = new HashMap<>();
         for (String columnName : columnNames) {
-            if (!columnName.equals("TIME")) {
-                dataPoints.put(columnName, (float[]) data.dataFor(columnName));
-            }
+            dataPoints.put(columnName, (float[]) data.dataFor(columnName));
         }
 
         for (int row = 0, limit = dataPoints.get(columnNames[1]).length; row < limit; row++) {
-            System.out.println(row);
             Object[] dataPoint = new Object[1 + columnNames.length];
             dataPoint[0] = row;
             for (int index = 0; index < columnNames.length; index++) {
                 String columnName = columnNames[index];
-                if (columnName.equals("TIME")) {
-                    double value = ((double[]) data.dataFor(columnName))[row];
-                    dataPoint[1 + index] = value;
-                } else {
-                    float value = (float) dataPoints.get(columnName)[row];
-                    dataPoint[1 + index] = value;
-                }
+                float value = (float) dataPoints.get(columnName)[row];
+                dataPoint[1 + index] = value;
             }
             stream.format(template, dataPoint);
         }
