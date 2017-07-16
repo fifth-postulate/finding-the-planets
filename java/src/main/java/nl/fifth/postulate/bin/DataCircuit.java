@@ -3,10 +3,7 @@ package nl.fifth.postulate.bin;
 import nl.fifth.postulate.circuit.BaseTrappistData;
 import nl.fifth.postulate.circuit.PipeAssembly;
 import nl.fifth.postulate.circuit.TrappistData;
-import nl.fifth.postulate.circuit.pipe.Average;
-import nl.fifth.postulate.circuit.pipe.Detrend;
-import nl.fifth.postulate.circuit.pipe.FFTFilter;
-import nl.fifth.postulate.circuit.pipe.Smooth;
+import nl.fifth.postulate.circuit.pipe.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +14,7 @@ import java.util.Map;
 import static nl.fifth.postulate.circuit.pipe.Average.average;
 import static nl.fifth.postulate.circuit.pipe.Detrend.detrend;
 import static nl.fifth.postulate.circuit.pipe.FFTFilter.fftFilter;
+import static nl.fifth.postulate.circuit.pipe.MADFilter.madFilter;
 import static nl.fifth.postulate.circuit.pipe.Smooth.smooth;
 import static nl.fifth.postulate.circuit.pipe.TimeProxy.floatTime;
 
@@ -29,13 +27,16 @@ public class DataCircuit {
 
 
         PrintStream output = new PrintStream(new FileOutputStream(pathName));
-        Formatter.format(output, result, "%4d, %10.6f, %10.6f, %10.6f, %10.6f, %10.6f\n",
+        Formatter.format(output, result, "%4d, %10.6f, %10.6f, %10.6f, %10.6f, %10.6f, %10f\n",
                 "TIME",
                 Average.COLUMN_NAME,
                 Smooth.COLUMN_NAME,
                 Detrend.COLUMN_NAME,
-                FFTFilter.COLUMN_NAME
+                FFTFilter.COLUMN_NAME,
+                MADFilter.COLUMN_NAME
         );
+        output.flush();
+        output.close();
     }
 
     private static TrappistData process(TrappistData baseData) {
@@ -44,6 +45,7 @@ public class DataCircuit {
                 .andThen(smooth(0.6f))
                 .andThen(detrend(Average.COLUMN_NAME, Smooth.COLUMN_NAME))
                 .andThen(fftFilter(1500))
+                .andThen(madFilter(10))
                 .build();
 
         return assembly.process(baseData);
