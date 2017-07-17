@@ -14,7 +14,7 @@ import java.util.Map;
 import static nl.fifth.postulate.circuit.pipe.Average.average;
 import static nl.fifth.postulate.circuit.pipe.Detrend.detrend;
 import static nl.fifth.postulate.circuit.pipe.FFTFilter.fftFilter;
-import static nl.fifth.postulate.circuit.pipe.MADFilter.madFilter;
+import static nl.fifth.postulate.circuit.pipe.MedianFilter.medianFilter;
 import static nl.fifth.postulate.circuit.pipe.Smooth.smooth;
 import static nl.fifth.postulate.circuit.pipe.TimeProxy.floatTime;
 
@@ -33,7 +33,7 @@ public class DataCircuit {
                 Smooth.COLUMN_NAME,
                 Detrend.COLUMN_NAME,
                 FFTFilter.COLUMN_NAME,
-                MADFilter.COLUMN_NAME
+                MedianFilter.COLUMN_NAME
         );
         output.flush();
         output.close();
@@ -45,7 +45,7 @@ public class DataCircuit {
                 .andThen(smooth(0.6f))
                 .andThen(detrend(Average.COLUMN_NAME, Smooth.COLUMN_NAME))
                 .andThen(fftFilter(1500))
-                .andThen(madFilter(10))
+                .andThen(medianFilter(10))
                 .build();
 
         return assembly.process(baseData);

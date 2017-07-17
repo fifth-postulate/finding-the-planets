@@ -3,14 +3,14 @@ package nl.fifth.postulate.circuit.pipe;
 import nl.fifth.postulate.circuit.ChainingPipe;
 import nl.fifth.postulate.circuit.TrappistData;
 
-public class MADFilter extends ChainingPipe {
-    public static MADFilter madFilter(int window) {
-        return new MADFilter(window);
+public class MedianFilter extends ChainingPipe {
+    public static MedianFilter medianFilter(int window) {
+        return new MedianFilter(window);
     }
-    public static final String COLUMN_NAME = "MADFILTER";
+    public static final String COLUMN_NAME = "MEDIANFILTER";
     private final int window;
 
-    public MADFilter(int window) {
+    public MedianFilter(int window) {
         super(COLUMN_NAME);
         this.window = window;
     }
@@ -19,18 +19,18 @@ public class MADFilter extends ChainingPipe {
     public Object calculate(TrappistData trappistData) {
         float[] data = (float[]) trappistData.dataFor(FFTFilter.COLUMN_NAME);
 
-        MADCollector collector = new MADCollector(window, data);
+        MedianCollector collector = new MedianCollector(window, data);
 
         return collector.result();
     }
 }
 
-class MADCollector {
+class MedianCollector {
     private final float[] data;
     private final int window;
     private final Median median;
 
-    public MADCollector(int window, float[] data) {
+    public MedianCollector(int window, float[] data) {
         this.window = window;
         this.data = data;
         this.median = new Median();
@@ -40,40 +40,37 @@ class MADCollector {
         float[] result = new float[data.length];
 
         for (int row = 0, limit = data.length; row < limit; row++) {
-            result[row] = MADaround(row);
+            result[row] = MedianAround(row);
         }
 
         return result;
     }
 
-    private float MADaround(int row) {
-        float[] windowedData = windowedDataAroun(row);
-        float globalMedian = median.of(windowedData);
-        for (int index = 0, limit = windowedData.length; index < limit; index++) {
-            windowedData[index] = java.lang.Math.abs(windowedData[index] - globalMedian);
-        }
+    private float MedianAround(int row) {
+        float[] windowedData = windowedDataAround(row);
         return median.of(windowedData);
     }
 
-    private float[] windowedDataAroun(int row) {
+    private float[] windowedDataAround(int row) {
         float[] data = new float[window];
 
         for (int index = 0, offset = window/2; index < window; index++) {
-            int rowIndex = rowIndex(index, offset);
-            data[index] = data[rowIndex];
+            int targetIndex = row + index - offset;
+            int rowIndex = clampedIndex(targetIndex);
+            data[index] = this.data[rowIndex];
         }
         return data;
     }
 
-    private int rowIndex(int index, int offset) {
-        int rowIndex = index - offset;
-        if (rowIndex < 0) {
+    private int clampedIndex(int index) {
+        int clampIndex = index;
+        if (clampIndex < 0) {
             return 0;
         }
-        if (rowIndex >= data.length) {
+        if (clampIndex >= data.length) {
             return data.length - 1;
         }
-        return rowIndex;
+        return clampIndex;
     }
 
 }
