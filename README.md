@@ -116,7 +116,12 @@ P                        array descriptor                8
 Q                        array descriptor                16
 ```
 
-## Results
+## Recreation of iPython notebook
+Below you can find the preliminary results of our exploration of the data set.
+We got a feel for the process of extracting data, but results differed from the
+iPython notebook. Here we are closely following the notebook steps.
+
+## Preliminary Results
 ### Images
 #### First image created
 Below you find the first image that I created from the *long cadence* FITS data.
