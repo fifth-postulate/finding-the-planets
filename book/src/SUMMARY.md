@@ -4,4 +4,5 @@
 - [Background](./background.md)
     - [Trappist-1](./background/trappist-1.md)
     - [Kepler](./background/kepler.md)
+- [Science](./science.md)
 - [Chapter 1](./chapter_1.md)
