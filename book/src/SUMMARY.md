@@ -6,4 +6,5 @@
     - [Kepler Spacecraft](./background/kepler.md)
 - [Science](./science.md)
     - [Exo-planet Discovery](./science/discovery.md)
+    - [Observing Position](./science/position.md)
 - [Chapter 1](./chapter_1.md)
