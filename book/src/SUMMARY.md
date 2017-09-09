@@ -8,4 +8,5 @@
     - [Exo-planet Discovery](./science/discovery.md)
     - [Observing Position](./science/position.md)
     - [Doppler Effect](./science/doppler.md)
+    - [Transit Method](./science/transit.md)
 - [Chapter 1](./chapter_1.md)
