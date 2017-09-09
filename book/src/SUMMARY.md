@@ -7,4 +7,5 @@
 - [Science](./science.md)
     - [Exo-planet Discovery](./science/discovery.md)
     - [Observing Position](./science/position.md)
+    - [Doppler Effect](./science/doppler.md)
 - [Chapter 1](./chapter_1.md)
