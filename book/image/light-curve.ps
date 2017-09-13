@@ -20,19 +20,19 @@
 save /clean-slate exch def
 75 25.4 div dup scale
 
-/x0 210 2 div def
+/x0 30 def
+/dx 25 def
 /y0 297 2 div def
-/s 5 def
-/S 25 def
+/s 5 2 div def
+/S 25 2 div def
 
-
-x0 y0 S s add 3 mul add s S S neg transit
-x0 y0 S s add 2 mul add s S S s add 2 div neg transit
-x0 y0 S s add 1 mul add s S S s sub 2 div neg transit
-x0 y0 S s add 0 mul add s S 0 transit
-x0 y0 S s add -1 mul add s S S s sub 2 div transit
-x0 y0 S s add -2 mul add s S S s add 2 div transit
-x0 y0 S s add -3 mul add s S S transit
+x0 0 dx mul add y0 s S S neg transit
+x0 1 dx mul add y0 s S S s add 2 div neg transit
+x0 2 dx mul add y0 s S S s sub 2 div neg transit
+x0 3 dx mul add y0 s S 0 transit
+x0 4 dx mul add y0 s S S s sub 2 div transit
+x0 5 dx mul add y0 s S S s add 2 div transit
+x0 6 dx mul add y0 s S S transit
 
 stroke
 clean-slate restore
