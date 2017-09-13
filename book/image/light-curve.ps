@@ -17,6 +17,18 @@
     end
 } def
 
+/dash {
+    [/h /y /x] dup length 0 add dict begin {exch def} forall
+    gsave
+    currentlinewidth 2 div setlinewidth
+    [3 5] 0 setdash
+    x y moveto
+    x y h add lineto
+    stroke
+    grestore
+    end
+} def
+
 save /clean-slate exch def
 75 25.4 div dup scale
 
