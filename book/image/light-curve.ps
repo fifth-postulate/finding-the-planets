@@ -38,13 +38,20 @@ save /clean-slate exch def
 /s 5 2 div def
 /S 25 2 div def
 
-x0 0 dx mul add y0 s S S neg transit
-x0 1 dx mul add y0 s S S s add 2 div neg transit
-x0 2 dx mul add y0 s S S s sub 2 div neg transit
-x0 3 dx mul add y0 s S 0 transit
-x0 4 dx mul add y0 s S S s sub 2 div transit
-x0 5 dx mul add y0 s S S s add 2 div transit
-x0 6 dx mul add y0 s S S transit
+[
+    [0 S neg]
+    [1 S s add 2 div neg]
+    [2 S s sub 2 div neg]
+    [3 0]
+    [4 S s sub 2 div]
+    [5 S s add 2 div]
+    [6 S]
+] {
+    aload pop [/position /index] dup length 1 add dict begin {exch def} forall
+    /x x0 index dx mul add def
+    x y0 s S position transit
+    end
+} forall
 
 stroke
 clean-slate restore
