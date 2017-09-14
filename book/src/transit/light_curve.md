@@ -36,3 +36,5 @@ by \\(I_{0}\\) to get
 \\]
 
 So the entire light curve looks something like this.
+
+![A light curve for a planet transition](image/light-curve.png)
