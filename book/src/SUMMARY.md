@@ -10,4 +10,4 @@
     - [Doppler Effect](./science/doppler.md)
 - [Transit Method](./transit.md)
     - [What To Look For](./transit/light_curve.md)
-- [Chapter 1](./chapter_1.md)
+- [Finding Planets](./finding.md)
