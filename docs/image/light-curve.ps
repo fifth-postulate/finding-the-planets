@@ -1,0 +1,85 @@
+%!PS-Adobe-1.0
+%%BoundingBox: 0 0 620 210
+/square {
+    [/s /y /x] dup length 0 add dict begin {exch def} forall
+    x s 2 div sub y s 2 div sub moveto
+    s 0 rlineto
+    0 s rlineto
+    s neg 0 rlineto
+    closepath
+    end
+} def
+
+/transit {
+    [/d /S /s /y /x] dup length 0 add dict begin {exch def} forall
+    x y S square
+    x d add y s square
+    end
+} def
+
+/dash {
+    [/h /y /x] dup length 0 add dict begin {exch def} forall
+    gsave
+    currentlinewidth 2 div setlinewidth
+    [3 5] 0 setdash
+    x y moveto
+    x y h add lineto
+    stroke
+    grestore
+    end
+} def
+
+save /clean-slate exch def
+75 25.4 div dup scale
+
+/x0 30 def
+/dx 25 def
+/y0 0 def
+/s 5 2 div def
+/S 25 2 div def
+/H 60 def
+/a0 0.9 def
+/a1 0.6 def
+
+0 S translate
+
+0.5 setgray
+
+0 y0 S sub  moveto
+210 0 rlineto
+0 H S add rlineto
+210 neg 0 rlineto
+closepath
+
+fill
+
+1 setgray
+
+[
+    [0 S neg             0           H a0 mul]
+    [1 S s add 2 div neg s 2 div     H a0 mul]
+    [2 S s sub 2 div neg s 2 div neg H a1 mul]
+    [3 0                 0           H a1 mul]
+    [4 S s sub 2 div     s 2 div     H a1 mul]
+    [5 S s add 2 div     s 2 div neg H a0 mul]
+    [6 S                 0           H a0 mul]
+] dup {
+    aload pop [/h /dd /position /index] dup length 1 add dict begin {exch def} forall
+    /x x0 index dx mul add def
+    x position add dd add y0 s 2 div add H dash
+    x y0 s S position transit
+    end
+} forall
+
+0 y0 H a0 mul add moveto
+{
+    aload pop [/h /dd /position /index] dup length 1 add dict begin {exch def} forall
+    /x x0 index dx mul add position add dd add def
+    /y y0 h add def
+    x y lineto
+    end
+} forall
+210 y0 H a0 mul add lineto
+
+stroke
+clean-slate restore
