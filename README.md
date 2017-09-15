@@ -1,5 +1,6 @@
 # Finding the Planets
-A workshop that allows one to discover exo-planets.
+A workshop that allows one to discover exo-planets. The workshop has an
+accompanying [book][]
 
 ## Trappist-1
 [Trappist-1][trappist] is a
@@ -174,3 +175,4 @@ transformation produces a filtered sequence.
 [data]: https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html
 [barentsen]: https://github.com/barentsen
 [notebook]: https://github.com/mrtommyb/trappist-lc/blob/master/TRAPPIST-1-transit-code.ipynb
+[book]: http://fifth-postulate.nl/finding-the-planets/
