@@ -3,6 +3,9 @@
 DATA-FILES := $(patsubst %,k2-trappist1-unofficial-tpf-%-cadence.fits,short long)
 COMPRESSED-FILES := $(patsubst %,%.gz,DATA-FILES)
 
+workshop.tar.gz:
+	tar cvfz workshop.tar.gz workshop/
+
 workshop:
 	mkdir -p workshop
 	cp *.fits workshop
@@ -20,4 +23,4 @@ data: $(DATA-FILES)
 
 clean:
 	rm -f *.fits.gz
-	rm -rf workshop
+	rm -rf workshop*
