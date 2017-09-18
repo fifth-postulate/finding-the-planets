@@ -11,3 +11,4 @@
 - [Transit Method](./transit.md)
     - [What To Look For](./transit/light_curve.md)
 - [Finding Planets](./finding.md)
+    - [FITS](./finding/fits.md)

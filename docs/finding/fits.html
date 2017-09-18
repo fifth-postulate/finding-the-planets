@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>What To Look For - Finding the Planets</title>
+        <title>FITS - Finding the Planets</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,7 +69,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html" class="active"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li></ul></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html" class="active"><strong>4.1.</strong> FITS</a></li></ul></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -89,66 +89,42 @@
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="light_curve.html#what to look for" id="what to look for"><h1>What To Look For</h1></a>
-<p>We are forming a model of a planet transit in order to make some calculations
-what to expect. Our model will be fairly crude, but it will suffices for
-understanding key characteristics of light curves.</p>
-<p>This section has some math in it. It is used to understand how a light curve
-will look when a planet transits. Feel free to skip to the result if you feel
-inclined.</p>
-<a class="header" href="light_curve.html#light curve" id="light curve"><h2>Light Curve</h2></a>
-<p>A <a href="https://en.wikipedia.org/wiki/Light_curve">light curve</a> is</p>
+                    <a class="header" href="fits.html#fits" id="fits"><h1>FITS</h1></a>
+<p>The results of the NASA Kepler mission on observing Trappist-1 are
+<a href="https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html">available</a>
+to the public. For your ease of use we downloaded the FITS files before hand.</p>
+<a class="header" href="fits.html#what are fits files" id="what are fits files"><h2>What are FITS files</h2></a>
+<p>A <a href="https://en.wikipedia.org/wiki/FITS">FITS</a> file is a</p>
 <blockquote>
-<p>a graph of light intensity of a celestial object or region, as a function of
-time.</p>
+<p>open standard defining a digital file format useful for storage,
+transmission and processing of scientific and other images. FITS is the most
+commonly used digital file format in astronomy. Unlike many image formats,
+FITS is designed specifically for scientific data and hence includes many
+provisions for describing photometric and spatial calibration information,
+together with image origin metadata.</p>
 </blockquote>
-<p>It graphs how bright some object appears in the sky over time. Our goal is to
-understand how the light curve looks like when a planet transits a star.</p>
-<a class="header" href="light_curve.html#model" id="model"><h2>Model</h2></a>
-<p>We are modeling our planet transit in the following crude manner. We assume the
-star to be a square which radiates uniformly. The total luminosity is
-\(I_{0}\). So the luminosity per area \(\rho = \frac{I_{0}}{A}\), where \(A\)
-is the total area of the star.</p>
-<p>We model our planet as a square as well. We will also assume that the planet
-will move with uniform speed across stars image during the transit. When the
-planet is fully in front of the star, it block some of the rays of the star
-diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
-\(a\) is the area of the planet.</p>
-<p>The interested in the relative drop in luminosity so we will divide \(I_{t}\)
-by \(I_{0}\) to get</p>
-<p>\[
-\frac{I_{t}}{I_{0}} = \frac{\rho \left(A - a\right)}{\rho A} = 1 - \frac{a}{A}
-\]</p>
-<p>So the entire light curve looks something like this.</p>
-<p><img src="image/light-curve.png" alt="A light curve for a planet transition" /></p>
+<p>We are going to use the <a href="https://crates.io/crates/fits-rs">fits-rs</a> crate to
+process the FITS files.</p>
 
                 </div>
 
                 <!-- Mobile navigation buttons -->
                 
-                    <a rel="prev" href="./transit.html" class="mobile-nav-chapters previous">
+                    <a rel="prev" href="./finding.html" class="mobile-nav-chapters previous">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="./finding.html" class="mobile-nav-chapters next">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                
 
             </div>
 
             
-                <a href="./transit.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                <a href="./finding.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
                     <i class="fa fa-angle-left"></i>
                 </a>
             
 
-            
-                <a href="./finding.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-right"></i>
-                </a>
             
 
         </div>
