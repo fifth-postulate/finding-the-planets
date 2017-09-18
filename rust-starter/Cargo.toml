@@ -1,0 +1,6 @@
+[package]
+name = "find-planets"
+version = "0.1.0"
+authors = ["Your awesome self <you@planet-hunter.org>"]
+
+[dependencies]
