@@ -12,4 +12,5 @@
     - [What To Look For](./transit/light_curve.md)
 - [Finding Planets](./finding.md)
     - [FITS](./finding/fits.md)
+    - [CSV](./finding/csv.md)
 [Setup](./setup.md)
