@@ -5,6 +5,7 @@ import nom.tam.fits.Fits;
 import nom.tam.fits.FitsException;
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class ToCSV {
     public static void main(String[] args) throws FitsException, IOException {
@@ -15,15 +16,16 @@ public class ToCSV {
         float[][][] rows = (float[][][]) hdu.getColumn("FLUX");
 
         for (int row = 0, rowLimit = rows.length; row < rowLimit; row++ ) {
-            System.out.printf("%f", time[row]);
+            PrintStream out = new PrintStream("output.csv");
+            out.printf("%f", time[row]);
             float[][] inputImage = rows[row];
             for (int y = 0, ylimit = inputImage.length; y < ylimit; y++) {
                 for (int x = 0, xlimit = inputImage[0].length; x < xlimit; x++) {
                     float value = inputImage[y][x];
-                    System.out.printf(",%f", value);
+                    out.printf(",%f", value);
                 }
             }
-            System.out.println();
+            out.println();
         }
 
     }
