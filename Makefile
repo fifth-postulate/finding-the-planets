@@ -11,6 +11,7 @@ workshop:
 	cp *.fits workshop
 	cp -r docs workshop/book
 	cp -r rust-starter workshop/rust-starter
+	cp *.csv workshop
 
 data: $(DATA-FILES)
 
