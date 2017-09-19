@@ -1,13 +1,15 @@
 extern crate simple_csv;
 extern crate png;
 
-use std::path::Path;
+use std::env;
 use std::fs::File;
 use std::io::BufWriter;
 use png::HasParameters;
 
 fn main(){
-    let path = Path::new(r"/home/dvberkel/Pictures/find-planets/trappist-1.0.png");
+    let mut path = env::current_dir().unwrap();
+    path.push("trappist-1.0.png");
+
     let file = File::create(path).unwrap();
     let ref mut w = BufWriter::new(file);
 
