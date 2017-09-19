@@ -5,3 +5,4 @@ authors = ["Daan van Berkel <daan.v.berkel.1980@gmail.com>"]
 
 [dependencies]
 simple_csv = "~0.0.8"
+png = "0.9.0"
