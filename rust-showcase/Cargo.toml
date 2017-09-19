@@ -1,6 +1,7 @@
 [package]
 name = "find-planets"
 version = "0.1.0"
-authors = ["Your awesome self <you@planet-hunter.org>"]
+authors = ["Daan van Berkel <daan.v.berkel.1980@gmail.com>"]
 
 [dependencies]
+simple_csv = "~0.0.8"
