@@ -26,10 +26,8 @@ fn main(){
         .iter()
         .map(|s| s/maximum)
         .map(|s| 255.0 * s)
-        .map(|s| s as u8)
+        .map(|s| s.floor() as u8)
         .collect();
-
-    println!("{}: {:?}", maximum, data);
 
     let mut path = env::current_dir().unwrap();
     path.push("trappist-1.0.png");
