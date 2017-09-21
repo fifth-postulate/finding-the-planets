@@ -30,7 +30,7 @@ fn main(){
         .collect();
 
     let mut path = env::current_dir().unwrap();
-    path.push("trappist-1.0.png");
+    path.push(format!("trappist-1.{}.png", 0));
 
     let file = File::create(path).unwrap();
     let ref mut w = BufWriter::new(file);

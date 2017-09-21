@@ -13,4 +13,5 @@
 - [Finding Planets](./finding.md)
     - [FITS](./finding/fits.md)
     - [CSV](./finding/csv.md)
+    - [Image](./finding/image.md)
 [Setup](./setup.md)

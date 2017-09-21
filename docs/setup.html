@@ -69,7 +69,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li></ul></li><li><a href="./setup.html" class="active">Setup</a></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li></ul></li><li><a href="./setup.html" class="active">Setup</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -96,6 +96,8 @@ workshop.</p>
 <p>The only real prerequisite is that you have a working
 <a href="https://www.rust-lang.org">Rust</a> tool chain. Everything else should be be
 provided in the workshop resources.</p>
+<p>If you want to graph some of the intermediate results, a graphing tool will be
+useful. We would recommend <a href="http://www.gnuplot.info/">gnuplot</a>.</p>
 <a class="header" href="setup.html#cargo_home" id="cargo_home"><h2>$CARGO_HOME</h2></a>
 <p>The project does relies on some crates. In order to go easy on the conference
 network we als downloaded the dependencies we envisioned. In order to make use
@@ -106,7 +108,7 @@ environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
 
                 <!-- Mobile navigation buttons -->
                 
-                    <a rel="prev" href="./finding/csv.html" class="mobile-nav-chapters previous">
+                    <a rel="prev" href="./finding/image.html" class="mobile-nav-chapters previous">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
@@ -116,7 +118,7 @@ environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
             </div>
 
             
-                <a href="./finding/csv.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
+                <a href="./finding/image.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
                     <i class="fa fa-angle-left"></i>
                 </a>
             
@@ -135,20 +137,6 @@ environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
 
         <!-- Livereload script (if served using the cli tool) -->
         
-    <script type="text/javascript">
-        var socket = new WebSocket("ws://localhost:3001");
-        socket.onmessage = function (event) {
-            if (event.data === "reload") {
-                socket.close();
-                location.reload(true); // force reload from server (not from cache)
-            }
-        };
-
-        window.onbeforeunload = function() {
-            socket.close();
-        }
-    </script>
-
 
         
 
