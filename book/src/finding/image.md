@@ -171,3 +171,22 @@ build and run your code.
 Which creates
 
 ![Actual Trappist-1 photo](image/trappist-1.0.png)
+
+## Appreciate the Image
+At first glance the image can be a little underwhelming. But it is precisely
+this image that blew my mind! Being accustomed to the marvelous artist
+impression when I learned about the actual data was 11x11 pixels I was hooked.
+How could anyone extract so much information from so little data?
+
+![10 times enlargement of actual Trappist-1 photo](image/trappist-1.0.large.png)
+
+I had to know and I hope you want to know too!
+
+## Further Considerations
+Almost every chapter can be allows you to play with what you have created. Below
+you can find some suggestions and food for thought that my spark your
+interested.
+
+* Make a bigger image with larger "pixels".
+* Make an entire series of images, one for each row.
+* Make a GIF or movie of the images.
