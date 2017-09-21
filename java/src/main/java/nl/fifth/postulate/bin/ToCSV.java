@@ -15,8 +15,9 @@ public class ToCSV {
         double[] time = (double[]) hdu.getColumn("TIME");
         float[][][] rows = (float[][][]) hdu.getColumn("FLUX");
 
+        PrintStream out = new PrintStream("output.csv");
         for (int row = 0, rowLimit = rows.length; row < rowLimit; row++ ) {
-            PrintStream out = new PrintStream("output.csv");
+
             out.printf("%f", time[row]);
             float[][] inputImage = rows[row];
             for (int y = 0, ylimit = inputImage.length; y < ylimit; y++) {
@@ -25,8 +26,9 @@ public class ToCSV {
                     out.printf(",%f", value);
                 }
             }
-            out.println();
+            out.printf("\n");
         }
+        out.flush();
 
     }
 }
