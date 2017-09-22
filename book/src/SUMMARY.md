@@ -14,4 +14,5 @@
     - [FITS](./finding/fits.md)
     - [CSV](./finding/csv.md)
     - [Image](./finding/image.md)
+    - [Collage](./finding/collage.md)
 [Setup](./setup.md)
