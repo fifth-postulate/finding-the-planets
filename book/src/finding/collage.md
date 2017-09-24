@@ -15,6 +15,58 @@ There are a few questions we need to answer before we can create our collage.
 1. For a row of data and a column in that row, which pixel should we paint?
 2. What color should we paint that pixel?
 
+### Position
+When we created the single image, we did not have to think about positioning
+explicitly. Because we want to make a collage we have some work to do.
+
+First of all, lets state some facts.
+
+1. Each image is 11x11 pixels.
+2. There are 3599 rows of images.
+
+The interesting thing about 3599 is that is 61x59. So we could make our collage
+almost a square with 61 columns and 59 rows of single images. With 11x11 images
+as base our collage will come in at 61x11 = 671 by 59x11 = 649.
+
+There are two factors that determine the position of the pixel. The which row
+that data is from, and which column the data is in.
+
+We will start with the row. Because we have 61 images along the x-axis of our
+collage, the `X`-offset will be
+
+```rust
+let offset_X = row_index % 61;
+```
+
+After 61 rows, we need to increase the `Y`-offset with one. This amounts to
+
+```rust
+let offset_Y = row_index / 61;
+```
+
+Now for the offset within the image. The image is 11x11. So given an original
+index in the row, we have for the 
+
+```rust
+let offset_x = original_index % 11;
+let offset_y = original_index / 11;
+```
+
+Now we can calculate the target index. For each `offset_Y` we need to go down an
+entire 11 rows in our collage. This is 11x61x11 = 7381. For each `offset_X` we
+need to shift 11 pixels down. For each `offset_y` we need to go down an entire
+row. This is 61x11 = 671. Finally, for each `offset_x` we need to shift 1 pixel
+down. All together this is
+
+```rust
+let target_index = offset_Y * 7381 +
+                   offset_X * 11 +
+                   offset_y * 671 +
+                   offsetx
+```
+
+With these calculations we know where to paint the image pixel.
+
 ### Color
 From our experience from creating an image we have a fairly good idea which
 color to use. The only difference between the collage and the single image is

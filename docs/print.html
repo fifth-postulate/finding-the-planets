@@ -406,6 +406,54 @@ from. Instead we are going to focus on processing the data.</p>
 <li>For a row of data and a column in that row, which pixel should we paint?</li>
 <li>What color should we paint that pixel?</li>
 </ol>
+<a class="header" href="print.html#position" id="position"><h3>Position</h3></a>
+<p>When we created the single image, we did not have to think about positioning
+explicitly. Because we want to make a collage we have some work to do.</p>
+<p>First of all, lets state some facts.</p>
+<ol>
+<li>Each image is 11x11 pixels.</li>
+<li>There are 3599 rows of images.</li>
+</ol>
+<p>The interesting thing about 3599 is that is 61x59. So we could make our collage
+almost a square with 61 columns and 59 rows of single images. With 11x11 images
+as base our collage will come in at 61x11 = 671 by 59x11 = 649.</p>
+<p>There are two factors that determine the position of the pixel. The which row
+that data is from, and which column the data is in.</p>
+<p>We will start with the row. Because we have 61 images along the x-axis of our
+collage, the <code>X</code>-offset will be</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let offset_X = row_index % 61;
+#}</code></pre></pre>
+<p>After 61 rows, we need to increase the <code>Y</code>-offset with one. This amounts to</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let offset_Y = row_index / 61;
+#}</code></pre></pre>
+<p>Now for the offset within the image. The image is 11x11. So given an original
+index in the row, we have for the</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let offset_x = original_index % 11;
+let offset_y = original_index / 11;
+#}</code></pre></pre>
+<p>Now we can calculate the target index. For each <code>offset_Y</code> we need to go down an
+entire 11 rows in our collage. This is 11x61x11 = 7381. For each <code>offset_X</code> we
+need to shift 11 pixels down. For each <code>offset_y</code> we need to go down an entire
+row. This is 61x11 = 671. Finally, for each <code>offset_x</code> we need to shift 1 pixel
+down. All together this is</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let target_index = offset_Y * 7381 +
+                   offset_X * 11 +
+                   offset_y * 671 +
+                   offsetx
+#}</code></pre></pre>
+<p>With these calculations we know where to paint the image pixel.</p>
 <a class="header" href="print.html#color" id="color"><h3>Color</h3></a>
 <p>From our experience from creating an image we have a fairly good idea which
 color to use. The only difference between the collage and the single image is
