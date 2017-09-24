@@ -97,6 +97,20 @@ looking at the image.</p>
 <p>We will not go into details of reading the data and writing the transformed
 data. We assume that the previous chapters have given enough examples to learn
 from. Instead we are going to focus on processing the data.</p>
+<a class="header" href="collage.html#processing" id="processing"><h2>Processing</h2></a>
+<p>There are a few questions we need to answer before we can create our collage.</p>
+<ol>
+<li>For a row of data and a column in that row, which pixel should we paint?</li>
+<li>What color should we paint that pixel?</li>
+</ol>
+<a class="header" href="collage.html#color" id="color"><h3>Color</h3></a>
+<p>From our experience from creating an image we have a fairly good idea which
+color to use. The only difference between the collage and the single image is
+that we want to use the same scale for each image.</p>
+<p>So instead of dividing our value by the maximum value of a single image, we
+should divide by the global maximum.</p>
+<p>Create a separate executable that will determine the global maximum of all the
+measurements that we can use in determining the color of the pixel.</p>
 
                 </div>
 
