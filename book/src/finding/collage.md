@@ -77,3 +77,14 @@ should divide by the global maximum.
 
 Create a separate executable that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.
+
+## Further Considerations
+The following suggestions might help your understanding of the problem we
+facing, i.e. detecting planets in our image.
+
+Take a long good look at your collage. Write down what you notice about the
+image. Ask yourself some questions and discuss your observations with somebody
+else. 
+
+Why do we need a global maximum? What would happen if we would stick to the
+maximum per image? What would that look like, and what would it tell you?
