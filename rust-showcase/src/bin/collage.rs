@@ -35,7 +35,7 @@ fn main(){
     }
 
     let mut path = env::current_dir().unwrap();
-    path.push("collage.png");
+    path.push("assets/collage.png");
 
     let file = File::create(path).unwrap();
     let ref mut w = BufWriter::new(file);
