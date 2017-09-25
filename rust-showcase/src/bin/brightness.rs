@@ -10,7 +10,7 @@ fn main(){
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
-    let o = File::create("average.csv").unwrap();
+    let o = File::create("brightness.csv").unwrap();
     let mut writer = SimpleCsvWriter::new(o);
 
     for (_, r) in reader.enumerate() {
