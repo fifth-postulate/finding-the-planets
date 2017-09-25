@@ -15,17 +15,15 @@ fn main(){
 
     for (_, r) in reader.enumerate() {
         let row = r.unwrap();
-        let (time, brightness) = sum(row);
+        let (time, brightness, filtered) = sum(row);
 
         writer.write(
-            &vec!(time.to_string(), brightness.to_string())
+            &vec!(time.to_string(), brightness.to_string(), filtered.to_string())
         ).unwrap();
     }
-
-
 }
 
-fn sum(row: Vec<String>) -> (f64, f64) {
+fn sum(row: Vec<String>) -> (f64, f64, f64) {
     let mut iter = row.iter();
     let time: f64 = f64::from_str(iter.next().unwrap()).unwrap();
 
@@ -35,6 +33,11 @@ fn sum(row: Vec<String>) -> (f64, f64) {
     let sum: f64 = raw
         .iter()
         .fold(0f64, |acc, v| acc+v);
+    let average = sum / (row.len() as f64);
+    let filtered: f64 = raw
+        .iter()
+        .filter(|&v| *v >= average)
+        .fold(0f64, |acc, v| acc+v);
 
-    (time, sum)
+    (time, sum, filtered)
 }
