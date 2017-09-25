@@ -69,7 +69,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -470,6 +470,116 @@ image. Ask yourself some questions and discuss your observations with somebody
 else.</p>
 <p>Why do we need a global maximum? What would happen if we would stick to the
 maximum per image? What would that look like, and what would it tell you?</p>
+<a class="header" href="print.html#brightness" id="brightness"><h1>Brightness</h1></a>
+<p>We are going to detect the planets by observing drops in overall brightness.
+Before we are able to do this, we need to calculate the brightness. That is
+precisely the objective in this chapter.</p>
+<p>We are going to create a CSV file with the first column the time of the
+measurement and the second column the brightness at that time.</p>
+<a class="header" href="print.html#processing-1" id="processing-1"><h2>Processing</h2></a>
+<p>For each row of data we would like to know how much Trappist-1 is radiating.
+What we are going to do is the following.</p>
+<p>Take a row of data and</p>
+<ol>
+<li>Convert each value to a <code>f64</code>.</li>
+<li>Sum all the values to get the overall brightness.</li>
+</ol>
+<p>Converting values to a <code>f64</code> is something we did before. We are not going into
+details for the conversion.</p>
+<p>The summation of all the values can be written down very succinctly because the
+<a href="https://doc.rust-lang.org/std/iter/"><code>Iterator</code></a> trait has a trick up it's
+sleeve.</p>
+<p>It defines a method <code>fold</code> with the following signature</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
+    where
+        F: FnMut(B, Self::Item) -&gt; B
+#}</code></pre></pre>
+<p>It takes something that implements the <code>Iterator</code> trait, a initial value called
+<code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
+first is accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
+produces. After that it accepts the previous call to <code>f</code> return value with the
+next value of the iterator. A fold returns the final return value of the
+function <code>f</code>.</p>
+<p>We can use it to calculate the sum of all the brightness values. If we have our
+raw <code>f64</code> values in the variable <code>raw</code>, we can determine the sum with</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let sum: f64 = raw
+    .iter()
+    .fold(0f64, |acc, v| acc+v);
+#}</code></pre></pre>
+<a class="header" href="print.html#removing background" id="removing background"><h3>Removing Background</h3></a>
+<p>If we take a look at one of the images</p>
+<p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
+<p>we see that the background is not pitch black. This means that the background
+adds to the brightness, even though it does not contribute to the signal. So we
+start our journey with something we will come very familiar with, we will clean
+up our data.</p>
+<p>What we are going to do is ignore the brightness value of anything below the
+average brightness. This transforms the image from above into the image below.</p>
+<p><img src="image/trappist-1.0.nobg.large.png" alt="Enlargement of an image of Trappist-1 with background removed" /></p>
+<p>Still not perfect, but it is better than nothing.</p>
+<p>In order to filter out the unwanted background we are going to need to know the
+average. We already no the sum, we just calculated it, so the average can be
+determined by</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let average = sum / (row.len() as f64);
+#}</code></pre></pre>
+<p>Calculating the contribution of the values above the average can still be done
+succinctly. What we need to do is filter out the values that we want to sum.
+I.e. the values above the average.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let filtered: f64 = raw
+    .iter().
+    .filter(|&amp;v| *v &gt;= average)
+    .fold(0f64, |acc, v| acc+v)
+#}</code></pre></pre>
+<a class="header" href="print.html#graphing results" id="graphing results"><h2>Graphing Results</h2></a>
+<p>Once you wrote your brightness results to a CSV file, they are ready for the
+following step. But if you are like me you probably want to see your results.
+This is where gnuplot comes in.</p>
+<p>If you have saved your results as <code>brightness.csv</code>, the following gnuplot
+session will plot your data.</p>
+<pre><code>set datafile separator ','
+
+plot [2905:2985] &quot;brightness.csv&quot; using 1:2
+</code></pre>
+<p>We will annotate the above example a little, so that you can use gnuplot on your
+own. The <code>simple_csv</code> library outputs CSV files with a comma as separator. This
+difference from the default assumption of gnuplot. Luckily this can be remedied
+with the first line.</p>
+<p>The second line display the core of gnuplot; the <code>plot</code> command. The first
+argument, i.e. <code>[2905:2985]</code>, defines the range on the x-axis. It is optional
+and will be inferred by gnuplot if it isn't present. If there would be a second
+argument of that form, i.e. <code>[min:max]</code>, that would be the range on the y-axis.
+Here it is inferred.</p>
+<p>The <code>&quot;brightness.csv&quot;</code> argument you probably recognize as the file you wrote
+your data to. The <code>plot</code> command will use data in this file to plot.</p>
+<p>The last refers to columns in the data. <code>using 1:2</code> tells the plot command to
+plot point with the first column as x-coordinate and the second column as
+y-coordinate.</p>
+<p>For a more extensive explanation of gnuplot we refer you to the
+<a href="http://www.gnuplot.info/">gnuplot homepage</a>.</p>
+<p>If you have gone to the trouble of outputting the brightness with and without
+the background, your plot could look like the one below.</p>
+<p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
+<a class="header" href="print.html#further considerations-2" id="further considerations-2"><h2>Further Considerations</h2></a>
+<p>Take a look at your data and write down what stands out to you. Discuss this
+with a neighbor.</p>
+<p>There is an obvious gap in our data. This is where the Kepler satellite stopped
+recording data due to a software reboot initiated by a cosmic ray event.
+Although the data was lost, the satellite still operates nominally.</p>
+<p>Furthermore there is a trend in the overall brightness, more pronounced in the
+data with the background. This is also seen in our collage. We will have to
+smooth out that trend and that is precisely what we will do next.</p>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
