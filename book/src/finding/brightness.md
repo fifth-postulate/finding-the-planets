@@ -134,4 +134,4 @@ Although the data was lost, the satellite still operates nominally.
 
 Furthermore there is a trend in the overall brightness, more pronounced in the
 data with the background. This is also seen in our collage. We will have to
-smooth out that trend and that is precisely what we will do next.
+smooth out that trend and that is precisely what we will in one of the next chapters.
