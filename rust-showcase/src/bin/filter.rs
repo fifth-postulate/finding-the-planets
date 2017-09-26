@@ -1,13 +1,15 @@
 extern crate simple_csv;
 
+use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use std::str::FromStr;
 use simple_csv::{SimpleCsvWriter, SimpleCsvReader};
 
-const THRESHOLD: f64 = 500f64;
-
 fn main(){
+    let args : Vec<String> = env::args().collect();
+    let threshold = f64::from_str(&args[1]).expect("first argument should be the threshold");
+
     let f = File::open("assets/brightness.csv").unwrap();
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
@@ -22,7 +24,7 @@ fn main(){
     for candidate in raw {
         match current {
             Some(previous) => {
-                if (candidate.1 - previous.1).abs() <= THRESHOLD {
+                if (candidate.1 - previous.1).abs() <= threshold {
                     result.push(previous);
                     current = Some(candidate);
                 }
