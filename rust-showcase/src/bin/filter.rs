@@ -34,7 +34,6 @@ fn main(){
                 current = Some(candidate)
             }
         }
-
     }
 
 
