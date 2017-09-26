@@ -1,5 +1,6 @@
 # Detrend
-Take a look the brightness graph you made in the preceding chapter.
+Take a look the filtered brightness graph you made in the preceding chapter.
+Your results may vary depending on your chosen threshold.
 
-![Brightness of Trappist-1](image/brightness-nobackground.png)
+![Filtered brightness of Trappist-1](image/filter.png)
 
