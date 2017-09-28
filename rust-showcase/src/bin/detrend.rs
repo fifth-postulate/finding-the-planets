@@ -19,18 +19,19 @@ fn main(){
         .map(data)
         .collect();
 
-    let mut result: Vec<(f64, f64, f64)> = vec!();
-    let mut smoothed: Option<(f64, f64)> = None;
+    let mut sequence: Vec<DetrendData> = vec!();
+    let mut data: Option<DetrendData> = None;
     for candidate in raw {
-        match smoothed {
+        match data{
             Some(previous) => {
-                let next = alpha * candidate.1 + (1f64 - alpha) * previous.1;
-                result.push((candidate.0, next, candidate.1 - next));
-                smoothed = Some((candidate.0, next));
+                let next = previous.next(candidate, alpha);
+                sequence.push(previous);
+                data = Some(next);
             }
 
             None => {
-                smoothed = Some(candidate)
+                data = Some(DetrendData::initial(candidate))
+
             }
         }
     }
@@ -39,9 +40,9 @@ fn main(){
     let o = File::create("assets/detrend.csv").unwrap();
     let mut writer = SimpleCsvWriter::new(o);
 
-    for (time, trend, difference) in result {
+    for data in sequence {
         writer.write(
-            &vec!(time.to_string(), trend.to_string(), difference.to_string())
+            &data.as_vec()
         ).unwrap();
     }
 }
@@ -54,4 +55,42 @@ fn data(row: Vec<String>) -> (f64, f64) {
         .collect();
 
     (raw[0], raw[1])
+}
+
+struct DetrendData {
+    time: f64,
+    brightness: f64,
+    trend: f64,
+    difference: f64,
+}
+
+impl DetrendData {
+    fn initial((time, brightness): (f64,f64)) -> DetrendData {
+        DetrendData {
+            time: time,
+            brightness: brightness,
+            trend: brightness,
+            difference: 0f64,
+        }
+    }
+
+    fn next(&self, (time, brightness): (f64, f64), alpha: f64) -> DetrendData {
+        let trend = alpha * brightness + (1f64 - alpha) * self.trend;
+        DetrendData {
+            time: time,
+            brightness: brightness,
+            trend: trend,
+            difference: brightness - trend,
+        }
+
+    }
+
+    fn as_vec(&self) -> Vec<String> {
+        vec!(
+            self.time.to_string(),
+            self.brightness.to_string(),
+            self.trend.to_string(),
+            self.difference.to_string(),
+        )
+    }
 }
