@@ -16,6 +16,6 @@
     - [Image](./finding/image.md)
     - [Collage](./finding/collage.md)
     - [Brightness](./finding/brightness.md)
-    - [Filter](./finding/filter.md)
     - [Detrend](./finding/detrend.md)
+    - [Filter](./finding/filter.md)
 [Setup](./setup.md)
