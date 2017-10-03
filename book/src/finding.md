@@ -13,3 +13,24 @@ the next chapter.
 Although this could be optimized in a single pipeline, foregoing the need to
 write and read CSV, with this format we have to ability to reflect. This will
 aid us in understanding our task at hand.
+
+## Outline
+The following outline is typical for almost all the activities we are going to
+do in this workshop.
+
+1. Read data
+2. Process data
+3. Write data
+
+Processing could be any of, but not limited to, transforming, filtering,
+analyzing or fitting. Now processing will be generating image data.
+
+This could be your first encounter with some of the libraries we use. When we
+start using a library for the first time, we are going to be very specific. Once
+you get to know the library we leave you to fill in the blanks.
+
+## Further Considerations
+Almost every chapter encourages you to play with what you have created. We hope
+too give you some food for thought that might spark your interested. But feel
+free to come up with your own questions and observations and don't forget to
+share them.

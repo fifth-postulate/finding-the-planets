@@ -1,6 +1,6 @@
 # What is this book about
-This book is an compendium to the workshop _Find Planets_. The workshop walks
-you through various techniques and teaches you how to detect planets in
+This book is an compendium to the workshop _Finding the Planets_. The workshop
+walks you through various techniques and teaches you how to detect planets in
 photo-metric data.
 
 It starts with observations of [Trappist-1][trappist-1], a star system only 40

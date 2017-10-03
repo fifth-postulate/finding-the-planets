@@ -90,8 +90,8 @@
 
                 <div id="content" class="content">
                     <a class="header" href="print.html#what is this book about" id="what is this book about"><h1>What is this book about</h1></a>
-<p>This book is an compendium to the workshop <em>Find Planets</em>. The workshop walks
-you through various techniques and teaches you how to detect planets in
+<p>This book is an compendium to the workshop <em>Finding the Planets</em>. The workshop
+walks you through various techniques and teaches you how to detect planets in
 photo-metric data.</p>
 <p>It starts with observations of <a href="https://en.wikipedia.org/wiki/TRAPPIST-1">Trappist-1</a>, a star system only 40
 light-years from earth. It ends with finding the planets among the massaged
@@ -101,13 +101,13 @@ how to find the actual planets.</p>
 your trusty silicon companion go on a journey to explore the riches of the
 universe. So put on your science hat and go find those planets.</p>
 <a class="header" href="print.html#background" id="background"><h1>Background</h1></a>
-<p>Before we strap into our science-craft let's to set the scene by learning about
+<p>Before we strap into our science-craft let's set the scene by learning about
 the background of all those marvelous discoveries.</p>
 <p>In the following chapters, you will learn more about Trappist-1, how it was
 discovered and the data that we will use to find its planets.</p>
 <a class="header" href="print.html#trappist-1" id="trappist-1"><h1>Trappist-1</h1></a>
 <p>Trappist-1 is a star system 39 light-years from Earth. A light-year is the
-distance light travels in on year. That is approximately 369 trillion
+distance light travels in one year. That is approximately 369 trillion
 kilometers. Even though this seems an astronomically large distance, on a
 galactic scale, Trappist-1 and the sun are close neighbors.</p>
 <a class="header" href="print.html#kepler spacecraft" id="kepler spacecraft"><h1>Kepler Spacecraft</h1></a>
@@ -126,7 +126,7 @@ outline the various different ways of discovering exoplanets.</p>
 <p>The various ways can be grouped in two categories. Direct observation and
 indirect observation.</p>
 <a class="header" href="print.html#direct observation" id="direct observation"><h2>Direct observation</h2></a>
-<p>Direct observation entails taking an telescope and searching the sky in the hope
+<p>Direct observation entails taking a telescope and searching the sky in the hope
 of spotting an exo-planet. Unfortunately the chances of this happening are very
 low. Where we can take a telescope and point it at Jupiter and discover a few
 of her moons, exo-planets are so far away and often so dim, it is impractical
@@ -150,10 +150,10 @@ wobble that we can use to infer the existence of planets.</p>
 <p>Similar with direct observation, we could try to observe the wobble of a star
 directly. This method faces the same problems, i.e. the distances of the stars
 are so immense, the wobble becomes all but undetectable.</p>
-<p>So we will quickly move on the other methods.</p>
+<p>So we will quickly move on to other methods.</p>
 <a class="header" href="print.html#doppler effect" id="doppler effect"><h1>Doppler Effect</h1></a>
 <p>Just like a blaring whistle of a train drops pitch when it rushes by, light
-changes color when depending if the light emitter is moving towards us or away
+changes color depending if the light emitter is moving towards us or away
 from us. This is called the Doppler effect.</p>
 <p>By careful measurement of the Doppler effect in star light one could discover
 regularities and infer the existence of planets. Even though this technique is
@@ -179,19 +179,19 @@ inclined.</p>
 time.</p>
 </blockquote>
 <p>It graphs how bright some object appears in the sky over time. Our goal is to
-understand how the light curve looks like when a planet transits a star.</p>
+understand what the light curve looks like when a planet transits a star.</p>
 <a class="header" href="print.html#model" id="model"><h2>Model</h2></a>
 <p>We are modeling our planet transit in the following crude manner. We assume the
 star to be a square which radiates uniformly. The total luminosity is
 \(I_{0}\). So the luminosity per area \(\rho = \frac{I_{0}}{A}\), where \(A\)
 is the total area of the star.</p>
 <p>We model our planet as a square as well. We will also assume that the planet
-will move with uniform speed across stars image during the transit. When the
+will move with uniform speed across the stars image during the transit. When the
 planet is fully in front of the star, it block some of the rays of the star
 diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
 \(a\) is the area of the planet.</p>
-<p>The interested in the relative drop in luminosity so we will divide \(I_{t}\)
-by \(I_{0}\) to get</p>
+<p>We are interested in the relative drop in luminosity so we will divide
+\(I_{t}\) by \(I_{0}\) to get</p>
 <p>\[
 \frac{I_{t}}{I_{0}} = \frac{\rho \left(A - a\right)}{\rho A} = 1 - \frac{a}{A}
 \]</p>
@@ -209,6 +209,24 @@ the next chapter.</p>
 <p>Although this could be optimized in a single pipeline, foregoing the need to
 write and read CSV, with this format we have to ability to reflect. This will
 aid us in understanding our task at hand.</p>
+<a class="header" href="print.html#outline" id="outline"><h2>Outline</h2></a>
+<p>The following outline is typical for almost all the activities we are going to
+do in this workshop.</p>
+<ol>
+<li>Read data</li>
+<li>Process data</li>
+<li>Write data</li>
+</ol>
+<p>Processing could be any of, but not limited to, transforming, filtering,
+analyzing or fitting. Now processing will be generating image data.</p>
+<p>This could be your first encounter with some of the libraries we use. When we
+start using a library for the first time, we are going to be very specific. Once
+you get to know the library we leave you to fill in the blanks.</p>
+<a class="header" href="print.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
+<p>Almost every chapter encourages you to play with what you have created. We hope
+too give you some food for thought that might spark your interested. But feel
+free to come up with your own questions and observations and don't forget to
+share them.</p>
 <a class="header" href="print.html#fits" id="fits"><h1>FITS</h1></a>
 <p>The results of the NASA Kepler mission on observing Trappist-1 are
 <a href="https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html">available</a>
@@ -240,18 +258,6 @@ impression of Trappist-1.</p>
 used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.</p>
 <a class="header" href="print.html#creating an image" id="creating an image"><h2>Creating an image</h2></a>
-<p>The following outline is typical for almost all the activities we are going to
-do in this workshop.</p>
-<ol>
-<li>Read data</li>
-<li>Process data</li>
-<li>Write data</li>
-</ol>
-<p>Processing could be any of, but not limited to, transforming, filtering,
-analyzing or fitting. Now processing will be generating image data.</p>
-<p>Because this could be your first encounter with the libraries we use, we are
-going to be very specific. In a sense the training wheels are on. But once you
-created your own image, you are ready to following your own path.</p>
 <p>So go ahead and start a new Rust file named <code>image.rs</code> in the <code>src/bin</code>
 directory of your project.</p>
 <a class="header" href="print.html#reading data" id="reading data"><h3>Reading Data</h3></a>
@@ -386,14 +392,11 @@ build and run your code.</p>
 <a class="header" href="print.html#appreciate the image" id="appreciate the image"><h2>Appreciate the Image</h2></a>
 <p>At first glance the image can be a little underwhelming. But it is precisely
 this image that blew my mind! Being accustomed to the marvelous artist
-impression when I learned about the actual data was 11x11 pixels I was hooked.
+impression, when I learned about the actual data was 11x11 pixels I was hooked.
 How could anyone extract so much information from so little data?</p>
 <p><img src="image/trappist-1.0.large.png" alt="10 times enlargement of actual Trappist-1 photo" /></p>
 <p>I had to know and I hope you want to know too!</p>
-<a class="header" href="print.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
-<p>Almost every chapter can be allows you to play with what you have created. Below
-you can find some suggestions and food for thought that my spark your
-interested.</p>
+<a class="header" href="print.html#further considerations-1" id="further considerations-1"><h2>Further Considerations</h2></a>
 <ul>
 <li>Make a bigger image with larger &quot;pixels&quot;.</li>
 <li>Make an entire series of images, one for each row.</li>
@@ -458,7 +461,7 @@ down. All together this is</p>
 let target_index = offset_Y * 7381 +
                    offset_X * 11 +
                    offset_y * 671 +
-                   offsetx
+                   offset_x
 #}</code></pre></pre>
 <p>With these calculations we know where to paint the image pixel.</p>
 <a class="header" href="print.html#color" id="color"><h3>Color</h3></a>
@@ -469,7 +472,7 @@ that we want to use the same scale for each image.</p>
 should divide by the global maximum.</p>
 <p>Create a separate executable that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.</p>
-<a class="header" href="print.html#further considerations-1" id="further considerations-1"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further considerations-2" id="further considerations-2"><h2>Further Considerations</h2></a>
 <p>The following suggestions might help your understanding of the problem we
 facing, i.e. detecting planets in our image.</p>
 <p>Take a long good look at your collage. Write down what you notice about the
@@ -506,7 +509,7 @@ fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
 #}</code></pre></pre>
 <p>It takes something that implements the <code>Iterator</code> trait, a initial value called
 <code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
-first is accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
+first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
 produces. After that it accepts the previous call to <code>f</code> return value with the
 next value of the iterator. A fold returns the final return value of the
 function <code>f</code>.</p>
@@ -531,7 +534,7 @@ average brightness. This transforms the image from above into the image below.</
 <p><img src="image/trappist-1.0.nobg.large.png" alt="Enlargement of an image of Trappist-1 with background removed" /></p>
 <p>Still not perfect, but it is better than nothing.</p>
 <p>In order to filter out the unwanted background we are going to need to know the
-average. We already no the sum, we just calculated it, so the average can be
+average. We already know the sum, we just calculated it, so the average can be
 determined by</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -578,7 +581,7 @@ y-coordinate.</p>
 <p>If you have gone to the trouble of outputting the brightness with and without
 the background, your plot could look like the one below.</p>
 <p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
-<a class="header" href="print.html#further considerations-2" id="further considerations-2"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further considerations-3" id="further considerations-3"><h2>Further Considerations</h2></a>
 <p>Take a look at your data and write down what stands out to you. Discuss this
 with a neighbor.</p>
 <p>Why is the average taken as a cut-off value? What are other options?</p>
@@ -592,7 +595,7 @@ smooth out that trend and that is precisely what we will in one of the next chap
 <p>Take a look the brightness graph you made in the preceding chapter.</p>
 <p><img src="image/brightness-nobackground.png" alt="Brightness of Trappist-1" /></p>
 <p>There are clear bands of data. I.e. regions where most of the data-points lie.
-But what also stands out enormous
+But what also stands out enormous are
 <a href="https://en.wikipedia.org/wiki/Outlier">outliers</a>. For example, most points are
 below 18000, but some shoot out all the way to 28000. They are clearly
 erroneous.</p>
@@ -652,7 +655,7 @@ for candidate in raw {
 }
 #}</code></pre></pre>
 <p>The result can be written to a CSV file.</p>
-<a class="header" href="print.html#further considerations-3" id="further considerations-3"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further considerations-4" id="further considerations-4"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
 Try some different values and try to get a feel for what works. Discuss you
 choices with somebody else.</p>

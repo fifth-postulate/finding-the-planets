@@ -32,7 +32,7 @@ fn fold<B, F>(self, init: B, f: F) -> B
 
 It takes something that implements the `Iterator` trait, a initial value called
 `init` and repeatedly calls `f`. The function `f` accepts two arguments. At
-first is accepts the initial `init` value and the first element the `Iterator`
+first it accepts the initial `init` value and the first element the `Iterator`
 produces. After that it accepts the previous call to `f` return value with the
 next value of the iterator. A fold returns the final return value of the
 function `f`.
@@ -64,7 +64,7 @@ average brightness. This transforms the image from above into the image below.
 Still not perfect, but it is better than nothing.
 
 In order to filter out the unwanted background we are going to need to know the
-average. We already no the sum, we just calculated it, so the average can be
+average. We already know the sum, we just calculated it, so the average can be
 determined by
 
 ```rust

@@ -14,20 +14,6 @@ used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.
 
 ## Creating an image
-The following outline is typical for almost all the activities we are going to
-do in this workshop.
-
-1. Read data
-2. Process data
-3. Write data
-
-Processing could be any of, but not limited to, transforming, filtering,
-analyzing or fitting. Now processing will be generating image data.
-
-Because this could be your first encounter with the libraries we use, we are
-going to be very specific. In a sense the training wheels are on. But once you
-created your own image, you are ready to following your own path.
-
 So go ahead and start a new Rust file named `image.rs` in the `src/bin`
 directory of your project.
 
@@ -175,7 +161,7 @@ Which creates
 ## Appreciate the Image
 At first glance the image can be a little underwhelming. But it is precisely
 this image that blew my mind! Being accustomed to the marvelous artist
-impression when I learned about the actual data was 11x11 pixels I was hooked.
+impression, when I learned about the actual data was 11x11 pixels I was hooked.
 How could anyone extract so much information from so little data?
 
 ![10 times enlargement of actual Trappist-1 photo](image/trappist-1.0.large.png)
@@ -183,10 +169,6 @@ How could anyone extract so much information from so little data?
 I had to know and I hope you want to know too!
 
 ## Further Considerations
-Almost every chapter can be allows you to play with what you have created. Below
-you can find some suggestions and food for thought that my spark your
-interested.
-
 * Make a bigger image with larger "pixels".
 * Make an entire series of images, one for each row.
 * Make a GIF or movie of the images.

@@ -62,7 +62,7 @@ down. All together this is
 let target_index = offset_Y * 7381 +
                    offset_X * 11 +
                    offset_y * 671 +
-                   offsetx
+                   offset_x
 ```
 
 With these calculations we know where to paint the image pixel.

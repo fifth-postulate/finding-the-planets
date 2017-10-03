@@ -118,7 +118,7 @@ fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
 #}</code></pre></pre>
 <p>It takes something that implements the <code>Iterator</code> trait, a initial value called
 <code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
-first is accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
+first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
 produces. After that it accepts the previous call to <code>f</code> return value with the
 next value of the iterator. A fold returns the final return value of the
 function <code>f</code>.</p>
@@ -143,7 +143,7 @@ average brightness. This transforms the image from above into the image below.</
 <p><img src="image/trappist-1.0.nobg.large.png" alt="Enlargement of an image of Trappist-1 with background removed" /></p>
 <p>Still not perfect, but it is better than nothing.</p>
 <p>In order to filter out the unwanted background we are going to need to know the
-average. We already no the sum, we just calculated it, so the average can be
+average. We already know the sum, we just calculated it, so the average can be
 determined by</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]

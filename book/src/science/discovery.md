@@ -7,7 +7,7 @@ The various ways can be grouped in two categories. Direct observation and
 indirect observation.
 
 ## Direct observation
-Direct observation entails taking an telescope and searching the sky in the hope
+Direct observation entails taking a telescope and searching the sky in the hope
 of spotting an exo-planet. Unfortunately the chances of this happening are very
 low. Where we can take a telescope and point it at Jupiter and discover a few
 of her moons, exo-planets are so far away and often so dim, it is impractical
