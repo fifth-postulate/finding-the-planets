@@ -60,6 +60,7 @@ struct DetrendData {
     time: f64,
     brightness: f64,
     trend: f64,
+    difference: f64,
 }
 
 impl DetrendData {
@@ -68,6 +69,7 @@ impl DetrendData {
             time: time,
             brightness: brightness,
             trend: brightness,
+            difference: 0f64,
         }
     }
 
@@ -77,6 +79,7 @@ impl DetrendData {
             time: time,
             brightness: brightness,
             trend: trend,
+            difference: brightness - trend,
         }
 
     }
@@ -86,6 +89,7 @@ impl DetrendData {
             self.time.to_string(),
             self.brightness.to_string(),
             self.trend.to_string(),
+            self.difference.to_string(),
         )
     }
 }

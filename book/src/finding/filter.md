@@ -1,7 +1,7 @@
 # Filter
-Take a look the brightness graph you made in the preceding chapter.
+Take a look the detrended brightness graph you made in the preceding chapter.
 
-![Brightness of Trappist-1](image/brightness-nobackground.png)
+![Detrended brightness of Trappist-1](image/detrend.png)
 
 There are clear bands of data. I.e. regions where most of the data-points lie.
 But what also stands out enormous are
