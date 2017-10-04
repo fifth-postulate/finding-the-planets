@@ -597,6 +597,74 @@ smooth out that trend and that is precisely what we will in one of the next chap
 <p>Notice how the graph tends to flare up. This is a systemic problem that we
 should correct. We are going to do that by finding what trend the graph is
 following, and adjusting for that.</p>
+<a class="header" href="print.html#processing-2" id="processing-2"><h2>Processing</h2></a>
+<p>Before, we processed each row individually. Now we need to operate on the entire
+sequence. So instead iterating over each row, we are going to transform it
+directly.</p>
+<p>Because a <code>SimpleCsvReader</code> is an <code>Iterator</code> we can use our tricks on it. The
+idiosyncrasies of the <code>SimpleCsvReader</code> make that we first need to unwrap a row.
+Next we can map over the row of data and collect into a vector of tuples, the
+entry being the time and the second entry being the brightness.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let raw: Vec&lt;(f64, f64)&gt; = reader
+    .map(|r| r.unwrap())
+    .map(data)
+    .collect();
+#}</code></pre></pre>
+<p>The function <code>data</code> has the following signature</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn data(row: Vec&lt;String&gt;) -&gt; (f64, f64)
+#}</code></pre></pre>
+<p><code>data</code> is responsible for turning the raw columns of our CSV into <code>f64</code> brightness values,
+and selecting the correct ones.</p>
+<p>Up until now we never returned more than two or three values. For our current
+plan we are going to return more. In order to keep track of our data, we are
+going to create a <code>struct</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+struct DetrendData {
+    time: f64,
+    brightness: f64,
+    trend: f64,
+    difference: f64,
+}
+#}</code></pre></pre>
+<p>We have created a few entries, some familiar, some unfamiliar. <code>time</code> and
+<code>brightness</code> are pretty self-explanatory. <code>difference</code> is intended to hold the
+difference between the <code>brightness</code> and the <code>trend</code>.</p>
+<p>But how do we calculate the trend?</p>
+<a class="header" href="print.html#strategies" id="strategies"><h3>Strategies</h3></a>
+<p>Let us reflect on what we are trying to achieve. We have some data points
+\(y_{0}, y_{1}, \ldots, y_{n}\). We have a model that predicts that these
+values fluctuate around a given mean \(Y\), but for some reason or another, it
+doesn't.</p>
+<p>Instead the values fluctuate around some function \(f\), for which we don't
+now the shape or form. This is the called the <em>trend</em>.</p>
+<p>Our goal is to approximate the trend function \(f\) by a function that we can
+calculate from the data. Next we can analyze the actual signal by removing the
+trend. In effect we will look at the de-trended signal \(y_{0} - t(0), y_{1} -
+t(1), \ldots, t_{n} - t(n)\). Here \(t\) is our approximation for the trend.</p>
+<p>We shall do this by providing the values of our approximation.</p>
+<p>There are numerous strategies for determining the trend in a sequence of data.
+Below you can find some we have selected for this workshop.</p>
+<a class="header" href="print.html#weighted trend" id="weighted trend"><h4>Weighted Trend</h4></a>
+<p>With the notations from the preceding section the weighted trend algorithm is as
+follows. First you pick a parameter \(\alpha\) such that it lies between zero
+and one, i.e. \(0 \le \alpha \ge 1\).</p>
+<p>Next we will explain how to calculate each point of our approximation to the
+trend.</p>
+<ul>
+<li>\(t_{0} = y_{0}\). I.e. our first approximation is the first value of our
+sequence of data.</li>
+<li>\(t_{i} = \alpha y_{i} + (1-\alpha) t_{i-1}\). I.e. our trend tends towards
+the new value of our sequence, but is a but reluctant. It tends to stick to
+the previous values.</li>
+</ul>
 <a class="header" href="print.html#filter" id="filter"><h1>Filter</h1></a>
 <p>Take a look the detrended brightness graph you made in the preceding chapter.</p>
 <p><img src="image/detrend.png" alt="Detrended brightness of Trappist-1" /></p>
@@ -608,7 +676,7 @@ erroneous.</p>
 <p>There are various reasons how these outliers can occur. Some are the results of
 satellite maneuvers. What ever there origin, in this chapter we will filter
 those outliers.</p>
-<a class="header" href="print.html#processing-2" id="processing-2"><h2>Processing</h2></a>
+<a class="header" href="print.html#processing-3" id="processing-3"><h2>Processing</h2></a>
 <p>Before, we processed each row individually. Now we need to operate on the entire
 sequence. So instead iterating over each row, we are going to transform it
 directly.</p>
