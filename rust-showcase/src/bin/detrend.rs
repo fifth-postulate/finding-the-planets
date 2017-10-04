@@ -10,7 +10,7 @@ fn main(){
     let args : Vec<String> = env::args().collect();
     let alpha = f64::from_str(&args[1]).expect("first argument should be the threshold");
 
-    let f = File::open("assets/filter.csv").unwrap();
+    let f = File::open("assets/brightness.csv").unwrap();
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -36,7 +36,6 @@ fn main(){
         }
     }
 
-
     let o = File::create("assets/detrend.csv").unwrap();
     let mut writer = SimpleCsvWriter::new(o);
 
@@ -61,7 +60,6 @@ struct DetrendData {
     time: f64,
     brightness: f64,
     trend: f64,
-    difference: f64,
 }
 
 impl DetrendData {
@@ -70,7 +68,6 @@ impl DetrendData {
             time: time,
             brightness: brightness,
             trend: brightness,
-            difference: 0f64,
         }
     }
 
@@ -80,7 +77,6 @@ impl DetrendData {
             time: time,
             brightness: brightness,
             trend: trend,
-            difference: brightness - trend,
         }
 
     }
@@ -90,7 +86,6 @@ impl DetrendData {
             self.time.to_string(),
             self.brightness.to_string(),
             self.trend.to_string(),
-            self.difference.to_string(),
         )
     }
 }
