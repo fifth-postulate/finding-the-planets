@@ -59,12 +59,12 @@ values fluctuate around a given mean \\(Y\\), but for some reason or another, it
 doesn't.
 
 Instead the values fluctuate around some function \\(f\\), for which we don't
-now the shape or form. This is the called the _trend_.
+now the shape or form. This is called the _trend_.
 
 Our goal is to approximate the trend function \\(f\\) by a function that we can
 calculate from the data. Next we can analyze the actual signal by removing the
 trend. In effect we will look at the de-trended signal \\(y_{0} - t(0), y_{1} -
-t(1), \ldots, t_{n} - t(n)\\). Here \\(t\\) is our approximation for the trend.
+t(1), \ldots, y_{n} - t(n)\\). Here \\(t\\) is our approximation for the trend.
 
 We shall do this by providing the values of our approximation.
 
@@ -74,7 +74,7 @@ Below you can find some we have selected for this workshop.
 #### Weighted Trend
 With the notations from the preceding section the weighted trend algorithm is as
 follows. First you pick a parameter \\(\alpha\\) such that it lies between zero
-and one, i.e. \\(0 \le \alpha \ge 1\\).
+and one, i.e. \\(0 \le \alpha \le 1\\).
 
 Next we will explain how to calculate each point of our approximation to the
 trend.
@@ -84,3 +84,4 @@ trend.
 * \\(t_{i} = \alpha y_{i} + (1-\alpha) t_{i-1}\\). I.e. our trend tends towards
   the new value of our sequence, but is a but reluctant. It tends to stick to
   the previous values.
+ 
