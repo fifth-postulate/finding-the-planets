@@ -665,6 +665,86 @@ sequence of data.</li>
 the new value of our sequence, but is a but reluctant. It tends to stick to
 the previous values.</li>
 </ul>
+<p>Let's implement this algorithm. With our <code>DetrendData</code> structure, we have an
+opportunity to directly implement the different branches of our algorithm. We
+start an <code>impl</code> block for <code>DetrendData</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+impl DetrendData {
+
+}
+#}</code></pre></pre>
+<p>Next we are going to translate the first branch of the algorithm. Since our data
+gets delivered to us in the form of a <code>(f64, f64)</code> pair, we better accept it as
+an argument.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn initial((time, brightness): (f64, f64)) -&gt; DetrendData {
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: brightness,
+        difference: 0f64,
+    }
+}
+#}</code></pre></pre>
+<p>It is little more than putting things in the right place. Next we will use the
+current <code>DetrendData</code> that we have, and use it to determine what the next
+<code>DetrendData</code> should be. Because this depends on the new data and the parameter
+\(\alpha\), we better accept them both.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn next(&amp;self, (time, brightness): (f64, f64), alpha: f64) -&gt; DetrendData {
+    let trend = alpha * brightness + (1f64 - alpha) * self.trend;
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: trend,
+        difference: brightness - trend,
+    }
+}
+#}</code></pre></pre>
+<p>We calculate the <code>trend</code> as described in the algorithm, and calculate the
+difference from the brightness and the freshly calculated trend. With a
+convenience method that turns the <code>DetrendData</code> into a <code>Vec&lt;String&gt;</code> we are
+ready to calculate our entire trend.</p>
+<p>We will collect our data in a vector of <code>DetrendData</code>. Because we are going to
+incrementally add new entries to it, it needs to be mutable.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut sequence: Vec&lt;DetrendData&gt; = vec!();
+#}</code></pre></pre>
+<p>We also keep track of the last calculated <code>DetrendData</code> in a mutable variable
+called <code>data</code>. Because we haven't calculated any value yet, its type is
+<code>Option&lt;DetrendData&gt;</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut data: Option&lt;DetrendData&gt; = None
+#}</code></pre></pre>
+<p>This has the added benefit that we can differentiate between when to initialize
+data, and when to calculate the next data, during our iteration over our raw data.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+for candidate in raw {
+    match data {
+        None =&gt; {
+            data = Some(DetrendData::initial(candidate))
+        } 
+        
+        Some(previous) =&gt; {
+            let next = previous.next(candidate, alpha);
+            sequence.push(previous);
+            data = Some(next)
+        }
+    }
+}
+#}</code></pre></pre>
 <a class="header" href="print.html#filter" id="filter"><h1>Filter</h1></a>
 <p>Take a look the detrended brightness graph you made in the preceding chapter.</p>
 <p><img src="image/detrend.png" alt="Detrended brightness of Trappist-1" /></p>

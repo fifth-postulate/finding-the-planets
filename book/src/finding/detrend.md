@@ -85,3 +85,83 @@ trend.
   the new value of our sequence, but is a but reluctant. It tends to stick to
   the previous values.
  
+Let's implement this algorithm. With our `DetrendData` structure, we have an
+opportunity to directly implement the different branches of our algorithm. We
+start an `impl` block for `DetrendData`.
+
+```rust
+impl DetrendData {
+
+}
+```
+
+Next we are going to translate the first branch of the algorithm. Since our data
+gets delivered to us in the form of a `(f64, f64)` pair, we better accept it as
+an argument.
+
+```rust
+fn initial((time, brightness): (f64, f64)) -> DetrendData {
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: brightness,
+        difference: 0f64,
+    }
+}
+```
+
+It is little more than putting things in the right place. Next we will use the
+current `DetrendData` that we have, and use it to determine what the next
+`DetrendData` should be. Because this depends on the new data and the parameter
+\\(\alpha\\), we better accept them both.
+
+```rust
+fn next(&self, (time, brightness): (f64, f64), alpha: f64) -> DetrendData {
+    let trend = alpha * brightness + (1f64 - alpha) * self.trend;
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: trend,
+        difference: brightness - trend,
+    }
+}
+```
+
+We calculate the `trend` as described in the algorithm, and calculate the
+difference from the brightness and the freshly calculated trend. With a
+convenience method that turns the `DetrendData` into a `Vec<String>` we are
+ready to calculate our entire trend.
+
+We will collect our data in a vector of `DetrendData`. Because we are going to
+incrementally add new entries to it, it needs to be mutable.
+
+```rust
+let mut sequence: Vec<DetrendData> = vec!();
+```
+
+We also keep track of the last calculated `DetrendData` in a mutable variable
+called `data`. Because we haven't calculated any value yet, its type is
+`Option<DetrendData>`.
+
+```rust
+let mut data: Option<DetrendData> = None
+```
+
+This has the added benefit that we can differentiate between when to initialize
+data, and when to calculate the next data, during our iteration over our raw data.
+
+```rust
+for candidate in raw {
+    match data {
+        None => {
+            data = Some(DetrendData::initial(candidate))
+        } 
+        
+        Some(previous) => {
+            let next = previous.next(candidate, alpha);
+            sequence.push(previous);
+            data = Some(next)
+        }
+    }
+}
+```
