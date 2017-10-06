@@ -8,3 +8,7 @@ Here you can finds some links that you can follow up on after your science adven
 
 * Very cool [site](http://spaceprob.es/) that catalogs "active human-made
   machines that freckle our solar system and dot our galaxy"
+
+## Hunting 
+* A [TEDx talk](https://www.youtube.com/watch?v=gypAjPp6eps) about planet hunting 
+* [Zooniverse](https://www.zooniverse.org/)
