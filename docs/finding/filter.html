@@ -92,70 +92,37 @@
                     <a class="header" href="filter.html#filter" id="filter"><h1>Filter</h1></a>
 <p>Take a look the detrended brightness graph you made in the preceding chapter.</p>
 <p><img src="image/detrend.png" alt="Detrended brightness of Trappist-1" /></p>
-<p>There are clear bands of data. I.e. regions where most of the data-points lie.
+<p>There is a clear band of data. I.e. regions where most of the data-points lie.
 But what also stands out enormous are
 <a href="https://en.wikipedia.org/wiki/Outlier">outliers</a>. For example, most points are
-below 18000, but some shoot out all the way to 28000. They are clearly
+below 50, but some shoot out all the way to 600. They are clearly
 erroneous.</p>
 <p>There are various reasons how these outliers can occur. Some are the results of
 satellite maneuvers. What ever there origin, in this chapter we will filter
 those outliers.</p>
 <a class="header" href="filter.html#processing" id="processing"><h2>Processing</h2></a>
-<p>Before, we processed each row individually. Now we need to operate on the entire
-sequence. So instead iterating over each row, we are going to transform it
-directly.</p>
-<p>Because a <code>SimpleCsvReader</code> is an <code>Iterator</code> we can use our tricks on it. The
-idiosyncrasies of the <code>SimpleCsvReader</code> make that we first need to unwrap a row.
-Next we can map over the row of data and collect into a vector of tuples, the
-entry being the time and the second entry being the brightness.</p>
+<p>We are going to rely on our <code>data</code> function again. Remeber the <code>data</code> function
+is responsible for:</p>
+<blockquote>
+<p>turning the raw columns of our CSV into <code>f64</code> values, and selecting the
+correct ones.</p>
+</blockquote>
+<p>Now that we have our data, we can filter it in one swoop. <code>Iter</code> still has a
+trick up it's sleeve. It sports a <code>filter</code> method that fits our needs. Study the
+code below.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let raw: Vec&lt;(f64, f64)&gt; = reader
-    .map(|r| r.unwrap())
+let result: Vec&lt;(f64, f64)&gt; = reader
+    .map (|r| r.unwrap())
     .map(data)
+    .filter(|&amp;(_,difference)| difference.abs() &lt;= threshold)
     .collect();
 #}</code></pre></pre>
-<p>The function <code>data</code> has the following signature</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn data(row: Vec&lt;String&gt;) -&gt; (f64, f64)
-#}</code></pre></pre>
-<p><code>data</code> is responsible for turning the raw columns of our CSV into <code>f64</code> brightness values,
-and selecting the correct ones.</p>
-<p>Now that we have our data, we can filter it. Our plan is to keep a vector of
-results that we will fill with data-points that we want to keep. We will keep
-track of the current data-point, who's type is <code>Option&lt;(f64,f64)&gt;</code> because
-before we start iterating over our data we do not have a current data-point.</p>
-<p>While iterating over our candidate data-points we compare it to our current
-data-point. If the difference in brightness fall between predetermined threshold
-we add our current point to the result and update our current data-point.</p>
-<p>All in all, something along the lines of</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut result: Vec&lt;(f64, f64)&gt; = vec!();
-let mut current: Option&lt;(f64, f64)&gt; = None;
-for candidate in raw {
-    match current {
-        Some(previous) =&gt; {
-            if (candidate.1 - previous.1).abs() &lt;= threshold {
-                result.push(previous);
-                current = Some(candidate);
-            }
-        }
-
-        None =&gt; {
-            current = Some(candidate)
-        }
-    }
-}
-#}</code></pre></pre>
-<p>The result can be written to a CSV file.</p>
+<p>The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.</p>
 <a class="header" href="filter.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
-Try some different values and try to get a feel for what works. Discuss you
+Try some different values and try to get a feel for what works. Discuss your
 choices with somebody else.</p>
 
                 </div>
