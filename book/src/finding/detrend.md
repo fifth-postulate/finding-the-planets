@@ -69,7 +69,7 @@ t(1), \ldots, y_{n} - t(n)\\). Here \\(t\\) is our approximation for the trend.
 We shall do this by providing the values of our approximation.
 
 There are numerous strategies for determining the trend in a sequence of data.
-Below you can find some we have selected for this workshop.
+Below you can find a strategy we have selected for this workshop.
 
 #### Weighted Trend
 With the notations from the preceding section the weighted trend algorithm is as
@@ -165,3 +165,10 @@ for candidate in raw {
     }
 }
 ```
+
+## Further Considerations
+How does the weighted detrend behave for known functions? Try to plot an step
+function, i.e. a series that starts out 0 and than is 1 through out, and detrend
+it.
+
+What other kind of detrend strategies can you come up with?

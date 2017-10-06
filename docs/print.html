@@ -651,7 +651,7 @@ trend. In effect we will look at the de-trended signal \(y_{0} - t(0), y_{1} -
 t(1), \ldots, y_{n} - t(n)\). Here \(t\) is our approximation for the trend.</p>
 <p>We shall do this by providing the values of our approximation.</p>
 <p>There are numerous strategies for determining the trend in a sequence of data.
-Below you can find some we have selected for this workshop.</p>
+Below you can find a strategy we have selected for this workshop.</p>
 <a class="header" href="print.html#weighted trend" id="weighted trend"><h4>Weighted Trend</h4></a>
 <p>With the notations from the preceding section the weighted trend algorithm is as
 follows. First you pick a parameter \(\alpha\) such that it lies between zero
@@ -745,6 +745,11 @@ for candidate in raw {
     }
 }
 #}</code></pre></pre>
+<a class="header" href="print.html#further considerations-4" id="further considerations-4"><h2>Further Considerations</h2></a>
+<p>How does the weighted detrend behave for known functions? Try to plot an step
+function, i.e. a series that starts out 0 and than is 1 through out, and detrend
+it.</p>
+<p>What other kind of detrend strategies can you come up with?</p>
 <a class="header" href="print.html#filter" id="filter"><h1>Filter</h1></a>
 <p>Take a look the detrended brightness graph you made in the preceding chapter.</p>
 <p><img src="image/detrend.png" alt="Detrended brightness of Trappist-1" /></p>
@@ -776,7 +781,7 @@ let result: Vec&lt;(f64, f64)&gt; = reader
     .collect();
 #}</code></pre></pre>
 <p>The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.</p>
-<a class="header" href="print.html#further considerations-4" id="further considerations-4"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further considerations-5" id="further considerations-5"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
 Try some different values and try to get a feel for what works. Discuss your
 choices with somebody else.</p>
