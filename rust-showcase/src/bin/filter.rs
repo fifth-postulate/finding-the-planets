@@ -10,32 +10,15 @@ fn main(){
     let args : Vec<String> = env::args().collect();
     let threshold = f64::from_str(&args[1]).expect("first argument should be the threshold");
 
-    let f = File::open("assets/brightness.csv").unwrap();
+    let f = File::open("assets/detrend.csv").unwrap();
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
-    let raw: Vec<(f64, f64)> = reader
+    let result: Vec<(f64, f64)> = reader
         .map (|r| r.unwrap())
         .map(data)
+        .filter(|&(_,difference)| difference.abs() <= threshold)
         .collect();
-
-    let mut result: Vec<(f64, f64)> = vec!();
-    let mut current: Option<(f64, f64)> = None;
-    for candidate in raw {
-        match current {
-            Some(previous) => {
-                if (candidate.1 - previous.1).abs() <= threshold {
-                    result.push(previous);
-                    current = Some(candidate);
-                }
-            }
-
-            None => {
-                current = Some(candidate)
-            }
-        }
-    }
-
 
     let o = File::create("assets/filter.csv").unwrap();
     let mut writer = SimpleCsvWriter::new(o);
@@ -54,5 +37,5 @@ fn data(row: Vec<String>) -> (f64, f64) {
         .map(|s| f64::from_str(s).unwrap())
         .collect();
 
-    (raw[0], raw[2])
+    (raw[0], raw[3])
 }
