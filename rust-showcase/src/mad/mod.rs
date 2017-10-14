@@ -53,6 +53,17 @@ pub mod tests {
         assert!((median - 2.5).abs() < EPSILON);
     }
 
+
+    #[test]
+    fn median_of_unsorted_vector() {
+        let data: Vec<f64> = vec!(2.0, 4.0, 3.0, 1.0);
+
+        let median = median_of(&data);
+
+        assert_eq!(median, 2.5);
+        assert!((median - 2.5).abs() < EPSILON);
+    }
+
     #[test]
     fn groups_of_2_for_a_vector() {
         let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
