@@ -1,27 +1,27 @@
 
-pub fn median_of(slice: &[f64]) -> f64 {
-    let n = slice.len();
+pub fn median_of(data: &Vec<f64>) -> f64 {
+    let n = data.len();
     let mut copy = vec!(0f64; n);
-    copy.copy_from_slice(&slice);
+    copy.copy_from_slice(&data);
     copy.sort_by(|a,b| a.partial_cmp(b).unwrap());
     let middle: usize = n / 2;
 
     let result = if n % 2 == 1 {
-        slice[middle]
+        copy[middle]
     } else {
-        (slice[middle] + slice[middle - 1])/2.0
+        (copy[middle] + copy[middle - 1])/2.0
     };
 
     result.clone()
 }
 
-pub fn groups(slice: Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
+pub fn groups(data: Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
     let mut groups: Vec<Vec<f64>> = vec!();
 
-    for end_index in group_size .. slice.len() + 1 {
+    for end_index in group_size .. data.len() + 1 {
         let mut group: Vec<f64> = vec!();
         for index in (end_index - group_size) .. end_index {
-            group.push(slice[index])
+            group.push(data[index])
         }
         groups.push(group)
     }
