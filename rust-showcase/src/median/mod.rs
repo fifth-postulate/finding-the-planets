@@ -1,4 +1,4 @@
-pub fn mad_of(data: &Vec<f64>, window: usize) -> Vec<f64> {
+pub fn median_filter(data: &Vec<f64>, window: usize) -> Vec<f64> {
     groups(data, window)
         .iter()
         .map(median_of)
@@ -101,7 +101,7 @@ pub mod tests {
     fn mad_of_2_for_a_vector() {
         let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
 
-        let mad = mad_of(&data, 2);
+        let mad = median_filter(&data, 2);
 
         assert_eq!(vec![
             1.5,
@@ -115,7 +115,7 @@ pub mod tests {
     fn mad_of_3_for_a_vector() {
         let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
 
-        let mad = mad_of(&data, 3);
+        let mad = median_filter(&data, 3);
 
         assert_eq!(vec![
             2.0,

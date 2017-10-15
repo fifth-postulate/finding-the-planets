@@ -1,1 +1,1 @@
-pub mod mad;
+pub mod median;
