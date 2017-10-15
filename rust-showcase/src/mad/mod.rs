@@ -1,3 +1,9 @@
+pub fn mad_of(data: &Vec<f64>, window: usize) -> Vec<f64> {
+    groups(data, window)
+        .iter()
+        .map(median_of)
+        .collect()
+}
 
 pub fn median_of(data: &Vec<f64>) -> f64 {
     let n = data.len();
@@ -15,7 +21,7 @@ pub fn median_of(data: &Vec<f64>) -> f64 {
     result.clone()
 }
 
-pub fn groups(data: Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
+pub fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
     let mut groups: Vec<Vec<f64>> = vec!();
 
     for end_index in group_size .. data.len() + 1 {
@@ -68,7 +74,7 @@ pub mod tests {
     fn groups_of_2_for_a_vector() {
         let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
 
-        let gs = groups(data, 2);
+        let gs = groups(&data, 2);
 
         assert_eq!(vec![
             vec!(1.0, 2.0),
@@ -82,12 +88,39 @@ pub mod tests {
     fn groups_of_3_for_a_vector() {
         let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
 
-        let gs = groups(data, 3);
+        let gs = groups(&data, 3);
 
         assert_eq!(vec![
             vec!(1.0, 2.0, 3.0),
             vec!(2.0, 3.0, 4.0),
             vec!(3.0, 4.0, 5.0),
             vec!(4.0, 5.0, 6.0)], gs);
+    }
+
+    #[test]
+    fn mad_of_2_for_a_vector() {
+        let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+
+        let mad = mad_of(&data, 2);
+
+        assert_eq!(vec![
+            1.5,
+            2.5,
+            3.5,
+            4.5,
+            5.5], mad);
+    }
+
+    #[test]
+    fn mad_of_3_for_a_vector() {
+        let data: Vec<f64> = vec!(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+
+        let mad = mad_of(&data, 3);
+
+        assert_eq!(vec![
+            2.0,
+            3.0,
+            4.0,
+            5.0], mad);
     }
 }
