@@ -12,13 +12,13 @@ fn median_of(data: &Vec<f64>) -> f64 {
     copy.sort_by(|a,b| a.partial_cmp(b).unwrap());
     let middle: usize = n / 2;
 
-    let result = if n % 2 == 1 {
+    let median = if n % 2 == 1 {
         copy[middle]
     } else {
         (copy[middle] + copy[middle - 1])/2.0
     };
 
-    result
+    median
 }
 
 fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
