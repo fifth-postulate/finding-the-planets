@@ -18,7 +18,7 @@ fn median_of(data: &Vec<f64>) -> f64 {
         (copy[middle] + copy[middle - 1])/2.0
     };
 
-    result.clone()
+    result
 }
 
 fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
