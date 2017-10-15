@@ -5,7 +5,7 @@ pub fn mad_of(data: &Vec<f64>, window: usize) -> Vec<f64> {
         .collect()
 }
 
-pub fn median_of(data: &Vec<f64>) -> f64 {
+fn median_of(data: &Vec<f64>) -> f64 {
     let n = data.len();
     let mut copy = vec!(0f64; n);
     copy.copy_from_slice(&data);
@@ -21,7 +21,7 @@ pub fn median_of(data: &Vec<f64>) -> f64 {
     result.clone()
 }
 
-pub fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
+fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
     let mut groups: Vec<Vec<f64>> = vec!();
 
     for end_index in group_size .. data.len() + 1 {
