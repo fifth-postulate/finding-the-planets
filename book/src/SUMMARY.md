@@ -18,5 +18,5 @@
     - [Brightness](./finding/brightness.md)
     - [Detrend](./finding/detrend.md)
     - [Filter](./finding/filter.md)
-    - [MAD](./finding/mad.md)
+    - [Median](./finding/median.md)
 [Setup](./setup.md)
