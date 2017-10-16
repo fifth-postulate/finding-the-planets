@@ -810,7 +810,97 @@ take the average of the middle two.</li>
 the two middle values. The average of \(53\) and \(58\) is
 \(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
 <a class="header" href="print.html#make a library" id="make a library"><h2>Make a library.</h2></a>
-<p>Because we are going to use the median several times, we are going to create a library.</p>
+<p>Because we are going to use the median several times, we are going to create a
+library. Let's start with our <code>lib.rs</code>.</p>
+<p>In our <code>lib.rs</code> we are announcing a module called <code>median</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub mod median;
+#}</code></pre></pre>
+<p>There are different ways to create this module. Either creating a <code>median.rs</code>
+file inside the <code>src</code> directory. Or creating a <code>median</code> directory inside the
+<code>src</code> directory, which contains a <code>mod.rs</code> file. Which every you choose, let's
+implement a <code>median_of</code> function.</p>
+<p>Our <code>median_of</code> function will have a <code>&amp;Vec&lt;f64&gt;</code> as parameter and return the
+median <code>f64</code>. Once we have a sorted copy of the data called <code>copy</code>, getting the
+median comes down to determining if the number of elements is even or odd, and
+performing the right calculation.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let n = data.len();
+let middle: usize = n / 2;
+let median = if n % 2 == 1 {
+    copy[middle]
+} else {
+    (copy[middle] + copy[middle - 1]) / 2.0;
+}
+#}</code></pre></pre>
+<p>But how do we sort the original data?</p>
+<a class="header" href="print.html#sorting side-quest" id="sorting side-quest"><h3>Sorting side-quest</h3></a>
+<p>There are a few interesting tidbits when sorting a <code>Vec&lt;f64&gt;</code> that we are going
+to make a side-quest out of it. While looking into <code>Vec&lt;T&gt;</code>
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort">documentation</a>,
+you can come across the method <code>sort</code>. Let's see if we can use it.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+
+vs.sort();
+#}</code></pre></pre>
+<p>Unfortunately this doesn't compile.</p>
+<pre><code class="language-text">   Compiling playground v0.0.1 (file:///playground)
+error[E0277]: the trait bound `f64: std::cmp::Ord` is not satisfied
+ --&gt; src/main.rs:6:4
+  |
+6 | vs.sort();
+  |    ^^^^ the trait `std::cmp::Ord` is not implemented for `f64`
+
+error: aborting due to previous error
+
+error: Could not compile `playground`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<p>Which could come as a surprise. Certainly we can determine whether `0.0 &lt; 1.0``?</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+assert!(0.0f64 &lt; 1.0f64);
+#}</code></pre></pre>
+<p>Luckily we can. So what is going on? Rust has two related traits for comparison:
+<a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a> and
+<a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a>. The main difference
+is that <code>Ord</code> is supposed to be <em>total</em>. I.e. any type that implements the <code>Ord</code>
+trait should be able to compare any pair of values in that have the type.</p>
+<p>In other words, if you implement the <code>Ord</code> trait you should be able to answer
+the one and only one of the following questions with <em>yes</em> for values <code>a</code> and
+<code>b</code> in the type:</p>
+<ol>
+<li>Is <code>a &lt; b</code>?</li>
+<li>Is <code>a == b</code>?</li>
+<li>Is <code>a &gt; b</code>?</li>
+</ol>
+<p>The problem with <code>f64</code> is that is implements IEEE-754, the standard for
+arithmetic with floating point arithmetic. This standard defines values <code>NaN</code>,
+not a number, for which is not comparable with any other value.</p>
+<p>So <code>f64</code> can not be complete and follow the standard at the same time.
+<code>PartialOrd</code> is implemented for <code>f64</code>. So as long as we do not compare with
+<code>NaN</code>s, which we don't intend to do, we should be save.</p>
+<p>Back to sorting, the <code>sort</code> method expects that the <code>Ord</code> is implemented, so we
+can not use it. It also has a <code>sort_by</code>, that allows to pass a <code>compare</code>
+function. We can use this to our advantage by relying on the <code>PartialOrd</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+
+vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+println!(&quot;{:?}&quot;, vs);
+#}</code></pre></pre>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
