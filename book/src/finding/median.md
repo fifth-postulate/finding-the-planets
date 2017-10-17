@@ -91,7 +91,8 @@ error: Could not compile `playground`.
 To learn more, run the command again with --verbose.
 ```
 
-Which could come as a surprise. Certainly we can determine whether `0.0 < 1.0``?
+Which could come as a surprise. The `Ord` trait determines an ordering of
+elements. Certainly we can determine whether `0.0 < 1.0``? 
 
 ```rust
 assert!(0.0f64 < 1.0f64);
@@ -101,10 +102,10 @@ Luckily we can. So what is going on? Rust has two related traits for comparison:
 [`PartialOrd`](https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html) and
 [`Ord`](https://doc.rust-lang.org/std/cmp/trait.Ord.html). The main difference
 is that `Ord` is supposed to be _total_. I.e. any type that implements the `Ord`
-trait should be able to compare any pair of values in that have the type.
+trait should be able to compare any pair of values that have the type.
 
 In other words, if you implement the `Ord` trait you should be able to answer
-the one and only one of the following questions with *yes* for values `a` and
+**yes** to one and only one of the following questions with for values `a` and
 `b` in the type:
 
 1. Is `a < b`?
@@ -112,15 +113,15 @@ the one and only one of the following questions with *yes* for values `a` and
 3. Is `a > b`?
 
 The problem with `f64` is that is implements IEEE-754, the standard for
-arithmetic with floating point arithmetic. This standard defines values `NaN`,
-not a number, for which is not comparable with any other value.
+arithmetic with floating point numbers. This standard defines a value `NaN`,
+not a number, which is not comparable with any other value.
 
 So `f64` can not be complete and follow the standard at the same time.
-`PartialOrd` is implemented for `f64`. So as long as we do not compare with
-`NaN`s, which we don't intend to do, we should be save.
+Fortunately `PartialOrd` is implemented for `f64`. So as long as we do not
+compare with `NaN`s, which we don't intend to do, we should be safe.
 
 Back to sorting, the `sort` method expects that the `Ord` is implemented, so we
-can not use it. It also has a `sort_by`, that allows to pass a `compare`
+can not use it. `Vec<T>` also has a `sort_by` method, that allows to pass a `compare`
 function. We can use this to our advantage by relying on the `PartialOrd` trait.
 
 ```rust
@@ -130,3 +131,20 @@ vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
 println!("{:?}", vs);
 ```
+
+This correctly sorts our vector. But notice that the `vs` variable is declared
+mutable. Our signature doesn't expect to have a mutable reference, so we need to
+copy our `data` first.
+
+### Copying Data
+We need a mutable copy of our `data`. Luckily the `Vec<T>` API provides an other
+method; `copy_from_slice`. We use it as
+
+```rust
+let n = data.len();
+let mut copy = vec!(0f64; n);
+copy.copy_from_slice(&data);
+```
+
+This is the final piece in the median puzzle. We are able to put everything
+together and write our `median_of` function.

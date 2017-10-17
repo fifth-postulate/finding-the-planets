@@ -864,7 +864,8 @@ error: Could not compile `playground`.
 
 To learn more, run the command again with --verbose.
 </code></pre>
-<p>Which could come as a surprise. Certainly we can determine whether `0.0 &lt; 1.0``?</p>
+<p>Which could come as a surprise. The <code>Ord</code> trait determines an ordering of
+elements. Certainly we can determine whether `0.0 &lt; 1.0``?</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
@@ -874,9 +875,9 @@ assert!(0.0f64 &lt; 1.0f64);
 <a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a> and
 <a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a>. The main difference
 is that <code>Ord</code> is supposed to be <em>total</em>. I.e. any type that implements the <code>Ord</code>
-trait should be able to compare any pair of values in that have the type.</p>
+trait should be able to compare any pair of values that have the type.</p>
 <p>In other words, if you implement the <code>Ord</code> trait you should be able to answer
-the one and only one of the following questions with <em>yes</em> for values <code>a</code> and
+<strong>yes</strong> to one and only one of the following questions with for values <code>a</code> and
 <code>b</code> in the type:</p>
 <ol>
 <li>Is <code>a &lt; b</code>?</li>
@@ -884,13 +885,13 @@ the one and only one of the following questions with <em>yes</em> for values <co
 <li>Is <code>a &gt; b</code>?</li>
 </ol>
 <p>The problem with <code>f64</code> is that is implements IEEE-754, the standard for
-arithmetic with floating point arithmetic. This standard defines values <code>NaN</code>,
-not a number, for which is not comparable with any other value.</p>
+arithmetic with floating point numbers. This standard defines a value <code>NaN</code>,
+not a number, which is not comparable with any other value.</p>
 <p>So <code>f64</code> can not be complete and follow the standard at the same time.
-<code>PartialOrd</code> is implemented for <code>f64</code>. So as long as we do not compare with
-<code>NaN</code>s, which we don't intend to do, we should be save.</p>
+Fortunately <code>PartialOrd</code> is implemented for <code>f64</code>. So as long as we do not
+compare with <code>NaN</code>s, which we don't intend to do, we should be safe.</p>
 <p>Back to sorting, the <code>sort</code> method expects that the <code>Ord</code> is implemented, so we
-can not use it. It also has a <code>sort_by</code>, that allows to pass a <code>compare</code>
+can not use it. <code>Vec&lt;T&gt;</code> also has a <code>sort_by</code> method, that allows to pass a <code>compare</code>
 function. We can use this to our advantage by relying on the <code>PartialOrd</code> trait.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -901,6 +902,21 @@ vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
 println!(&quot;{:?}&quot;, vs);
 #}</code></pre></pre>
+<p>This correctly sorts our vector. But notice that the <code>vs</code> variable is declared
+mutable. Our signature doesn't expect to have a mutable reference, so we need to
+copy our <code>data</code> first.</p>
+<a class="header" href="print.html#copying data" id="copying data"><h3>Copying Data</h3></a>
+<p>We need a mutable copy of our <code>data</code>. Luckily the <code>Vec&lt;T&gt;</code> API provides an other
+method; <code>copy_from_slice</code>. We use it as</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let n = data.len();
+let mut copy = vec!(0f64; n);
+copy.copy_from_slice(&amp;data);
+#}</code></pre></pre>
+<p>This is the final piece in the median puzzle. We are able to put everything
+together and write our <code>median_of</code> function.</p>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
