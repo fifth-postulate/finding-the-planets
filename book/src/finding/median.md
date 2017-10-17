@@ -148,3 +148,80 @@ copy.copy_from_slice(&data);
 
 This is the final piece in the median puzzle. We are able to put everything
 together and write our `median_of` function.
+
+### Form Groups
+We do not want to calculate the median of our entire sequence. Instead we want
+to move a [*sliding window*](https://en.wikipedia.org/wiki/Streaming_algorithm)
+over our data and calculate the median of that specific window.
+
+For that we need to group our data. Let's create that function.
+
+```rust
+fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
+    let mut groups: Vec<Vec<f64>> = vec!();
+
+    for end_index in group_size .. data.len() + 1 {
+        let mut group: Vec<f64> = vec!();
+        for index in (end_index - group_size) .. end_index {
+            group.push(data[index])
+        }
+        groups.push(group)
+    }
+
+    groups
+}
+```
+
+### Median Filter
+We are now in the position to create a `median_filter` function. I.e. a function
+that calculates the median of a sliding window over our data. With all of our
+preparations it writes itself as
+
+```rust
+pub fn median_filter(data: &Vec<f64>, window: usize) -> Vec<f64> {
+    groups(data, window)
+        .iter()
+        .map(median_of)
+        .collect()
+}
+```
+
+With our library all done, we can start out processing proper.
+
+## Processing
+But wait! Our data arrives as `f64`-pairs, i.e. `(f64, f64)`, and we create
+`median_filter` to operate on a single `f64` value. Did I lead you down a wrong
+path?
+
+Not entirely. Once again the standard library, in the form of the `Iter` trait,
+has a trick up their sleeve. It comes in the pair of methods `zip` and `unzip`.
+You can find their signatures below.
+With `unzip` you can take a sequences of pairs and return a pair of sequences.
+`zip` goes the other way.
+
+Let's see how we can use them. After getting the raw data, we can use `unzip` to
+extract the individual components.
+
+```rust
+let (times, values): (Vec<f64>, Vec<f64>) = raw
+    .iter()
+    .cloned()
+    .unzip();
+```
+
+The `cloned` call is because we need to take ownership of our data. Next we can
+use our `median_filter` from our own library. Make sure to reference our own
+external crate and import the correct function.
+
+```rust
+let median_times = median_filter(&times, window_size);
+let median_values = median_filter(&values, window_size);
+```
+
+Finally we can zip together these two vectors again to get our result.
+
+```rust
+let result = median_times.iter().zip(median_values);
+```
+
+Storing this into a CSV file makes it available for the next step.

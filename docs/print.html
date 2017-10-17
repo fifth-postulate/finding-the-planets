@@ -917,6 +917,78 @@ copy.copy_from_slice(&amp;data);
 #}</code></pre></pre>
 <p>This is the final piece in the median puzzle. We are able to put everything
 together and write our <code>median_of</code> function.</p>
+<a class="header" href="print.html#form groups" id="form groups"><h3>Form Groups</h3></a>
+<p>We do not want to calculate the median of our entire sequence. Instead we want
+to move a <a href="https://en.wikipedia.org/wiki/Streaming_algorithm"><em>sliding window</em></a>
+over our data and calculate the median of that specific window.</p>
+<p>For that we need to group our data. Let's create that function.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn groups(data: &amp;Vec&lt;f64&gt;, group_size: usize) -&gt; Vec&lt;Vec&lt;f64&gt;&gt; {
+    let mut groups: Vec&lt;Vec&lt;f64&gt;&gt; = vec!();
+
+    for end_index in group_size .. data.len() + 1 {
+        let mut group: Vec&lt;f64&gt; = vec!();
+        for index in (end_index - group_size) .. end_index {
+            group.push(data[index])
+        }
+        groups.push(group)
+    }
+
+    groups
+}
+#}</code></pre></pre>
+<a class="header" href="print.html#median filter" id="median filter"><h3>Median Filter</h3></a>
+<p>We are now in the position to create a <code>median_filter</code> function. I.e. a function
+that calculates the median of a sliding window over our data. With all of our
+preparations it writes itself as</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub fn median_filter(data: &amp;Vec&lt;f64&gt;, window: usize) -&gt; Vec&lt;f64&gt; {
+    groups(data, window)
+        .iter()
+        .map(median_of)
+        .collect()
+}
+#}</code></pre></pre>
+<p>With our library all done, we can start out processing proper.</p>
+<a class="header" href="print.html#processing-4" id="processing-4"><h2>Processing</h2></a>
+<p>But wait! Our data arrives as <code>f64</code>-pairs, i.e. <code>(f64, f64)</code>, and we create
+<code>median_filter</code> to operate on a single <code>f64</code> value. Did I lead you down a wrong
+path?</p>
+<p>Not entirely. Once again the standard library, in the form of the <code>Iter</code> trait,
+has a trick up their sleeve. It comes in the pair of methods <code>zip</code> and <code>unzip</code>.
+You can find their signatures below.
+With <code>unzip</code> you can take a sequences of pairs and return a pair of sequences.
+<code>zip</code> goes the other way.</p>
+<p>Let's see how we can use them. After getting the raw data, we can use <code>unzip</code> to
+extract the individual components.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let (times, values): (Vec&lt;f64&gt;, Vec&lt;f64&gt;) = raw
+    .iter()
+    .cloned()
+    .unzip();
+#}</code></pre></pre>
+<p>The <code>cloned</code> call is because we need to take ownership of our data. Next we can
+use our <code>median_filter</code> from our own library. Make sure to reference our own
+external crate and import the correct function.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let median_times = median_filter(&amp;times, window_size);
+let median_values = median_filter(&amp;values, window_size);
+#}</code></pre></pre>
+<p>Finally we can zip together these two vectors again to get our result.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let result = median_times.iter().zip(median_values);
+#}</code></pre></pre>
+<p>Storing this into a CSV file makes it available for the next step.</p>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
