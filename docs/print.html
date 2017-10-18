@@ -989,6 +989,13 @@ let median_values = median_filter(&amp;values, window_size);
 let result = median_times.iter().zip(median_values);
 #}</code></pre></pre>
 <p>Storing this into a CSV file makes it available for the next step.</p>
+<a class="header" href="print.html#further considerations-6" id="further considerations-6"><h2>Further Considerations</h2></a>
+<p>You have created a library that contains some functions. How do you know that
+they are implemented correctly? Try to add some
+<a href="https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html">tests</a>
+that increases your confidence in your code.</p>
+<p>The <code>median_filter</code> accepts an <code>window_size</code> argument. What is a good value?</p>
+<p>Why haven't we used same the method we used to detrend the data?</p>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
