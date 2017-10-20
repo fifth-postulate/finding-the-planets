@@ -19,4 +19,5 @@
     - [Detrend](./finding/detrend.md)
     - [Filter](./finding/filter.md)
     - [Median](./finding/median.md)
+    - [Median Revisted](./finding/median2.md)
 [Setup](./setup.md)
