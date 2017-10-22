@@ -100,6 +100,141 @@ following sub-tasks.</p>
 <li>Iterating over all transit curve parameters</li>
 <li>Scoring each candidate transit curve and selecting the best</li>
 </ol>
+<p>Let us create a module for this as well. We will call it <code>fit</code>.</p>
+<a class="header" href="fitting.html#transit curves" id="transit curves"><h2>Transit Curves</h2></a>
+<a class="header" href="fitting.html#iterate parameters" id="iterate parameters"><h2>Iterate Parameters</h2></a>
+<p>Our transit curve has five parameters. We would like to generate candidate
+transit curves and check how well they fit our data. This can be accomplished by
+iterating over the five parameters, and mapping them into a transit curve.</p>
+<a class="header" href="fitting.html#floatiterator" id="floatiterator"><h3>FloatIterator</h3></a>
+<p>We will first focus on an iterator for a single <code>f64</code>. We want all floating
+point numbers between a <code>start</code> and <code>finish</code>, increasing each new number with a
+certain <code>step</code>. We will create a <code>struct</code> that keeps track of where we are.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub struct FloatIterator {
+    start: f64,
+    finish: f64,
+    step: f64,
+    current: u64,
+}
+#}</code></pre></pre>
+<p>Implementing a <code>new</code> constructor should set the <code>current</code> to <code>0</code> and accept
+<code>start</code>, <code>finish</code> and step as parameters.</p>
+<p>Next we need to implement <code>Iterator</code> for <code>FloatIterator</code>. We must import
+<code>std::iter::Iterator</code> so that we can easily reference it in our code. In the
+<code>next</code> method of the <code>Iterator</code> trait we need to decide if we need to return a
+<code>Some</code> or a <code>None</code>. This depends on the our intended return value. I.e. if the
+value <code>start + step * current</code> is less then or equal to our <code>finish</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+impl Iterator for FloatIterator {
+    type Item = f64;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        let value = self.start + self.step * (self.current as f64);
+
+        if value &lt;= self.finish {
+            self.current += 1;
+
+            Some(value)
+        } else {
+            None
+        }
+    }
+}
+#}</code></pre></pre>
+<p>This wraps up our <code>FloatIterator</code>.</p>
+<a class="header" href="fitting.html#exemplar tupleiterator" id="exemplar tupleiterator"><h3>Exemplar TupleIterator</h3></a>
+<p>Next we are going to create a <code>TupleIterator</code>. It is going to show all the
+necessary tools to create the actual <code>TupleIterator</code> we want, without getting
+distracted by the tedious details.</p>
+<p>Because we want to express multiple times a range of floating point numbers we
+are interested in, we are going to create a <code>struct</code> to keep track of <code>start</code>,
+<code>finish</code> and <code>step</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub struct FloatRange {
+    start: f64,
+    finish: f64,
+    step: f64,
+}
+#}</code></pre></pre>
+<p>implementing a <code>new</code> constructor for <code>FloatRange</code> is nothing more than excepting
+the correct parameters and passing them in the struct. Having a <code>FloatRange</code>
+allows us to ask it for the value belonging to a certain index. Let's extend the
+implementation of <code>FloatRange</code> with an <code>index</code> function. The actual
+implementation looks very familiar.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn index(&amp;self, index: u64) -&gt; Option&lt;f64&gt; {
+    let value = self.start + self.step * (index as f64);
+
+    if value &lt;= self.finish {
+        Some(value)
+    } else {
+        None
+    }
+}
+#}</code></pre></pre>
+<p>Now that we can express the floating point range we are interested in, we can
+use that in our <code>TupleIterator</code>. The responsibility of the <code>TupleIterator</code> is to
+keep track of two indices into two separate <code>FloatIterator</code>. Because we need to
+be able to &quot;restart&quot; the <code>FloatIterator</code> we are not actually use a
+<code>FloatIterator</code>. Instead we choose to do the iterating our selves.</p>
+<p>We start with a structure that will keep track for us.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub struct TupleIterator {
+    first: FloatRange,
+    second: FloatRange,
+    current: (u64, u64),
+}
+#}</code></pre></pre>
+<p>It looks a lot like the <code>FloatIterator</code>. The main difference is that we need to
+keep track of two different ranges, and two different indices into these
+iterators. Implementing a new is just like the <code>FloatIterator</code> little more than
+accepting the correct parameters and initializing the current indices to
+<code>(0,0)</code>.</p>
+<p>Now for implementing <code>Iterator</code> for <code>TupleIterator</code>. It comes down to keeping
+track of the right indices. Let's look at the implementation.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+impl Iterator for TupleIterator {
+    type Item = (f64, f64);
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        let (first_index, second_index) = self.current;
+
+        match self.first.index(first_index) {
+            Some(first_value) =&gt; {
+                match self.second.index(second_index) {
+                    Some(second_value) =&gt; {
+                        self.current = (first_index, second_index + 1);
+
+                        Some((first_value, second_value))
+                    },
+
+                    None =&gt; {
+                        self.current = (first_index + 1, 0);
+
+                        self.next()
+                    },
+                }
+            },
+
+            None =&gt; None,
+        }
+    }
+}
+#}</code></pre></pre>
+<a class="header" href="fitting.html#score" id="score"><h2>Score</h2></a>
 
                 </div>
 

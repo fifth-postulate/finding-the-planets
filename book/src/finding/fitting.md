@@ -11,3 +11,146 @@ following sub-tasks.
 2. Iterating over all transit curve parameters
 3. Scoring each candidate transit curve and selecting the best
 
+Let us create a module for this as well. We will call it `fit`.
+
+## Transit Curves
+
+## Iterate Parameters
+Our transit curve has five parameters. We would like to generate candidate
+transit curves and check how well they fit our data. This can be accomplished by
+iterating over the five parameters, and mapping them into a transit curve.
+
+### FloatIterator
+We will first focus on an iterator for a single `f64`. We want all floating
+point numbers between a `start` and `finish`, increasing each new number with a
+certain `step`. We will create a `struct` that keeps track of where we are.
+
+```rust
+pub struct FloatIterator {
+    start: f64,
+    finish: f64,
+    step: f64,
+    current: u64,
+}
+```
+
+Implementing a `new` constructor should set the `current` to `0` and accept
+`start`, `finish` and step as parameters.
+
+Next we need to implement `Iterator` for `FloatIterator`. We must import
+`std::iter::Iterator` so that we can easily reference it in our code. In the
+`next` method of the `Iterator` trait we need to decide if we need to return a
+`Some` or a `None`. This depends on the our intended return value. I.e. if the
+value `start + step * current` is less then or equal to our `finish`.
+
+```rust
+impl Iterator for FloatIterator {
+    type Item = f64;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let value = self.start + self.step * (self.current as f64);
+
+        if value <= self.finish {
+            self.current += 1;
+
+            Some(value)
+        } else {
+            None
+        }
+    }
+}
+```
+
+This wraps up our `FloatIterator`.
+
+### Exemplar TupleIterator
+Next we are going to create a `TupleIterator`. It is going to show all the
+necessary tools to create the actual `TupleIterator` we want, without getting
+distracted by the tedious details.
+
+Because we want to express multiple times a range of floating point numbers we
+are interested in, we are going to create a `struct` to keep track of `start`,
+`finish` and `step`.
+
+```rust
+pub struct FloatRange {
+    start: f64,
+    finish: f64,
+    step: f64,
+}
+```
+
+implementing a `new` constructor for `FloatRange` is nothing more than excepting
+the correct parameters and passing them in the struct. Having a `FloatRange`
+allows us to ask it for the value belonging to a certain index. Let's extend the
+implementation of `FloatRange` with an `index` function. The actual
+implementation looks very familiar.
+
+```rust
+fn index(&self, index: u64) -> Option<f64> {
+    let value = self.start + self.step * (index as f64);
+
+    if value <= self.finish {
+        Some(value)
+    } else {
+        None
+    }
+}
+```
+
+Now that we can express the floating point range we are interested in, we can
+use that in our `TupleIterator`. The responsibility of the `TupleIterator` is to
+keep track of two indices into two separate `FloatIterator`. Because we need to
+be able to "restart" the `FloatIterator` we are not actually use a
+`FloatIterator`. Instead we choose to do the iterating our selves.
+
+We start with a structure that will keep track for us.
+
+```rust
+pub struct TupleIterator {
+    first: FloatRange,
+    second: FloatRange,
+    current: (u64, u64),
+}
+```
+
+It looks a lot like the `FloatIterator`. The main difference is that we need to
+keep track of two different ranges, and two different indices into these
+iterators. Implementing a new is just like the `FloatIterator` little more than
+accepting the correct parameters and initializing the current indices to
+`(0,0)`.
+
+Now for implementing `Iterator` for `TupleIterator`. It comes down to keeping
+track of the right indices. Let's look at the implementation.
+
+```rust
+impl Iterator for TupleIterator {
+    type Item = (f64, f64);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let (first_index, second_index) = self.current;
+
+        match self.first.index(first_index) {
+            Some(first_value) => {
+                match self.second.index(second_index) {
+                    Some(second_value) => {
+                        self.current = (first_index, second_index + 1);
+
+                        Some((first_value, second_value))
+                    },
+
+                    None => {
+                        self.current = (first_index + 1, 0);
+
+                        self.next()
+                    },
+                }
+            },
+
+            None => None,
+        }
+    }
+}
+```
+
+## Score
