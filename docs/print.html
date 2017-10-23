@@ -1212,6 +1212,25 @@ the new indices.</p>
 <p>Although it doesn't look pretty, it does its job. It is your task to extend this
 example to iterate over all transit parameters.</p>
 <a class="header" href="print.html#score" id="score"><h2>Score</h2></a>
+<p>We are going to score a <code>Transit</code> with the
+<a href="https://en.wikipedia.org/wiki/Least_squares"><em>least squares</em></a> method. This
+method sums the squares of the difference between two series. That is easier
+said than done. Lets look at following code.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub fn least_squares(xs: &amp;Vec&lt;f64&gt;, ys: &amp;Vec&lt;f64&gt;) -&gt; f64 {
+    xs.iter().zip(ys)
+        .map(|(a,b)| (a-b).powi(2))
+        .sum()
+}
+#}</code></pre></pre>
+<p>We define a function names <code>least_squares</code> that accepts to vectors of floating
+points numbers. Next we recognize our dear friend: the <code>iter</code> method. We use it
+on the first vector and zip it with the second vector. On the vector of pairs we
+map the function that calculates the squared difference. We finish with summing
+all the numbers, getting our result.</p>
+<p>With all the parts in place we are ready to start processing.</p>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>

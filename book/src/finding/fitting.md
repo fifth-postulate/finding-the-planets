@@ -234,3 +234,23 @@ Although it doesn't look pretty, it does its job. It is your task to extend this
 example to iterate over all transit parameters.
 
 ## Score
+We are going to score a `Transit` with the 
+[_least squares_](https://en.wikipedia.org/wiki/Least_squares) method. This
+method sums the squares of the difference between two series. That is easier
+said than done. Lets look at following code.
+
+```rust
+pub fn least_squares(xs: &Vec<f64>, ys: &Vec<f64>) -> f64 {
+    xs.iter().zip(ys)
+        .map(|(a,b)| (a-b).powi(2))
+        .sum()
+}
+```
+
+We define a function names `least_squares` that accepts to vectors of floating
+points numbers. Next we recognize our dear friend: the `iter` method. We use it
+on the first vector and zip it with the second vector. On the vector of pairs we
+map the function that calculates the squared difference. We finish with summing
+all the numbers, getting our result.
+
+With all the parts in place we are ready to start processing.
