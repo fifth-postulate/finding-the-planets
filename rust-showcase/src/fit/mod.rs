@@ -97,20 +97,21 @@ pub struct TransitParametersIterator {
     third: FloatRange,
     fourth: FloatRange,
     fifth: FloatRange,
-    current: (u64, u64, u64, u64, u64),
+    sixth: FloatRange,
+    current: (u64, u64, u64, u64, u64, u64),
 }
 
 impl TransitParametersIterator {
-    pub fn new(first: FloatRange, second: FloatRange, third: FloatRange, fourth: FloatRange, fifth: FloatRange) -> Self {
-        Self { current: (0,0,0,0,0), first, second, third, fourth, fifth }
+    pub fn new(first: FloatRange, second: FloatRange, third: FloatRange, fourth: FloatRange, fifth: FloatRange, sixth: FloatRange) -> Self {
+        Self { current: (0,0,0,0,0,0), first, second, third, fourth, fifth, sixth }
     }
 }
 
 impl Iterator for TransitParametersIterator {
-    type Item = (f64, f64, f64, f64, f64);
+    type Item = (f64, f64, f64, f64, f64, f64);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let (index0, index1, index2, index3, index4) = self.current;
+        let (index0, index1, index2, index3, index4, index5) = self.current;
 
         match self.first.index(index0) {
             Some(value0) => {
@@ -122,13 +123,23 @@ impl Iterator for TransitParametersIterator {
                                     Some(value3) => {
                                         match self.fifth.index(index4) {
                                             Some(value4) => {
-                                                self.current = (index0, index1, index2, index3, index4 + 1);
+                                                match self.sixth.index(index5) {
+                                                    Some(value5) => {
+                                                        self.current = (index0, index1, index2, index3, index4, index5 + 1);
 
-                                                Some((value0, value1, value2, value3, value4))
+                                                        Some((value0, value1, value2, value3, value4, value5))
+                                                    },
+
+                                                    None => {
+                                                        self.current = (index0, index1, index2, index3 + 1, 0, 0);
+
+                                                        self.next()
+                                                    },
+                                                }
                                             },
 
                                             None => {
-                                                self.current = (index0, index1, index2, index3 + 1, 0);
+                                                self.current = (index0, index1, index2, index3 + 1, 0, 0);
 
                                                 self.next()
                                             },
@@ -136,7 +147,7 @@ impl Iterator for TransitParametersIterator {
                                     },
 
                                     None => {
-                                        self.current = (index0, index1, index2 + 1, 0, 0);
+                                        self.current = (index0, index1, index2 + 1, 0, 0, 0);
 
                                         self.next()
                                     },
@@ -144,7 +155,7 @@ impl Iterator for TransitParametersIterator {
                             },
 
                             None => {
-                                self.current = (index0, index1 + 1, 0, 0, 0);
+                                self.current = (index0, index1 + 1, 0, 0, 0, 0);
 
                                 self.next()
                             },
@@ -152,7 +163,7 @@ impl Iterator for TransitParametersIterator {
                     },
 
                     None => {
-                        self.current = (index0 + 1, 0, 0, 0, 0);
+                        self.current = (index0 + 1, 0, 0, 0, 0, 0);
 
                         self.next()
                     },
