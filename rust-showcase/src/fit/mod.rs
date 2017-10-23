@@ -29,6 +29,140 @@ impl Iterator for FloatIterator {
     }
 }
 
+pub struct FloatRange {
+    start: f64,
+    finish: f64,
+    step: f64,
+}
+
+impl FloatRange {
+    pub fn new(start: f64, finish: f64, step: f64) -> FloatRange {
+        FloatRange { start, finish, step }
+    }
+
+    fn index(&self, index: u64) -> Option<f64> {
+        let value = self.start + self.step * (index as f64);
+
+        if value <= self.finish {
+            Some(value)
+        } else {
+            None
+        }
+    }
+}
+
+pub struct TupleIterator {
+    first: FloatRange,
+    second: FloatRange,
+    current: (u64, u64),
+}
+
+impl TupleIterator {
+    pub fn new(first : FloatRange, second: FloatRange) -> Self {
+        Self { current: (0,0), first, second }
+    }
+}
+
+impl Iterator for TupleIterator {
+    type Item = (f64, f64);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let (first_index, second_index) = self.current;
+
+        match self.first.index(first_index) {
+            Some(first_value) => {
+                match self.second.index(second_index) {
+                    Some(second_value) => {
+                        self.current = (first_index, second_index + 1);
+
+                        Some((first_value, second_value))
+                    },
+
+                    None => {
+                        self.current = (first_index + 1, 0);
+
+                        self.next()
+                    },
+                }
+            },
+
+            None => None,
+        }
+    }
+}
+
+pub struct TransitParametersIterator {
+    first: FloatRange,
+    second: FloatRange,
+    third: FloatRange,
+    fourth: FloatRange,
+    fifth: FloatRange,
+    current: (u64, u64, u64, u64, u64),
+}
+
+impl TransitParametersIterator {
+    pub fn new(first: FloatRange, second: FloatRange, third: FloatRange, fourth: FloatRange, fifth: FloatRange) -> Self {
+        Self { current: (0,0,0,0,0), first, second, third, fourth, fifth }
+    }
+}
+
+impl Iterator for TransitParametersIterator {
+    type Item = (f64, f64, f64, f64, f64);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let (index0, index1, index2, index3, index4) = self.current;
+
+        match self.first.index(index0) {
+            Some(value0) => {
+                match self.second.index(index1) {
+                    Some(value1) => {
+                        match self.third.index(index2) {
+                            Some(value2) => {
+                                match self.fourth.index(index3) {
+                                    Some(value3) => {
+                                        match self.fifth.index(index4) {
+                                            Some(value4) => {
+                                                self.current = (index0, index1, index2, index3, index4 + 1);
+
+                                                Some((value0, value1, value2, value3, value4))
+                                            },
+
+                                            None => {
+                                                self.current = (index0, index1, index2, index3 + 1, 0);
+
+                                                self.next()
+                                            },
+                                        }
+                                    },
+
+                                    None => {
+                                        self.current = (index0, index1, index2 + 1, 0, 0);
+
+                                        self.next()
+                                    },
+                                }
+                            },
+
+                            None => {
+                                self.current = (index0, index1 + 1, 0, 0, 0);
+
+                                self.next()
+                            },
+                        }
+                    },
+
+                    None => {
+                        self.current = (index0 + 1, 0, 0, 0, 0);
+
+                        self.next()
+                    },
+                }
+            },
+
+            None => None,
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -46,6 +180,34 @@ mod tests {
         assert!(are_near(iter.next().unwrap(), 0.6f64));
         assert!(are_near(iter.next().unwrap(), 0.8f64));
         assert!(are_near(iter.next().unwrap(), 1.0f64));
+        assert_eq!(iter.next(), None);
+    }
+
+
+    #[test]
+    fn tuple_iterator_should_collect_floating_point_tuples() {
+        let first = FloatRange::new(0.0, 0.2, 0.2);
+        let second = FloatRange::new(0.0, 0.2, 0.1);
+        let mut iter = TupleIterator::new(first, second);
+
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.0f64));
+        assert!(are_near(s, 0.0f64));
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.0f64));
+        assert!(are_near(s, 0.1f64));
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.0f64));
+        assert!(are_near(s, 0.2f64));
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.2f64));
+        assert!(are_near(s, 0.0f64));
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.2f64));
+        assert!(are_near(s, 0.1f64));
+        let (f, s) = iter.next().unwrap();
+        assert!(are_near(f, 0.2f64));
+        assert!(are_near(s, 0.2f64));
         assert_eq!(iter.next(), None);
     }
 
