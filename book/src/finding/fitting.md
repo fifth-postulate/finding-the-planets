@@ -15,6 +15,26 @@ Let us create a module for this as well. We will call it `fit`.
 
 ## Transit Curves
 
+![Multiple periods of a transit curves](image/period.png)
+
+The above image shows a typical transit curve where the planet transits the host
+star multiple times. From this diagram we can learn about the parameters that
+make up such a transit.
+
+Below we list the parameters important in our transit curve.
+
+1. **Period**. The time between the start of one transit and the start of the
+   next transit. 
+2. **Base**. Height of the line, when no planet transits. This is often
+   normalized, but because of the choices we made, we need this parameter. 
+3. **Depth**. How far the luminosity drops when the planets transits. This is
+   related to the size of the planet.
+4. **Duration**. How long the luminosity stays at full depth.
+5. **Decay**. How much time it takes the luminosity to go from the `base` to
+   `depth`. In our model the attack, i.e. time it takes the luminosity to go
+   from `depth` back to `base`, and decay are the same.
+6. **Phase**. Where in the period does the periodic function start.
+
 ## Iterate Parameters
 Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by

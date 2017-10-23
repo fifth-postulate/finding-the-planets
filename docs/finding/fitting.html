@@ -102,6 +102,24 @@ following sub-tasks.</p>
 </ol>
 <p>Let us create a module for this as well. We will call it <code>fit</code>.</p>
 <a class="header" href="fitting.html#transit curves" id="transit curves"><h2>Transit Curves</h2></a>
+<p><img src="image/period.png" alt="Multiple periods of a transit curves" /></p>
+<p>The above image shows a typical transit curve where the planet transits the host
+star multiple times. From this diagram we can learn about the parameters that
+make up such a transit.</p>
+<p>Below we list the parameters important in our transit curve.</p>
+<ol>
+<li><strong>Period</strong>. The time between the start of one transit and the start of the
+next transit.</li>
+<li><strong>Base</strong>. Height of the line, when no planet transits. This is often
+normalized, but because of the choices we made, we need this parameter.</li>
+<li><strong>Depth</strong>. How far the luminosity drops when the planets transits. This is
+related to the size of the planet.</li>
+<li><strong>Duration</strong>. How long the luminosity stays at full depth.</li>
+<li><strong>Decay</strong>. How much time it takes the luminosity to go from the <code>base</code> to
+<code>depth</code>. In our model the attack, i.e. time it takes the luminosity to go
+from <code>depth</code> back to <code>base</code>, and decay are the same.</li>
+<li><strong>Phase</strong>. Where in the period does the periodic function start.</li>
+</ol>
 <a class="header" href="fitting.html#iterate parameters" id="iterate parameters"><h2>Iterate Parameters</h2></a>
 <p>Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by
