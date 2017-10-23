@@ -1141,6 +1141,21 @@ impl Iterator for TupleIterator {
     }
 }
 #}</code></pre></pre>
+<p>Reading the code, we discover that we determine two values, one for each
+<code>FloatRange</code>. If the first <code>FloatRange</code> return <code>None</code> we are done. If it returns
+some value, we see what the second <code>FloatRange</code> returns. If that also returns
+some value, we do the following things.</p>
+<ol>
+<li>Increment the second index.</li>
+<li>Return the tuple of values.</li>
+</ol>
+<p>If the second <code>FloatRange</code> doesn't return some value, we know that it exhausted
+its range. We then increment the first index, resetting the second index. In
+effect we want to the second iterator from scratch, but with a new first value.
+Next we use the power of recursion to determine what the value should be with
+the new indices.</p>
+<p>Although it doesn't look pretty, it does its job. It is your task to extend this
+example to iterate over all transit parameters.</p>
 <a class="header" href="print.html#score" id="score"><h2>Score</h2></a>
 <a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the

@@ -153,4 +153,21 @@ impl Iterator for TupleIterator {
 }
 ```
 
+Reading the code, we discover that we determine two values, one for each
+`FloatRange`. If the first `FloatRange` return `None` we are done. If it returns
+some value, we see what the second `FloatRange` returns. If that also returns
+some value, we do the following things.
+
+1. Increment the second index.
+2. Return the tuple of values.
+ 
+If the second `FloatRange` doesn't return some value, we know that it exhausted
+its range. We then increment the first index, resetting the second index. In
+effect we want to the second iterator from scratch, but with a new first value.
+Next we use the power of recursion to determine what the value should be with
+the new indices. 
+
+Although it doesn't look pretty, it does its job. It is your task to extend this
+example to iterate over all transit parameters.
+
 ## Score
