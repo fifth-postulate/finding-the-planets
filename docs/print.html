@@ -1027,6 +1027,43 @@ related to the size of the planet.</li>
 from <code>depth</code> back to <code>base</code>, and decay are the same.</li>
 <li><strong>Phase</strong>. Where in the period does the periodic function start.</li>
 </ol>
+<p>Below you find a <code>struct</code> and an implemented constructor that can track this
+data.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub struct Transit {
+    period: f64,
+    base: f64,
+    depth: f64,
+    duration: f64,
+    decay: f64,
+    phase: f64,
+}
+
+impl Transit {
+    fn new((period, base, depth, duration, decay, phase): (f64,f64,f64,f64,f64,f64)) -&gt; Transit {
+        Transit { period, base, depth, duration, decay, phase }
+    }
+}
+#}</code></pre></pre>
+<p>Notice that the <code>new</code> function accepts a tuple of floating point numbers. We
+will use this when we iterate over the parameters.</p>
+<p>What we also want to know is, when we have got a <code>time</code>, what is the
+corresponding value of this transit curve. For that we are going to implement a
+<code>value</code> method on `Transit</p>
+<p>What we also want to know is, when we have got a <code>time, what is the corresponding value of this transit curve. For that we are going to implement a</code>value method on <code>Transit</code>.</p>
+<p>The interesting times are</p>
+<ol>
+<li>Before the decay. The value should be <code>base</code></li>
+<li>During the decay. The value should linearly interpolate between <code>base</code> and
+<code>base</code> - <code>depth</code>.</li>
+<li>During full transit. The value should be <code>base</code> - <code>depth</code></li>
+<li>During the attack. The value should linearly interpolate between <code>base</code> -
+<code>depth</code> and <code>base</code>.</li>
+<li>After the transit. The value should be <code>base</code>.</li>
+</ol>
+<p>Implement the above logic into a <code>value</code> method for <code>Transit</code>.</p>
 <a class="header" href="print.html#iterate parameters" id="iterate parameters"><h2>Iterate Parameters</h2></a>
 <p>Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by

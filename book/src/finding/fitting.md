@@ -35,6 +35,49 @@ Below we list the parameters important in our transit curve.
    from `depth` back to `base`, and decay are the same.
 6. **Phase**. Where in the period does the periodic function start.
 
+Below you find a `struct` and an implemented constructor that can track this
+data.
+
+```rust
+pub struct Transit {
+    period: f64,
+    base: f64,
+    depth: f64,
+    duration: f64,
+    decay: f64,
+    phase: f64,
+}
+
+impl Transit {
+    fn new((period, base, depth, duration, decay, phase): (f64,f64,f64,f64,f64,f64)) -> Transit {
+        Transit { period, base, depth, duration, decay, phase }
+    }
+}
+```
+
+Notice that the `new` function accepts a tuple of floating point numbers. We
+will use this when we iterate over the parameters.
+
+What we also want to know is, when we have got a `time`, what is the
+corresponding value of this transit curve. For that we are going to implement a
+`value` method on `Transit
+
+What we also want to know is, when we have got a `time, what is the
+corresponding value of this transit curve. For that we are going to implement a
+`value method on `Transit`.
+
+The interesting times are
+
+1. Before the decay. The value should be `base`
+2. During the decay. The value should linearly interpolate between `base` and
+   `base` - `depth`.
+3. During full transit. The value should be `base` - `depth`
+4. During the attack. The value should linearly interpolate between `base` -
+   `depth` and `base`.
+5. After the transit. The value should be `base`.
+
+Implement the above logic into a `value` method for `Transit`.
+
 ## Iterate Parameters
 Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by
