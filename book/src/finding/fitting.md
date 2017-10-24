@@ -254,3 +254,5 @@ map the function that calculates the squared difference. We finish with summing
 all the numbers, getting our result.
 
 With all the parts in place we are ready to start processing.
+
+## Processing
