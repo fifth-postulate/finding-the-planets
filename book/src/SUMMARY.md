@@ -21,4 +21,5 @@
     - [Filter](./finding/filter.md)
     - [Median](./finding/median.md)
     - [Fitting](./finding/fitting.md)
+- [Reflection](./reflection.md)
 [Setup](./setup.md)
