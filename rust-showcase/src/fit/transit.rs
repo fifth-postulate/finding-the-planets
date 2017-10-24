@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Transit {
     period: f64,
     base: f64,
@@ -13,7 +13,7 @@ impl Transit {
         Transit { period, base, depth, duration, decay, phase }
     }
 
-    pub fn value(&self, time: f64) -> f64 {
+    pub fn value(&self, time: &f64) -> f64 {
         let k = (time/self.period).floor();
         let t = time - k * self.period;
 
