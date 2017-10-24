@@ -256,3 +256,61 @@ all the numbers, getting our result.
 With all the parts in place we are ready to start processing.
 
 ## Processing
+We need to compare candidate transit curves with our median, so we need to read our `median.csv`. Because we would like to process the times and the values separedly we use the `unzip` trick we learned earlier.
+
+```rust
+let (times, values): (Vec<f64>, Vec<f64>) = raw
+    .iter()
+    .cloned()
+    .unzip();
+```
+
+Processing consist for a big part of a main loop that iterates over our transit parameters. This is depend on a number of `FloatRange`s and this is where you can shine. By looking at your `median.csv` data you can guess good ranges, and with some luck you will find planets.
+
+We need to keep track of the best transit curve. So we initialize variables before our main loop.
+
+```rust
+let mut best_score = f64::MAX;
+let mut best_transit: Option<Transit> = None;
+```
+
+In order to make use of the `f64::MAX` we need to import `std::f64`. Not that the best score will actually be the lowest value, so it is save to initialize it to the maximum value.
+
+Inside our loop, we can create a transit curve from the parameters.
+
+```rust
+let transit = Transit::new(parameters);
+```
+
+The `transit` can be used to determine the values at the times we observed by mapping over the `times` and using the `value` method.
+
+```rust
+let transit_values: Vec<f64> = times.iter().map(|t| transit.value(t)).collect();
+```
+
+Scoring is little more than calling the right function.
+
+```rust
+let score = least_squares(&transit_values, &values);
+```
+
+Now that we have the score, we need to compare it with the best score we now about, and update our best candidate accordingly.
+
+```rust
+if score < best_score {
+    best_score = score;
+    best_transit = Some(transit.clone());
+}
+```
+
+When the loop finishes we would like to know which transit is the best. So we prepare to print it to console, and calculate the actual values, which you can write to a CSV file.
+
+```rust
+let best_transit = best_transit.unwrap();
+let best_transit_values: Vec<f64> = times.iter().map(|t| best_transit.value(t)).collect();
+println!("{:?}", best_transit);
+
+let result = times.iter().zip(best_transit_values);
+```
+
+Lets fly through our candidates and see what planet you can find.

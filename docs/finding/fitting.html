@@ -327,6 +327,62 @@ map the function that calculates the squared difference. We finish with summing
 all the numbers, getting our result.</p>
 <p>With all the parts in place we are ready to start processing.</p>
 <a class="header" href="./finding/fitting.html#processing" id="processing"><h2>Processing</h2></a>
+<p>We need to compare candidate transit curves with our median, so we need to read our <code>median.csv</code>. Because we would like to process the times and the values separedly we use the <code>unzip</code> trick we learned earlier.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let (times, values): (Vec&lt;f64&gt;, Vec&lt;f64&gt;) = raw
+    .iter()
+    .cloned()
+    .unzip();
+#}</code></pre></pre>
+<p>Processing consist for a big part of a main loop that iterates over our transit parameters. This is depend on a number of <code>FloatRange</code>s and this is where you can shine. By looking at your <code>median.csv</code> data you can guess good ranges, and with some luck you will find planets.</p>
+<p>We need to keep track of the best transit curve. So we initialize variables before our main loop.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut best_score = f64::MAX;
+let mut best_transit: Option&lt;Transit&gt; = None;
+#}</code></pre></pre>
+<p>In order to make use of the <code>f64::MAX</code> we need to import <code>std::f64</code>. Not that the best score will actually be the lowest value, so it is save to initialize it to the maximum value.</p>
+<p>Inside our loop, we can create a transit curve from the parameters.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let transit = Transit::new(parameters);
+#}</code></pre></pre>
+<p>The <code>transit</code> can be used to determine the values at the times we observed by mapping over the <code>times</code> and using the <code>value</code> method.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let transit_values: Vec&lt;f64&gt; = times.iter().map(|t| transit.value(t)).collect();
+#}</code></pre></pre>
+<p>Scoring is little more than calling the right function.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let score = least_squares(&amp;transit_values, &amp;values);
+#}</code></pre></pre>
+<p>Now that we have the score, we need to compare it with the best score we now about, and update our best candidate accordingly.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+if score &lt; best_score {
+    best_score = score;
+    best_transit = Some(transit.clone());
+}
+#}</code></pre></pre>
+<p>When the loop finishes we would like to know which transit is the best. So we prepare to print it to console, and calculate the actual values, which you can write to a CSV file.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let best_transit = best_transit.unwrap();
+let best_transit_values: Vec&lt;f64&gt; = times.iter().map(|t| best_transit.value(t)).collect();
+println!(&quot;{:?}&quot;, best_transit);
+
+let result = times.iter().zip(best_transit_values);
+#}</code></pre></pre>
+<p>Lets fly through our candidates and see what planet you can find.</p>
 
                 </div>
 
