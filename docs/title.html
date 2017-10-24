@@ -2,12 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>What To Look For - Finding the Planets</title>
+        <title>Finding The Planets - Finding the Planets</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <base href="../">
+        <base href="">
 
         <link rel="stylesheet" href="book.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -69,7 +69,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html" class="active"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./title.html" class="active">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -91,50 +91,17 @@
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./transit/light_curve.html#what-to-look-for" id="what-to-look-for"><h1>What To Look For</h1></a>
-<p>We are forming a model of a planet transit in order to make some calculations
-what to expect. Our model will be fairly crude, but it will suffices for
-understanding key characteristics of light curves.</p>
-<p>This section has some math in it. It is used to understand how a light curve
-will look when a planet transits. Feel free to skip to the result if you feel
-inclined.</p>
-<a class="header" href="./transit/light_curve.html#light-curve" id="light-curve"><h2>Light Curve</h2></a>
-<p>A <a href="https://en.wikipedia.org/wiki/Light_curve">light curve</a> is</p>
-<blockquote>
-<p>a graph of light intensity of a celestial object or region, as a function of
-time.</p>
-</blockquote>
-<p>It graphs how bright some object appears in the sky over time. Our goal is to
-understand what the light curve looks like when a planet transits a star.</p>
-<a class="header" href="./transit/light_curve.html#model" id="model"><h2>Model</h2></a>
-<p>We are modeling our planet transit in the following crude manner. We assume the
-star to be a square which radiates uniformly. The total luminosity is
-\(I_{0}\). So the luminosity per area \(\rho = \frac{I_{0}}{A}\), where \(A\)
-is the total area of the star.</p>
-<p>We model our planet as a square as well. We will also assume that the planet
-will move with uniform speed across the stars image during the transit. When the
-planet is fully in front of the star, it block some of the rays of the star
-diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
-\(a\) is the area of the planet.</p>
-<p>We are interested in the relative drop in luminosity so we will divide
-\(I_{t}\) by \(I_{0}\) to get</p>
-<p>\[
-\frac{I_{t}}{I_{0}} = \frac{\rho \left(A - a\right)}{\rho A} = 1 - \frac{a}{A}
-\]</p>
-<p>So the entire light curve looks something like this.</p>
-<p><img src="image/light-curve.png" alt="A light curve for a planet transition" /></p>
+                    <a class="header" href="./title.html#finding-the-planets" id="finding-the-planets"><h1>Finding The Planets</h1></a>
+<p>Exo-planets, planets that orbits distant stars, are a scientific marvel that appeal to our adventurous mind. In artist’s impressions they are portrayed as beautiful alien worlds dancing around their host star. The real world is not so visual but far more interesting.</p>
+<p>During this workshop, you will learn the tricks and develop the tools with which you can analyse real-outer-world data in search of exo-planets. You will get your amateur astronomer merit badge when you find the hidden worlds.</p>
 
                 </div>
 
                 <!-- Mobile navigation buttons -->
                 
-                    <a rel="prev" href="./transit.html" class="mobile-nav-chapters previous">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                
 
                 
-                    <a rel="next" href="./finding.html" class="mobile-nav-chapters next">
+                    <a rel="next" href="./about.html" class="mobile-nav-chapters next">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -142,13 +109,9 @@ diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
             </div>
 
             
-                <a href="./transit.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-            
 
             
-                <a href="./finding.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
+                <a href="./about.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
                     <i class="fa fa-angle-right"></i>
                 </a>
             

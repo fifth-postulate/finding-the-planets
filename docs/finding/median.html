@@ -56,20 +56,20 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('theme');
+            var theme = store.get('mdbook-theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('sidebar');
+            var sidebar = store.get('mdbook-sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html" class="active"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html" class="active"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./setup.html">Setup</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -84,17 +84,19 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        <a href="print.html">
+                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        </a>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="median.html#median" id="median"><h1>Median</h1></a>
+                    <a class="header" href="./finding/median.html#median" id="median"><h1>Median</h1></a>
 <p>We filtered our brightness graph and got something like this.</p>
 <p><img src="image/filter.png" alt="Filtered brightness of Trappist-1" /></p>
 <p>We would like to know around what kind of average these points are fluctuating.
 For that we are calculating the median.</p>
-<a class="header" href="median.html#calculation" id="calculation"><h2>Calculation</h2></a>
+<a class="header" href="./finding/median.html#calculation" id="calculation"><h2>Calculation</h2></a>
 <p>Let's say we have a sequence of values \(y_{0}, y_{1}, \ldots, y_{n-1}\). The
 median of these numbers is defined as follows.</p>
 <ol>
@@ -113,7 +115,7 @@ take the average of the middle two.</li>
 <p>Because there are an even number of values, we should take the average of the of
 the two middle values. The average of \(53\) and \(58\) is
 \(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
-<a class="header" href="median.html#make a library" id="make a library"><h2>Make a library.</h2></a>
+<a class="header" href="./finding/median.html#make-a-library" id="make-a-library"><h2>Make a library.</h2></a>
 <p>Because we are going to use the median several times, we are going to create a
 library. Let's start with our <code>lib.rs</code>.</p>
 <p>In our <code>lib.rs</code> we are announcing a module called <code>median</code>.</p>
@@ -142,7 +144,7 @@ let median = if n % 2 == 1 {
 }
 #}</code></pre></pre>
 <p>But how do we sort the original data?</p>
-<a class="header" href="median.html#sorting side-quest" id="sorting side-quest"><h3>Sorting side-quest</h3></a>
+<a class="header" href="./finding/median.html#sorting-side-quest" id="sorting-side-quest"><h3>Sorting side-quest</h3></a>
 <p>There are a few interesting tidbits when sorting a <code>Vec&lt;f64&gt;</code> that we are going
 to make a side-quest out of it. While looking into <code>Vec&lt;T&gt;</code>
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort">documentation</a>,
@@ -209,7 +211,7 @@ println!(&quot;{:?}&quot;, vs);
 <p>This correctly sorts our vector. But notice that the <code>vs</code> variable is declared
 mutable. Our signature doesn't expect to have a mutable reference, so we need to
 copy our <code>data</code> first.</p>
-<a class="header" href="median.html#copying data" id="copying data"><h3>Copying Data</h3></a>
+<a class="header" href="./finding/median.html#copying-data" id="copying-data"><h3>Copying Data</h3></a>
 <p>We need a mutable copy of our <code>data</code>. Luckily the <code>Vec&lt;T&gt;</code> API provides an other
 method; <code>copy_from_slice</code>. We use it as</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -221,7 +223,7 @@ copy.copy_from_slice(&amp;data);
 #}</code></pre></pre>
 <p>This is the final piece in the median puzzle. We are able to put everything
 together and write our <code>median_of</code> function.</p>
-<a class="header" href="median.html#form groups" id="form groups"><h3>Form Groups</h3></a>
+<a class="header" href="./finding/median.html#form-groups" id="form-groups"><h3>Form Groups</h3></a>
 <p>We do not want to calculate the median of our entire sequence. Instead we want
 to move a <a href="https://en.wikipedia.org/wiki/Streaming_algorithm"><em>sliding window</em></a>
 over our data and calculate the median of that specific window.</p>
@@ -243,7 +245,7 @@ fn groups(data: &amp;Vec&lt;f64&gt;, group_size: usize) -&gt; Vec&lt;Vec&lt;f64&
     groups
 }
 #}</code></pre></pre>
-<a class="header" href="median.html#median filter" id="median filter"><h3>Median Filter</h3></a>
+<a class="header" href="./finding/median.html#median-filter" id="median-filter"><h3>Median Filter</h3></a>
 <p>We are now in the position to create a <code>median_filter</code> function. I.e. a function
 that calculates the median of a sliding window over our data. With all of our
 preparations it writes itself as</p>
@@ -258,7 +260,7 @@ pub fn median_filter(data: &amp;Vec&lt;f64&gt;, window: usize) -&gt; Vec&lt;f64&
 }
 #}</code></pre></pre>
 <p>With our library all done, we can start out processing proper.</p>
-<a class="header" href="median.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="./finding/median.html#processing" id="processing"><h2>Processing</h2></a>
 <p>But wait! Our data arrives as <code>f64</code>-pairs, i.e. <code>(f64, f64)</code>, and we create
 <code>median_filter</code> to operate on a single <code>f64</code> value. Did I lead you down a wrong
 path?</p>
@@ -293,7 +295,7 @@ let median_values = median_filter(&amp;values, window_size);
 let result = median_times.iter().zip(median_values);
 #}</code></pre></pre>
 <p>Storing this into a CSV file makes it available for the next step.</p>
-<a class="header" href="median.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="./finding/median.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>You have created a library that contains some functions. How do you know that
 they are implemented correctly? Try to add some
 <a href="https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html">tests</a>
@@ -341,6 +343,22 @@ that increases your confidence in your code.</p>
         </script>
 
         <!-- Livereload script (if served using the cli tool) -->
+        
+    <script type="text/javascript">
+        var socket = new WebSocket("ws://localhost:3001");
+        socket.onmessage = function (event) {
+            if (event.data === "reload") {
+                socket.close();
+                location.reload(true); // force reload from server (not from cache)
+            }
+        };
+
+        window.onbeforeunload = function() {
+            socket.close();
+        }
+    </script>
+
+
         
 
         

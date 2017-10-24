@@ -5,6 +5,7 @@ body {
 }
 body {
   margin: 0;
+  font-size: 1rem;
 }
 code {
   font-family: "Source Code Pro", Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace;
@@ -17,6 +18,9 @@ code {
   float: right;
 }
 .hidden {
+  display: none;
+}
+.play-button.hidden {
   display: none;
 }
 h2,
@@ -348,7 +352,8 @@ table thead td {
 .light .nav-chapters,
 .light .nav-chapters:visited,
 .light .mobile-nav-chapters,
-.light .mobile-nav-chapters:visited {
+.light .mobile-nav-chapters:visited,
+.light .menu-bar a i {
   color: #ccc;
 }
 .light .menu-bar i:hover,
@@ -468,7 +473,8 @@ table thead td {
 .coal .nav-chapters,
 .coal .nav-chapters:visited,
 .coal .mobile-nav-chapters,
-.coal .mobile-nav-chapters:visited {
+.coal .mobile-nav-chapters:visited,
+.coal .menu-bar a i {
   color: #43484d;
 }
 .coal .menu-bar i:hover,
@@ -588,7 +594,8 @@ table thead td {
 .navy .nav-chapters,
 .navy .nav-chapters:visited,
 .navy .mobile-nav-chapters,
-.navy .mobile-nav-chapters:visited {
+.navy .mobile-nav-chapters:visited,
+.navy .menu-bar a i {
   color: #737480;
 }
 .navy .menu-bar i:hover,
@@ -708,7 +715,8 @@ table thead td {
 .rust .nav-chapters,
 .rust .nav-chapters:visited,
 .rust .mobile-nav-chapters,
-.rust .mobile-nav-chapters:visited {
+.rust .mobile-nav-chapters:visited,
+.rust .menu-bar a i {
   color: #737480;
 }
 .rust .menu-bar i:hover,
@@ -828,7 +836,8 @@ table thead td {
 .ayu .nav-chapters,
 .ayu .nav-chapters:visited,
 .ayu .mobile-nav-chapters,
-.ayu .mobile-nav-chapters:visited {
+.ayu .mobile-nav-chapters:visited,
+.ayu .menu-bar a i {
   color: #737480;
 }
 .ayu .menu-bar i:hover,
@@ -921,6 +930,9 @@ table thead td {
   #page-wrapper {
     left: 0;
     overflow-y: initial;
+  }
+  #page-wrapper.page-wrapper {
+    padding-left: 0px;
   }
   #content {
     max-width: none;
