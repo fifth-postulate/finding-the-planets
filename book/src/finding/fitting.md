@@ -314,3 +314,10 @@ let result = times.iter().zip(best_transit_values);
 ```
 
 Lets fly through our candidates and see what planet you can find.
+
+## Further Considerations
+How do you know that you implemented the various libraries correctly? Have you tested them?
+
+The way that we generate our transit parameters is going through all possible values. This seems a bit wastefull. Can you come up with a better way? Discussing your thoughts with somebody.
+
+We used the method of least squares to score a transit curve. What other scoring mechanism can you think of. What difference would it make?
