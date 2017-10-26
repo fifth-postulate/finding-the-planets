@@ -340,8 +340,8 @@ contained the time? We don't need it now so we will drop it for the moment.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let mut iter = row.iter();
-iter.next(); // dropping time
+let mut current_row = row.iter();
+current_row.next(); // dropping time
 #}</code></pre></pre>
 <p>Next we can transform all the measurements in floating point numbers. The
 <code>FromStr</code> trait comes in handy. It allows us to convert a <code>&amp;str</code> into an other
@@ -349,7 +349,7 @@ type. Include the <code>use std::str::FromStr</code> at the top of our file to u
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let raw: Vec&lt;f64&gt; = iter
+let raw: Vec&lt;f64&gt; = current_row
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 #}</code></pre></pre>

@@ -1,5 +1,5 @@
 # Exo-planet Discovery
-How does on discover exo-planets? This is no small feat. It makes use of
+How does one discover exo-planets? This is no small feat. It makes use of
 advanced technology and often relies on extensive data analysis. Below we
 outline the various different ways of discovering exoplanets.
 

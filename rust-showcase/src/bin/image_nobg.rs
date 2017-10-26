@@ -13,10 +13,10 @@ fn main(){
     let buf = BufReader::new(f);
     let mut reader = SimpleCsvReader::new(buf);
     let row = reader.next_row().unwrap().unwrap();
-    let mut iter = row.iter();
-    iter.next(); // dropping time
+    let mut current_row = row.iter();
+    current_row.next(); // dropping time
 
-    let raw: Vec<f64> = iter
+    let raw: Vec<f64> = current_row
         .map(|s| f64::from_str(s).unwrap())
         .collect();
     let sum = raw

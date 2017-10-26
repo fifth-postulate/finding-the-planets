@@ -1,5 +1,5 @@
 # Image
-Now that we have are data in a CSV file, we are operating on it. The first thing
+Now that we have our data in a CSV file, we are operating on it. The first thing
 that we should do is make an image.
 
 ## Artist Impression
@@ -50,7 +50,7 @@ With the `buf` we can create a CSV reader and read the first row of our data.
 
 ```rust
 let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap.unwrap();
+let row = reader.next_row().unwrap().unwrap();
 ```
 
 The unsightly double `unwrap` at the end comes from the interplay of the
@@ -67,8 +67,8 @@ We do this by iterating over the `row`. Remember how the first column
 contained the time? We don't need it now so we will drop it for the moment.
 
 ```rust
-let mut iter = row.iter();
-iter.next(); // dropping time
+let mut current_row = row.iter();
+current_row.next(); // dropping time
 ```
 
 Next we can transform all the measurements in floating point numbers.
@@ -77,7 +77,7 @@ Next we can transform all the measurements in floating point numbers.
 ```rust
 use std::str::FromStr;
 
-let raw: Vec<f64> = iter
+let raw: Vec<f64> = current_row
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 ```
