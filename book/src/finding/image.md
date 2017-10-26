@@ -50,7 +50,7 @@ With the `buf` we can create a CSV reader and read the first row of our data.
 
 ```rust
 let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap.unwrap();
+let row = reader.next_row().unwrap().unwrap();
 ```
 
 The unsightly double `unwrap` at the end comes from the interplay of the
