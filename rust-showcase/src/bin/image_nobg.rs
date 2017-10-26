@@ -19,9 +19,9 @@ fn main(){
     let raw: Vec<f64> = current_row
         .map(|s| f64::from_str(s).unwrap())
         .collect();
-    let sum = raw
+    let sum: f64 = raw
         .iter()
-        .fold(0f64, |acc, v| acc+v);
+        .sum();
     let average = sum/(raw.len() as f64);
     let maximum = raw
         .iter()

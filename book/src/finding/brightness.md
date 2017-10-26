@@ -46,6 +46,9 @@ let sum: f64 = raw
     .fold(0f64, |acc, v| acc+v);
 ```
 
+In this case we instead could use the `sum` method instead. `fold` will come in
+handy other situations.
+
 ### Removing Background
 If we take a look at one of the images
 
