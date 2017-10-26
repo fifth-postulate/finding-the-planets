@@ -50,7 +50,7 @@ With the `buf` we can create a CSV reader and read the first row of our data.
 
 ```rust
 let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap.unwrap();
+let row = reader.next_row().unwrap().unwrap();
 ```
 
 The unsightly double `unwrap` at the end comes from the interplay of the
@@ -113,7 +113,7 @@ To the top of the source file. We also need to include an import statement that
 makes our live working with PNGs easier.
 
 ```rust
-use png:HasParameters;
+use png::HasParameters;
 ```
 
 We are going to save the PNG into our working directory. Because the `png` crate
