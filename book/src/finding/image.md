@@ -1,5 +1,5 @@
 # Image
-Now that we have are data in a CSV file, we are operating on it. The first thing
+Now that we have our data in a CSV file, we are operating on it. The first thing
 that we should do is make an image.
 
 ## Artist Impression
