@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./background/kepler.html#kepler-spacecraft" id="kepler-spacecraft"><h1>Kepler Spacecraft</h1></a>
+                    <a class="header" href="kepler.html#kepler spacecraft" id="kepler spacecraft"><h1>Kepler Spacecraft</h1></a>
 <p>The Kepler spacecraft is a satellite that orbits the sun and acts as an
 telescope observing the universe without earths atmosphere interfering.</p>
 <p>It was launched by NASA, as part of the Discovery Program. A program which
@@ -152,8 +150,6 @@ focused on a series of lower-cost, highly focused space missions.</p>
         }
     </script>
 
-
-        
 
         
 

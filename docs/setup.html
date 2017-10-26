@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,23 +84,21 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./setup.html#setup" id="setup"><h1>Setup</h1></a>
+                    <a class="header" href="setup.html#setup" id="setup"><h1>Setup</h1></a>
 <p>In this chapter we will setup everything so that you can start working on the
 workshop.</p>
-<a class="header" href="./setup.html#prerequisites" id="prerequisites"><h2>Prerequisites</h2></a>
+<a class="header" href="setup.html#prerequisites" id="prerequisites"><h2>Prerequisites</h2></a>
 <p>The only real prerequisite is that you have a working
 <a href="https://www.rust-lang.org">Rust</a> tool chain. Everything else should be be
 provided in the workshop resources.</p>
 <p>If you want to graph some of the intermediate results, a graphing tool will be
 useful. We would recommend <a href="http://www.gnuplot.info/">gnuplot</a>.</p>
-<a class="header" href="./setup.html#cargo_home" id="cargo_home"><h2>$CARGO_HOME</h2></a>
+<a class="header" href="setup.html#cargo_home" id="cargo_home"><h2>$CARGO_HOME</h2></a>
 <p>The project does relies on some crates. In order to go easy on the conference
 network we als downloaded the dependencies we envisioned. In order to make use
 of this feature these downloaded crates it is necessary to set the <code>$CARGO_HOME</code>
@@ -153,8 +151,6 @@ environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
         }
     </script>
 
-
-        
 
         
 

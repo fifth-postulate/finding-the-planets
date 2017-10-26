@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./about.html#what-is-this-book-about" id="what-is-this-book-about"><h1>What is this book about</h1></a>
+                    <a class="header" href="about.html#what is this book about" id="what is this book about"><h1>What is this book about</h1></a>
 <p>This book is an compendium to the workshop <em>Finding the Planets</em>. The workshop
 walks you through various techniques and teaches you how to detect planets in
 photo-metric data.</p>
@@ -158,8 +156,6 @@ universe. So put on your science hat and go find those planets.</p>
         }
     </script>
 
-
-        
 
         
 

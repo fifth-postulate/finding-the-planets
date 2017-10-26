@@ -55,14 +55,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -83,14 +83,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./title.html#finding-the-planets" id="finding-the-planets"><h1>Finding The Planets</h1></a>
+                    <a class="header" href="title.html#finding the planets" id="finding the planets"><h1>Finding The Planets</h1></a>
 <p>Exo-planets, planets that orbits distant stars, are a scientific marvel that appeal to our adventurous mind. In artist’s impressions they are portrayed as beautiful alien worlds dancing around their host star. The real world is not so visual but far more interesting.</p>
 <p>During this workshop, you will learn the tricks and develop the tools with which you can analyse real-outer-world data in search of exo-planets. You will get your amateur astronomer merit badge when you find the hidden worlds.</p>
 
@@ -141,8 +139,6 @@
         }
     </script>
 
-
-        
 
         
 

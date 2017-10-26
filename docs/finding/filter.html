@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/filter.html#filter" id="filter"><h1>Filter</h1></a>
+                    <a class="header" href="filter.html#filter" id="filter"><h1>Filter</h1></a>
 <p>Take a look the detrended brightness graph you made in the preceding chapter.</p>
 <p><img src="image/detrend.png" alt="Detrended brightness of Trappist-1" /></p>
 <p>There is a clear band of data. I.e. regions where most of the data-points lie.
@@ -102,7 +100,7 @@ erroneous.</p>
 <p>There are various reasons how these outliers can occur. Some are the results of
 satellite maneuvers. What ever there origin, in this chapter we will filter
 those outliers.</p>
-<a class="header" href="./finding/filter.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="filter.html#processing" id="processing"><h2>Processing</h2></a>
 <p>We are going to rely on our <code>data</code> function again. Remeber the <code>data</code> function
 is responsible for:</p>
 <blockquote>
@@ -122,7 +120,7 @@ let result: Vec&lt;(f64, f64)&gt; = reader
     .collect();
 #}</code></pre></pre>
 <p>The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.</p>
-<a class="header" href="./finding/filter.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="filter.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
 Try some different values and try to get a feel for what works. Discuss your
 choices with somebody else.</p>
@@ -182,8 +180,6 @@ choices with somebody else.</p>
         }
     </script>
 
-
-        
 
         
 

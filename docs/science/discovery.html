@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,27 +84,25 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./science/discovery.html#exo-planet-discovery" id="exo-planet-discovery"><h1>Exo-planet Discovery</h1></a>
+                    <a class="header" href="discovery.html#exo-planet discovery" id="exo-planet discovery"><h1>Exo-planet Discovery</h1></a>
 <p>How does on discover exo-planets? This is no small feat. It makes use of
 advanced technology and often relies on extensive data analysis. Below we
 outline the various different ways of discovering exoplanets.</p>
 <p>The various ways can be grouped in two categories. Direct observation and
 indirect observation.</p>
-<a class="header" href="./science/discovery.html#direct-observation" id="direct-observation"><h2>Direct observation</h2></a>
+<a class="header" href="discovery.html#direct observation" id="direct observation"><h2>Direct observation</h2></a>
 <p>Direct observation entails taking a telescope and searching the sky in the hope
 of spotting an exo-planet. Unfortunately the chances of this happening are very
 low. Where we can take a telescope and point it at Jupiter and discover a few
 of her moons, exo-planets are so far away and often so dim, it is impractical
 for direct observation.</p>
 <p>So we will quickly leave direct observation behind and look into indirect observation.</p>
-<a class="header" href="./science/discovery.html#indirect-observation" id="indirect-observation"><h2>Indirect observation</h2></a>
+<a class="header" href="discovery.html#indirect observation" id="indirect observation"><h2>Indirect observation</h2></a>
 <p>Indirect observation entails observing a star closely and inferring the
 existence of one or more planets. It relies on the science orbital mechanics. We
 don't have to become physicist to get a grasp of the mechanisms involved.</p>
@@ -174,8 +172,6 @@ wobble that we can use to infer the existence of planets.</p>
         }
     </script>
 
-
-        
 
         
 

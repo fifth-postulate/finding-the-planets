@@ -7,7 +7,7 @@ $( document ).ready(function() {
     window.onunload = function(){};
 
     // Set theme
-    var theme = store.get('mdbook-theme');
+    var theme = store.get('theme');
     if (theme === null || theme === undefined) { theme = 'light'; }
 
     set_theme(theme);
@@ -17,7 +17,7 @@ $( document ).ready(function() {
         tabReplace: '    ', // 4 spaces
         languages: [],      // Languages used for auto-detection
     });
-
+    
     if (window.ace) {
         // language-rust class needs to be removed for editable
         // blocks or highlightjs will capture events
@@ -31,7 +31,7 @@ $( document ).ready(function() {
             hljs.highlightBlock(block);
         });
     }
-
+    
     // Adding the hljs class gives code blocks the color css
     // even if highlighting doesn't apply
     $('code').addClass('hljs');
@@ -83,6 +83,16 @@ $( document ).ready(function() {
     }
 
 
+    // Print button
+    $("#print-button").click(function(){
+        var printWindow = window.open("print.html");
+    });
+
+    if( url.substring(url.lastIndexOf('/')+1) == "print.html" ) {
+        window.print();
+    }
+
+
     // Theme button
     $("#theme-toggle").click(function(){
         if($('.theme-popup').length) {
@@ -118,34 +128,34 @@ $( document ).ready(function() {
 
     function set_theme(theme) {
         let ace_theme;
-
+        
         if (theme == 'coal' || theme == 'navy') {
             $("[href='ayu-highlight.css']").prop('disabled', true);
             $("[href='tomorrow-night.css']").prop('disabled', false);
             $("[href='highlight.css']").prop('disabled', true);
-
+            
             ace_theme = "ace/theme/tomorrow_night";
         } else if (theme == 'ayu') {
             $("[href='ayu-highlight.css']").prop('disabled', false);
             $("[href='tomorrow-night.css']").prop('disabled', true);
             $("[href='highlight.css']").prop('disabled', true);
-
+            
             ace_theme = "ace/theme/tomorrow_night";
         } else {
             $("[href='ayu-highlight.css']").prop('disabled', true);
             $("[href='tomorrow-night.css']").prop('disabled', true);
             $("[href='highlight.css']").prop('disabled', false);
-
+            
             ace_theme = "ace/theme/dawn";
         }
-
+        
         if (window.ace && window.editors) {
             window.editors.forEach(function(editor) {
                 editor.setTheme(ace_theme);
             });
         }
 
-        store.set('mdbook-theme', theme);
+        store.set('theme', theme);
 
         $('body').removeClass().addClass(theme);
     }
@@ -209,7 +219,7 @@ $( document ).ready(function() {
             pre_block.prepend("<div class=\"buttons\"></div>");
             buttons = pre_block.find(".buttons");
         }
-        buttons.prepend("<i class=\"fa fa-play play-button hidden\"></i>");
+        buttons.prepend("<i class=\"fa fa-play play-button\"></i>");
         buttons.prepend("<i class=\"fa fa-copy clip-button\"><i class=\"tooltiptext\"></i></i>");
 
         let code_block = pre_block.find("code").first();
@@ -235,7 +245,14 @@ $( document ).ready(function() {
         text: function(trigger) {
             hideTooltip(trigger);
             let playpen = $(trigger).parents(".playpen");
-            return playpen_text(playpen);
+            let code_block = playpen.find("code").first();
+
+            if (window.ace && code_block.hasClass("editable")) {
+                let editor = window.ace.edit(code_block.get(0));
+                return editor.getValue();
+            } else {
+                return code_block.get(0).textContent;
+            }
         }
     });
     clipboardSnippets.on('success', function(e) {
@@ -245,82 +262,7 @@ $( document ).ready(function() {
     clipboardSnippets.on('error', function(e) {
             showTooltip(e.trigger, "Clipboard error!");
     });
-
-    $.ajax({
-        url: "https://play.rust-lang.org/meta/crates",
-        method: "POST",
-        crossDomain: true,
-        dataType: "json",
-        contentType: "application/json",
-        success: function(response){
-            // get list of crates available in the rust playground
-            let playground_crates = response.crates.map(function(item) {return item["id"];} );
-            $(".playpen").each(function(block) {
-                handle_crate_list_update($(this), playground_crates);
-            });
-        },
-    });
-
 });
-
-function playpen_text(playpen) {
-    let code_block = playpen.find("code").first();
-
-    if (window.ace && code_block.hasClass("editable")) {
-        let editor = window.ace.edit(code_block.get(0));
-        return editor.getValue();
-    } else {
-        return code_block.get(0).textContent;
-    }
-}
-
-function handle_crate_list_update(playpen_block, playground_crates) {
-    // update the play buttons after receiving the response
-    update_play_button(playpen_block, playground_crates);
-
-    // and install on change listener to dynamically update ACE editors
-    if (window.ace) {
-        let code_block = playpen_block.find("code").first();
-        if (code_block.hasClass("editable")) {
-            let editor = window.ace.edit(code_block.get(0));
-            editor.on("change", function(e){
-                update_play_button(playpen_block, playground_crates);
-            });
-        }
-    }
-}
-
-// updates the visibility of play button based on `no_run` class and
-// used crates vs ones available on http://play.rust-lang.org
-function update_play_button(pre_block, playground_crates) {
-    var play_button = pre_block.find(".play-button");
-
-    var classes = pre_block.find("code").attr("class").split(" ");
-    // skip if code is `no_run`
-    if (classes.indexOf("no_run") > -1) {
-        play_button.addClass("hidden");
-        return;
-    }
-
-    // get list of `extern crate`'s from snippet
-    var txt = playpen_text(pre_block);
-    var re = /extern\s+crate\s+([a-zA-Z_0-9]+)\s*;/g;
-    var snippet_crates = [];
-    while (item = re.exec(txt)) {
-        snippet_crates.push(item[1]);
-    }
-
-    // check if all used crates are available on play.rust-lang.org
-    var all_available = snippet_crates.every(function(elem) {
-        return playground_crates.indexOf(elem) > -1;
-    });
-
-    if (all_available) {
-        play_button.removeClass("hidden");
-    } else {
-        play_button.addClass("hidden");
-    }
-}
 
 function hideTooltip(elem) {
     elem.firstChild.innerText="";
@@ -336,17 +278,17 @@ function sidebarToggle() {
     var html = $("html");
     if ( html.hasClass("sidebar-hidden") ) {
         html.removeClass("sidebar-hidden").addClass("sidebar-visible");
-        store.set('mdbook-sidebar', 'visible');
+        store.set('sidebar', 'visible');
     } else if ( html.hasClass("sidebar-visible") ) {
         html.removeClass("sidebar-visible").addClass("sidebar-hidden");
-        store.set('mdbook-sidebar', 'hidden');
+        store.set('sidebar', 'hidden');
     } else {
         if($("#sidebar").position().left === 0){
             html.addClass("sidebar-hidden");
-            store.set('mdbook-sidebar', 'hidden');
+            store.set('sidebar', 'hidden');
         } else {
             html.addClass("sidebar-visible");
-            store.set('mdbook-sidebar', 'visible');
+            store.set('sidebar', 'visible');
         }
     }
 }
@@ -358,24 +300,30 @@ function run_rust_code(code_block) {
         result_block = code_block.find(".result");
     }
 
-    let text = playpen_text(code_block);
-    
-    var params = {
-	channel: "stable",
-	mode: "debug",
-	crateType: "bin",
-	tests: false,
-	code: text,
+    let text;
+
+    let inner_code_block = code_block.find("code").first();
+    if (window.ace && inner_code_block.hasClass("editable")) {
+        let editor = window.ace.edit(inner_code_block.get(0));
+        text = editor.getValue();
+    } else {
+        text = inner_code_block.text();
     }
 
+    var params = {
+        version: "stable",
+        optimize: "0",
+        code: text,
+    };
+
     if(text.indexOf("#![feature") !== -1) {
-        params.channel = "nightly";
+        params.version = "nightly";
     }
 
     result_block.text("Running...");
 
     $.ajax({
-        url: "https://play.rust-lang.org/execute",
+        url: "https://play.rust-lang.org/evaluate.json",
         method: "POST",
         crossDomain: true,
         dataType: "json",
@@ -383,7 +331,7 @@ function run_rust_code(code_block) {
         data: JSON.stringify(params),
         timeout: 15000,
         success: function(response){
-           result_block.text(response.success ? response.stdout : response.stderr);
+            result_block.text(response.result);
         },
         error: function(qXHR, textStatus, errorThrown){
             result_block.text("Playground communication " + textStatus);

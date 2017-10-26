@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,17 +84,15 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/image.html#image" id="image"><h1>Image</h1></a>
+                    <a class="header" href="image.html#image" id="image"><h1>Image</h1></a>
 <p>Now that we have are data in a CSV file, we are operating on it. The first thing
 that we should do is make an image.</p>
-<a class="header" href="./finding/image.html#artist-impression" id="artist-impression"><h2>Artist Impression</h2></a>
+<a class="header" href="image.html#artist impression" id="artist impression"><h2>Artist Impression</h2></a>
 <p><img src="image/artist-impression.jpg" alt="An artist impression of Trappist-1" /></p>
 <p>Often artists are commissioned to create a stunning visualization of new findings.
 This is also the case with the Trappist-1 news. Above you find an artist
@@ -102,10 +100,10 @@ impression of Trappist-1.</p>
 <p>The downside of this is that we could loose track of the actual data that is
 used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.</p>
-<a class="header" href="./finding/image.html#creating-an-image" id="creating-an-image"><h2>Creating an image</h2></a>
+<a class="header" href="image.html#creating an image" id="creating an image"><h2>Creating an image</h2></a>
 <p>So go ahead and start a new Rust file named <code>image.rs</code> in the <code>src/bin</code>
 directory of your project.</p>
-<a class="header" href="./finding/image.html#reading-data" id="reading-data"><h3>Reading Data</h3></a>
+<a class="header" href="image.html#reading data" id="reading data"><h3>Reading Data</h3></a>
 <p>We will be reading our data from CSV. We will use the crate <code>simple_csv</code> for
 that. In order to use it include the following lines in <code>image.rs</code>.</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -143,7 +141,7 @@ let row = reader.next_row().unwrap.unwrap();
 <code>Iterator</code> trait that has a <code>next</code> function that returns an <code>Option</code>, and the
 way <code>simple_csv</code> parses lines in CSV files. Don't worry about it now, just make
 a mental note.</p>
-<a class="header" href="./finding/image.html#processing-data" id="processing-data"><h3>Processing Data</h3></a>
+<a class="header" href="image.html#processing data" id="processing data"><h3>Processing Data</h3></a>
 <p>Our CSV file contains rows of floating point numbers. But the <code>simple_csv</code> crate
 returns a slice of Strings. We will need to turn does Strings into floating
 point numbers before we can properly process them.</p>
@@ -183,7 +181,7 @@ let data: Vec&lt;u8&gt; = raw
     .map(|s| s.floor() as u8)
     .collect();
 #}</code></pre></pre>
-<a class="header" href="./finding/image.html#writing-data" id="writing-data"><h2>Writing data</h2></a>
+<a class="header" href="image.html#writing data" id="writing data"><h2>Writing data</h2></a>
 <p>Now that we have the gray-scale data, it is time to write it as an image. For
 this we will use the <code>png</code> crate. Before we can use it add</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -226,7 +224,7 @@ encoder.set(png::ColorType::Grayscale).set(png::BitDepth::Eight);
 let mut writer = encoder.write_header().unwrap();
 writer.write_image_data(data.as_slice()).unwrap();
 #}</code></pre></pre>
-<a class="header" href="./finding/image.html#our-image" id="our-image"><h2>Our Image</h2></a>
+<a class="header" href="image.html#our image" id="our image"><h2>Our Image</h2></a>
 <p>It is finally time to make our own impression of Trappist-1. Use <code>cargo</code> to
 build and run your code.</p>
 <pre><code class="language-shell">&gt; cargo build
@@ -234,14 +232,14 @@ build and run your code.</p>
 </code></pre>
 <p>Which creates</p>
 <p><img src="image/trappist-1.0.png" alt="Actual Trappist-1 photo" /></p>
-<a class="header" href="./finding/image.html#appreciate-the-image" id="appreciate-the-image"><h2>Appreciate the Image</h2></a>
+<a class="header" href="image.html#appreciate the image" id="appreciate the image"><h2>Appreciate the Image</h2></a>
 <p>At first glance the image can be a little underwhelming. But it is precisely
 this image that blew my mind! Being accustomed to the marvelous artist
 impression, when I learned about the actual data was 11x11 pixels I was hooked.
 How could anyone extract so much information from so little data?</p>
 <p><img src="image/trappist-1.0.large.png" alt="10 times enlargement of actual Trappist-1 photo" /></p>
 <p>I had to know and I hope you want to know too!</p>
-<a class="header" href="./finding/image.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="image.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <ul>
 <li>Make a bigger image with larger &quot;pixels&quot;.</li>
 <li>Make an entire series of images, one for each row.</li>
@@ -303,8 +301,6 @@ How could anyone extract so much information from so little data?</p>
         }
     </script>
 
-
-        
 
         
 

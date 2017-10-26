@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./background/trappist-1.html#trappist-1" id="trappist-1"><h1>Trappist-1</h1></a>
+                    <a class="header" href="trappist-1.html#trappist-1" id="trappist-1"><h1>Trappist-1</h1></a>
 <p>Trappist-1 is a star system 39 light-years from Earth. A light-year is the
 distance light travels in one year. That is approximately 369 trillion
 kilometers. Even though this seems an astronomically large distance, on a
@@ -152,8 +150,6 @@ galactic scale, Trappist-1 and the sun are close neighbors.</p>
         }
     </script>
 
-
-        
 
         
 

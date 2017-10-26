@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./science/doppler.html#doppler-effect" id="doppler-effect"><h1>Doppler Effect</h1></a>
+                    <a class="header" href="doppler.html#doppler effect" id="doppler effect"><h1>Doppler Effect</h1></a>
 <p>Just like a blaring whistle of a train drops pitch when it rushes by, light
 changes color depending if the light emitter is moving towards us or away
 from us. This is called the Doppler effect.</p>
@@ -154,8 +152,6 @@ used to discover exo-planets, we will be making use of a different technique.</p
         }
     </script>
 
-
-        
 
         
 

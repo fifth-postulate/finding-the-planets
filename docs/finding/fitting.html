@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/fitting.html#fitting" id="fitting"><h1>Fitting</h1></a>
+                    <a class="header" href="fitting.html#fitting" id="fitting"><h1>Fitting</h1></a>
 <p>We have created a plot of the median.</p>
 <p><img src="image/median.png" alt="The median of the filtered brightness" /></p>
 <p>We would like to find planets in it. Finding planets amounts to selecting a
@@ -103,7 +101,7 @@ following sub-tasks.</p>
 <li>Scoring each candidate transit curve and selecting the best</li>
 </ol>
 <p>Let us create a module for this as well. We will call it <code>fit</code>.</p>
-<a class="header" href="./finding/fitting.html#transit-curves" id="transit-curves"><h2>Transit Curves</h2></a>
+<a class="header" href="fitting.html#transit curves" id="transit curves"><h2>Transit Curves</h2></a>
 <p><img src="image/period.png" alt="Multiple periods of a transit curves" /></p>
 <p>The above image shows a typical transit curve where the planet transits the host
 star multiple times. From this diagram we can learn about the parameters that
@@ -159,11 +157,11 @@ corresponding value of this transit curve. For that we are going to implement a
 <li>After the transit. The value should be <code>base</code>.</li>
 </ol>
 <p>Implement the above logic into a <code>value</code> method for <code>Transit</code>.</p>
-<a class="header" href="./finding/fitting.html#iterate-parameters" id="iterate-parameters"><h2>Iterate Parameters</h2></a>
+<a class="header" href="fitting.html#iterate parameters" id="iterate parameters"><h2>Iterate Parameters</h2></a>
 <p>Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by
 iterating over the five parameters, and mapping them into a transit curve.</p>
-<a class="header" href="./finding/fitting.html#floatiterator" id="floatiterator"><h3>FloatIterator</h3></a>
+<a class="header" href="fitting.html#floatiterator" id="floatiterator"><h3>FloatIterator</h3></a>
 <p>We will first focus on an iterator for a single <code>f64</code>. We want all floating
 point numbers between a <code>start</code> and <code>finish</code>, increasing each new number with a
 certain <code>step</code>. We will create a <code>struct</code> that keeps track of where we are.</p>
@@ -204,7 +202,7 @@ impl Iterator for FloatIterator {
 }
 #}</code></pre></pre>
 <p>This wraps up our <code>FloatIterator</code>.</p>
-<a class="header" href="./finding/fitting.html#exemplar-tupleiterator" id="exemplar-tupleiterator"><h3>Exemplar TupleIterator</h3></a>
+<a class="header" href="fitting.html#exemplar tupleiterator" id="exemplar tupleiterator"><h3>Exemplar TupleIterator</h3></a>
 <p>Next we are going to create a <code>TupleIterator</code>. It is going to show all the
 necessary tools to create the actual <code>TupleIterator</code> we want, without getting
 distracted by the tedious details.</p>
@@ -306,7 +304,7 @@ Next we use the power of recursion to determine what the value should be with
 the new indices.</p>
 <p>Although it doesn't look pretty, it does its job. It is your task to extend this
 example to iterate over all transit parameters.</p>
-<a class="header" href="./finding/fitting.html#score" id="score"><h2>Score</h2></a>
+<a class="header" href="fitting.html#score" id="score"><h2>Score</h2></a>
 <p>We are going to score a <code>Transit</code> with the
 <a href="https://en.wikipedia.org/wiki/Least_squares"><em>least squares</em></a> method. This
 method sums the squares of the difference between two series. That is easier
@@ -326,7 +324,7 @@ on the first vector and zip it with the second vector. On the vector of pairs we
 map the function that calculates the squared difference. We finish with summing
 all the numbers, getting our result.</p>
 <p>With all the parts in place we are ready to start processing.</p>
-<a class="header" href="./finding/fitting.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="fitting.html#processing" id="processing"><h2>Processing</h2></a>
 <p>We need to compare candidate transit curves with our median, so we need to read our <code>median.csv</code>. Because we would like to process the times and the values separedly we use the <code>unzip</code> trick we learned earlier.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -383,7 +381,7 @@ println!(&quot;{:?}&quot;, best_transit);
 let result = times.iter().zip(best_transit_values);
 #}</code></pre></pre>
 <p>Lets fly through our candidates and see what planet you can find.</p>
-<a class="header" href="./finding/fitting.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="fitting.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <p>How do you know that you implemented the various libraries correctly? Have you tested them?</p>
 <p>The way that we generate our transit parameters is going through all possible values. This seems a bit wastefull. Can you come up with a better way? Discussing your thoughts with somebody.</p>
 <p>We used the method of least squares to score a transit curve. What other scoring mechanism can you think of. What difference would it make?</p>
@@ -443,8 +441,6 @@ let result = times.iter().zip(best_transit_values);
         }
     </script>
 
-
-        
 
         
 

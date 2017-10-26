@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,18 +84,16 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/fits.html#fits" id="fits"><h1>FITS</h1></a>
+                    <a class="header" href="fits.html#fits" id="fits"><h1>FITS</h1></a>
 <p>The results of the NASA Kepler mission on observing Trappist-1 are
 <a href="https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html">available</a>
 to the public. For your ease of use we downloaded the FITS files before hand.</p>
-<a class="header" href="./finding/fits.html#what-are-fits-files" id="what-are-fits-files"><h2>What are FITS files</h2></a>
+<a class="header" href="fits.html#what are fits files" id="what are fits files"><h2>What are FITS files</h2></a>
 <p>A <a href="https://en.wikipedia.org/wiki/FITS">FITS</a> file is a</p>
 <blockquote>
 <p>open standard defining a digital file format useful for storage,
@@ -192,8 +190,6 @@ process the FITS files. Unfortunatly the crate is not production ready. Although
         }
     </script>
 
-
-        
 
         
 

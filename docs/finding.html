@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,26 +84,24 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding.html#finding-planets" id="finding-planets"><h1>Finding Planets</h1></a>
+                    <a class="header" href="finding.html#finding planets" id="finding planets"><h1>Finding Planets</h1></a>
 <p>The following chapters will guide you in writing software that will detects
 planets around Trappist-1.</p>
 <p>Two things will go hand in hand. Explaining what to do followed by you
 implementing that in your favorite programming language.</p>
-<a class="header" href="./finding.html#format" id="format"><h2>Format</h2></a>
+<a class="header" href="finding.html#format" id="format"><h2>Format</h2></a>
 <p>We will chose to adhere to the following format. In almost every chapter we will
 output a Comma Separated Values (CSV) file. That file will serve as input for
 the next chapter.</p>
 <p>Although this could be optimized in a single pipeline, foregoing the need to
 write and read CSV, with this format we have to ability to reflect. This will
 aid us in understanding our task at hand.</p>
-<a class="header" href="./finding.html#outline" id="outline"><h2>Outline</h2></a>
+<a class="header" href="finding.html#outline" id="outline"><h2>Outline</h2></a>
 <p>The following outline is typical for almost all the activities we are going to
 do in this workshop.</p>
 <ol>
@@ -116,7 +114,7 @@ analyzing or fitting. Now processing will be generating image data.</p>
 <p>This could be your first encounter with some of the libraries we use. When we
 start using a library for the first time, we are going to be very specific. Once
 you get to know the library we leave you to fill in the blanks.</p>
-<a class="header" href="./finding.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="finding.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <p>Almost every chapter encourages you to play with what you have created. We hope
 too give you some food for thought that might spark your interested. But feel
 free to come up with your own questions and observations and don't forget to
@@ -177,8 +175,6 @@ share them.</p>
         }
     </script>
 
-
-        
 
         
 

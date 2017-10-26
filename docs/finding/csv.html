@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,14 +84,12 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/csv.html#csv" id="csv"><h1>CSV</h1></a>
+                    <a class="header" href="csv.html#csv" id="csv"><h1>CSV</h1></a>
 <p>Comma Seperated values play an integral role in this workshop. We don't need an particular sharp tool to process CSV files. Basic reading and writing is more than enough. We are going to use the <code>simple_csv</code> crate for this.</p>
 <p>Whenever we use the functionality we are going to explain what we are doing. If you want a head start take a look at the
 <a href="https://github.com/daramos/simple_csv">documentation</a>.</p>
@@ -151,8 +149,6 @@
         }
     </script>
 
-
-        
 
         
 

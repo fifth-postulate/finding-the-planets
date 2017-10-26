@@ -56,14 +56,14 @@
     <body class="light">
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme = store.get('theme');
             if (theme === null || theme === undefined) { theme = 'light'; }
             $('body').removeClass().addClass(theme);
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
+            var sidebar = store.get('sidebar');
             if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
             else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
         </script>
@@ -84,20 +84,18 @@
                     <h1 class="menu-title">Finding the Planets</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
                     </div>
                 </div>
 
                 <div id="content" class="content">
-                    <a class="header" href="./finding/brightness.html#brightness" id="brightness"><h1>Brightness</h1></a>
+                    <a class="header" href="brightness.html#brightness" id="brightness"><h1>Brightness</h1></a>
 <p>We are going to detect the planets by observing drops in overall brightness.
 Before we are able to do this, we need to calculate the brightness. That is
 precisely the objective in this chapter.</p>
 <p>We are going to create a CSV file with the first column the time of the
 measurement and the second column the brightness at that time.</p>
-<a class="header" href="./finding/brightness.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="brightness.html#processing" id="processing"><h2>Processing</h2></a>
 <p>For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.</p>
 <p>Take a row of data and</p>
@@ -133,7 +131,7 @@ let sum: f64 = raw
     .iter()
     .fold(0f64, |acc, v| acc+v);
 #}</code></pre></pre>
-<a class="header" href="./finding/brightness.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
+<a class="header" href="brightness.html#removing background" id="removing background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
 <p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
 <p>we see that the background is not pitch black. This means that the background
@@ -163,7 +161,7 @@ let filtered: f64 = raw
     .filter(|&amp;v| *v &gt;= average)
     .fold(0f64, |acc, v| acc+v)
 #}</code></pre></pre>
-<a class="header" href="./finding/brightness.html#graphing-results" id="graphing-results"><h2>Graphing Results</h2></a>
+<a class="header" href="brightness.html#graphing results" id="graphing results"><h2>Graphing Results</h2></a>
 <p>Once you wrote your brightness results to a CSV file, they are ready for the
 following step. But if you are like me you probably want to see your results.
 This is where gnuplot comes in.</p>
@@ -192,7 +190,7 @@ y-coordinate.</p>
 <p>If you have gone to the trouble of outputting the brightness with and without
 the background, your plot could look like the one below.</p>
 <p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
-<a class="header" href="./finding/brightness.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="brightness.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
 <p>Take a look at your data and write down what stands out to you. Discuss this
 with a neighbor.</p>
 <p>Why is the average taken as a cut-off value? What are other options?</p>
@@ -258,8 +256,6 @@ smooth out that trend and that is precisely what we will in one of the next chap
         }
     </script>
 
-
-        
 
         
 
