@@ -71,12 +71,12 @@ let mut current_row = row.iter();
 current_row.next(); // dropping time
 ```
 
-Next we can transform all the measurements in floating point numbers.
+Next we can transform all the measurements in floating point numbers. We can do
+that by using the `FromStr` trait. Import it with `use std::str::FromStr`. It
+provides a method `from_str` that transforms `&str` into an other type. 
 
 
 ```rust
-use std::str::FromStr;
-
 let raw: Vec<f64> = current_row
     .map(|s| f64::from_str(s).unwrap())
     .collect();
