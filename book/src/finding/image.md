@@ -71,7 +71,9 @@ let mut iter = row.iter();
 iter.next(); // dropping time
 ```
 
-Next we can transform all the measurements in floating point numbers.
+Next we can transform all the measurements in floating point numbers. The
+`FromStr` trait comes in handy. It allows us to convert a `&str` into an other
+type. Include the `use std::str::FromStr` at the top of our file to use it. 
 
 
 ```rust
@@ -79,9 +81,6 @@ let raw: Vec<f64> = iter
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 ```
-
-For the preceding line to work we need to include a `use std::str::FromStr;`
-line at the top of our file.
 
 What we are going to do is map these measurements onto a gray scale that we can
 save as an image. We do this by determining the maximum measurement, determining

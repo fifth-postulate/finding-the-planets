@@ -343,7 +343,9 @@ contained the time? We don't need it now so we will drop it for the moment.</p>
 let mut iter = row.iter();
 iter.next(); // dropping time
 #}</code></pre></pre>
-<p>Next we can transform all the measurements in floating point numbers.</p>
+<p>Next we can transform all the measurements in floating point numbers. The
+<code>FromStr</code> trait comes in handy. It allows us to convert a <code>&amp;str</code> into an other
+type. Include the <code>use std::str::FromStr</code> at the top of our file to use it.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
@@ -351,8 +353,6 @@ let raw: Vec&lt;f64&gt; = iter
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 #}</code></pre></pre>
-<p>For the preceding line to work we need to include a <code>use std::str::FromStr;</code>
-line at the top of our file.</p>
 <p>What we are going to do is map these measurements onto a gray scale that we can
 save as an image. We do this by determining the maximum measurement, determining
 the relative measurement compared to the maximum, and scaling it the an integer
