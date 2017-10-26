@@ -220,13 +220,14 @@ together with image origin metadata.</p>
 </blockquote>
 <p>We are going to use the <a href="https://crates.io/crates/fits-rs">fits-rs</a> crate to
 process the FITS files. Unfortunatly the crate is not production ready. Although we can use the crate to read the headers, it doesn't parse the table data just yet. For now the relevant data is converted into Comma Seperated Values (CVS).</p>
-<p>For an example of what you can do with that crate see below.</p>
+<p>For an example of what you can do with that crate see below. Note that it needs
+a other libraries, not included in the workshop material.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
     let args: Vec&lt;String&gt; = env::args().collect();
     let filename = &amp;args[1];
-    let header_index = u64:from_str(&amp;args[2]).expect(&quot;should be a non-negative number&quot;);
+    let header_index = u64::from_str(&amp;args[2]).expect(&quot;should be a non-negative number&quot;);
 
     let mut f = File::open(filename).expect(&quot;file not found&quot;);
     let mut buffer: Vec&lt;u8&gt; = vec!();
