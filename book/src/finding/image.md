@@ -60,10 +60,10 @@ a mental note.
 
 ### Processing Data
 Our CSV file contains rows of floating point numbers. But the `simple_csv` crate
-returns a slice of Strings. We will need to turn does Strings into floating
+returns a slice of Strings. We will need to turn those Strings into floating
 point numbers before we can properly process them.
 
-We does this by iterating over the `row`. Remember how the first column
+We do this by iterating over the `row`. Remember how the first column
 contained the time? We don't need it now so we will drop it for the moment.
 
 ```rust
@@ -71,16 +71,18 @@ let mut iter = row.iter();
 iter.next(); // dropping time
 ```
 
-Next we can transform all the measurements in floating point numbers. The
-`FromStr` trait comes in handy. It allows us to convert a `&str` into an other
-type. Include the `use std::str::FromStr` at the top of our file to use it. 
+Next we can transform all the measurements in floating point numbers.
 
 
 ```rust
+use std::str::FromStr;
+
 let raw: Vec<f64> = iter
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 ```
+
+Note we need to include a `use std::str::FromStr;` line at the top of our file.
 
 What we are going to do is map these measurements onto a gray scale that we can
 save as an image. We do this by determining the maximum measurement, determining
@@ -113,7 +115,7 @@ To the top of the source file. We also need to include an import statement that
 makes our live working with PNGs easier.
 
 ```rust
-use png:HasParameters;
+use png::HasParameters;
 ```
 
 We are going to save the PNG into our working directory. Because the `png` crate
