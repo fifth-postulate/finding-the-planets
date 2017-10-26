@@ -67,8 +67,8 @@ We does this by iterating over the `row`. Remember how the first column
 contained the time? We don't need it now so we will drop it for the moment.
 
 ```rust
-let mut iter = row.iter();
-iter.next(); // dropping time
+let mut current_row = row.iter();
+current_row.next(); // dropping time
 ```
 
 Next we can transform all the measurements in floating point numbers. The
@@ -77,7 +77,7 @@ type. Include the `use std::str::FromStr` at the top of our file to use it.
 
 
 ```rust
-let raw: Vec<f64> = iter
+let raw: Vec<f64> = current_row
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 ```
