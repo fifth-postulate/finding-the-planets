@@ -123,32 +123,6 @@ focused on a series of lower-cost, highly focused space missions.</p>
 detail the different methods of detecting exo-planets, and do some calculations
 on what the expect.</p>
 <a class="header" href="print.html#exo-planet discovery" id="exo-planet discovery"><h1>Exo-planet Discovery</h1></a>
-<p>How does on discover exo-planets? This is no small feat. It makes use of
-advanced technology and often relies on extensive data analysis. Below we
-outline the various different ways of discovering exoplanets.</p>
-<p>The various ways can be grouped in two categories. Direct observation and
-indirect observation.</p>
-<a class="header" href="print.html#direct observation" id="direct observation"><h2>Direct observation</h2></a>
-<p>Direct observation entails taking a telescope and searching the sky in the hope
-of spotting an exo-planet. Unfortunately the chances of this happening are very
-low. Where we can take a telescope and point it at Jupiter and discover a few
-of her moons, exo-planets are so far away and often so dim, it is impractical
-for direct observation.</p>
-<p>So we will quickly leave direct observation behind and look into indirect observation.</p>
-<a class="header" href="print.html#indirect observation" id="indirect observation"><h2>Indirect observation</h2></a>
-<p>Indirect observation entails observing a star closely and inferring the
-existence of one or more planets. It relies on the science orbital mechanics. We
-don't have to become physicist to get a grasp of the mechanisms involved.</p>
-<p>One of the <a href="https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion">laws of planetary motion</a>
-as laid down by Johannes Kepler is</p>
-<blockquote>
-<p>The orbit of a planet is an ellipse with the Sun at one of the two foci.</p>
-</blockquote>
-<p>This is not entirely true. Isaac Newton, when writing down his laws of
-gravitational attraction, inferred that planets and their stars revolve around
-their <em>center of mass</em>.</p>
-<p>This motion lets stars wobble around their average position. And it is this
-wobble that we can use to infer the existence of planets.</p>
 <a class="header" href="print.html#observing position" id="observing position"><h1>Observing Position</h1></a>
 <p>Similar with direct observation, we could try to observe the wobble of a star
 directly. This method faces the same problems, i.e. the distances of the stars
@@ -163,8 +137,8 @@ regularities and infer the existence of planets. Even though this technique is
 used to discover exo-planets, we will be making use of a different technique.</p>
 <a class="header" href="print.html#transit method" id="transit method"><h1>Transit Method</h1></a>
 <p>When a planet moves in between its star and the Earth, it will make the star
-appear dimmer because it obscures some of the light rays. Despite that planets
-are often very much smaller than their companion star, this effect is certainly
+appear dimmer because it obscures some of the light rays. Despite planets often
+being very much smaller than their companion star, this effect is certainly
 measurable.</p>
 <p>It is the transit method that we will use in this workshop to detect the planets
 around Trappist-1.</p>
@@ -280,7 +254,7 @@ process the FITS files. Unfortunatly the crate is not production ready. Although
 <p>Whenever we use the functionality we are going to explain what we are doing. If you want a head start take a look at the
 <a href="https://github.com/daramos/simple_csv">documentation</a>.</p>
 <a class="header" href="print.html#image" id="image"><h1>Image</h1></a>
-<p>Now that we have are data in a CSV file, we are operating on it. The first thing
+<p>Now that we have our data in a CSV file, we are operating on it. The first thing
 that we should do is make an image.</p>
 <a class="header" href="print.html#artist impression" id="artist impression"><h2>Artist Impression</h2></a>
 <p><img src="image/artist-impression.jpg" alt="An artist impression of Trappist-1" /></p>
@@ -325,7 +299,7 @@ arrange everything correctly and hope for the best.</p>
 # #![allow(unused_variables)]
 #fn main() {
 let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap.unwrap();
+let row = reader.next_row().unwrap().unwrap();
 #}</code></pre></pre>
 <p>The unsightly double <code>unwrap</code> at the end comes from the interplay of the
 <code>Iterator</code> trait that has a <code>next</code> function that returns an <code>Option</code>, and the
@@ -333,9 +307,9 @@ way <code>simple_csv</code> parses lines in CSV files. Don't worry about it now,
 a mental note.</p>
 <a class="header" href="print.html#processing data" id="processing data"><h3>Processing Data</h3></a>
 <p>Our CSV file contains rows of floating point numbers. But the <code>simple_csv</code> crate
-returns a slice of Strings. We will need to turn does Strings into floating
+returns a slice of Strings. We will need to turn those Strings into floating
 point numbers before we can properly process them.</p>
-<p>We does this by iterating over the <code>row</code>. Remember how the first column
+<p>We do this by iterating over the <code>row</code>. Remember how the first column
 contained the time? We don't need it now so we will drop it for the moment.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -343,16 +317,17 @@ contained the time? We don't need it now so we will drop it for the moment.</p>
 let mut current_row = row.iter();
 current_row.next(); // dropping time
 #}</code></pre></pre>
-<p>Next we can transform all the measurements in floating point numbers. The
-<code>FromStr</code> trait comes in handy. It allows us to convert a <code>&amp;str</code> into an other
-type. Include the <code>use std::str::FromStr</code> at the top of our file to use it.</p>
+<p>Next we can transform all the measurements in floating point numbers.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
+use std::str::FromStr;
+
 let raw: Vec&lt;f64&gt; = current_row
     .map(|s| f64::from_str(s).unwrap())
     .collect();
 #}</code></pre></pre>
+<p>Note we need to include a <code>use std::str::FromStr;</code> line at the top of our file.</p>
 <p>What we are going to do is map these measurements onto a gray scale that we can
 save as an image. We do this by determining the maximum measurement, determining
 the relative measurement compared to the maximum, and scaling it the an integer
@@ -384,7 +359,7 @@ makes our live working with PNGs easier.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-use png:HasParameters;
+use png::HasParameters;
 #}</code></pre></pre>
 <p>We are going to save the PNG into our working directory. Because the <code>png</code> crate
 expects a <code>BufWriter</code> we will have to include the following modules.</p>
