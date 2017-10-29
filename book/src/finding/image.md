@@ -55,8 +55,11 @@ let row = reader.next_row().unwrap().unwrap();
 
 The unsightly double `unwrap` at the end comes from the interplay of the
 `Iterator` trait that has a `next` function that returns an `Option`, and the
-way `simple_csv` parses lines in CSV files. Don't worry about it now, just make
-a mental note.
+way `simple_csv` parses lines from CSV files into a `Result`. So the first
+`unwrap` unwraps the `Option`, the second `unwrap` unwraps the `Result`.
+
+We should make a mental note when working with the `simple_csv` crate, we should
+mind our `unwrap`s.
 
 ### Processing Data
 Our CSV file contains rows of floating point numbers. But the `simple_csv` crate

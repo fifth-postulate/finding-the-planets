@@ -304,8 +304,10 @@ let row = reader.next_row().unwrap().unwrap();
 #}</code></pre></pre>
 <p>The unsightly double <code>unwrap</code> at the end comes from the interplay of the
 <code>Iterator</code> trait that has a <code>next</code> function that returns an <code>Option</code>, and the
-way <code>simple_csv</code> parses lines in CSV files. Don't worry about it now, just make
-a mental note.</p>
+way <code>simple_csv</code> parses lines from CSV files into a <code>Result</code>. So the first
+<code>unwrap</code> unwraps the <code>Option</code>, the second <code>unwrap</code> unwraps the <code>Result</code>.</p>
+<p>We should make a mental note when working with the <code>simple_csv</code> crate, we should
+mind our <code>unwrap</code>s.</p>
 <a class="header" href="print.html#processing data" id="processing data"><h3>Processing Data</h3></a>
 <p>Our CSV file contains rows of floating point numbers. But the <code>simple_csv</code> crate
 returns a slice of Strings. We will need to turn those Strings into floating
