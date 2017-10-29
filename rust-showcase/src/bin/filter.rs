@@ -10,7 +10,7 @@ fn main(){
     let args : Vec<String> = env::args().collect();
     let threshold = f64::from_str(&args[1]).expect("first argument should be the threshold");
 
-    let f = File::open("assets/detrend.csv").unwrap();
+    let f = File::open("assets/detrend.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -20,7 +20,7 @@ fn main(){
         .filter(|&(_,difference)| difference.abs() <= threshold)
         .collect();
 
-    let o = File::create("assets/filter.csv").unwrap();
+    let o = File::create("assets/filter.csv").expect("could not create output CSV.");
     let mut writer = SimpleCsvWriter::new(o);
 
     for (time, filtered) in result {

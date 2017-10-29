@@ -9,7 +9,7 @@ use png::HasParameters;
 use simple_csv::SimpleCsvReader;
 
 fn main(){
-    let f = File::open("../long-cadence.csv").unwrap();
+    let f = File::open("../long-cadence.csv").expect("input CSV to exist");
     let buf = BufReader::new(f);
     let mut reader = SimpleCsvReader::new(buf);
     let row = reader.next_row().unwrap().unwrap();
@@ -34,10 +34,10 @@ fn main(){
         .map(|s| s.floor() as u8)
         .collect();
 
-    let mut path = env::current_dir().unwrap();
+    let mut path = env::current_dir().expect("could not read current directory.");
     path.push(format!("assets/trappist-1.{}.nobg.png", 0));
 
-    let file = File::create(path).unwrap();
+    let file = File::create(path).expect("could not write output CSV.");
     let ref mut w = BufWriter::new(file);
 
     let mut encoder = png::Encoder::new(w, 11, 11);

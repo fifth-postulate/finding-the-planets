@@ -290,7 +290,7 @@ use std::io::BufReader;
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let f = File::open(&quot;../long-cadence.csv&quot;).unwrap();
+let f = File::open(&quot;../long-cadence.csv&quot;).expect(&quot;input CSV to exist.&quot;);
 let buf = BufReader::new(f);
 #}</code></pre></pre>
 <p>Notice that we are not handling errors in a graceful way. We are just going to

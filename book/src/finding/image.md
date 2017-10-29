@@ -39,7 +39,7 @@ use std::io::BufReader;
 And in the main function add.
 
 ```rust
-let f = File::open("../long-cadence.csv").unwrap();
+let f = File::open("../long-cadence.csv").expect("input CSV to exist.");
 let buf = BufReader::new(f);
 ```
 

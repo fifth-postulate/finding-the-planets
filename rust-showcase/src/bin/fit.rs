@@ -12,7 +12,7 @@ use find_planets::fit::transit::Transit;
 use find_planets::fit::score::least_squares;
 
 fn main(){
-    let f = File::open("assets/median.csv").unwrap();
+    let f = File::open("assets/median.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -53,7 +53,7 @@ fn main(){
     let result = times.iter().zip(best_transit_values);
 
     println!("{:?}", best_transit);
-    let o = File::create("assets/fit.csv").unwrap();
+    let o = File::create("assets/fit.csv").expect("could not write output CSV.");
     let mut writer = SimpleCsvWriter::new(o);
 
     for (time, transit) in result {

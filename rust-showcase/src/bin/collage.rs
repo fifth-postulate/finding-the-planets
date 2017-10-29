@@ -17,7 +17,7 @@ const SIZE: usize = WIDTH * HEIGHT;
 const MAXIMUM: f64 = 3923.0;
 
 fn main(){
-    let f = File::open("../long-cadence.csv").unwrap();
+    let f = File::open("../long-cadence.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -37,7 +37,7 @@ fn main(){
     let mut path = env::current_dir().unwrap();
     path.push("assets/collage.png");
 
-    let file = File::create(path).unwrap();
+    let file = File::create(path).expect("could not create output CSV");
     let ref mut w = BufWriter::new(file);
 
     let mut encoder = png::Encoder::new(w, 61*11, 59*11);

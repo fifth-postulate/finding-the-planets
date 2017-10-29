@@ -10,7 +10,7 @@ fn main(){
     let args : Vec<String> = env::args().collect();
     let alpha = f64::from_str(&args[1]).expect("first argument should be the threshold");
 
-    let f = File::open("assets/brightness.csv").unwrap();
+    let f = File::open("assets/brightness.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -36,7 +36,7 @@ fn main(){
         }
     }
 
-    let o = File::create("assets/detrend.csv").unwrap();
+    let o = File::create("assets/detrend.csv").expect("could not write output CSV.");
     let mut writer = SimpleCsvWriter::new(o);
 
     for data in sequence {

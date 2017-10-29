@@ -13,7 +13,7 @@ fn main(){
     let args : Vec<String> = env::args().collect();
     let window_size = usize::from_str(&args[1]).expect("first argument should be the window size");
 
-    let f = File::open("assets/filter.csv").unwrap();
+    let f = File::open("assets/filter.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
@@ -32,7 +32,7 @@ fn main(){
 
     let result = median_times.iter().zip(median_values);
 
-    let o = File::create("assets/median.csv").unwrap();
+    let o = File::create("assets/median.csv").expect("could not write output CSV.");
     let mut writer = SimpleCsvWriter::new(o);
 
     for (time, median) in result {

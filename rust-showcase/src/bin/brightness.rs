@@ -6,11 +6,11 @@ use std::str::FromStr;
 use simple_csv::{SimpleCsvWriter, SimpleCsvReader};
 
 fn main(){
-    let f = File::open("../long-cadence.csv").unwrap();
+    let f = File::open("../long-cadence.csv").expect("input CSV to exist.");
     let buf = BufReader::new(f);
     let reader = SimpleCsvReader::new(buf);
 
-    let o = File::create("assets/brightness.csv").unwrap();
+    let o = File::create("assets/brightness.csv").expect("could not create output CSV.");
     let mut writer = SimpleCsvWriter::new(o);
 
     for (_, r) in reader.enumerate() {
