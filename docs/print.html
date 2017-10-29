@@ -347,6 +347,20 @@ let data: Vec&lt;u8&gt; = raw
     .map(|s| s.floor() as u8)
     .collect();
 #}</code></pre></pre>
+<p>It uses a method <code>fold</code> with the following signature</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
+    where
+        F: FnMut(B, Self::Item) -&gt; B
+#}</code></pre></pre>
+<p>It takes something that implements the <code>Iterator</code> trait, a initial value called
+<code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
+first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
+produces. After that it accepts the previous call to <code>f</code> return value with the
+next value of the iterator. A fold returns the final return value of the
+function <code>f</code>.</p>
 <a class="header" href="print.html#writing data" id="writing data"><h2>Writing data</h2></a>
 <p>Now that we have the gray-scale data, it is time to write it as an image. For
 this we will use the <code>png</code> crate. Before we can use it add</p>
@@ -507,32 +521,16 @@ What we are going to do is the following.</p>
 details for the conversion.</p>
 <p>The summation of all the values can be written down very succinctly because the
 <a href="https://doc.rust-lang.org/std/iter/"><code>Iterator</code></a> trait has a trick up it's
-sleeve.</p>
-<p>It defines a method <code>fold</code> with the following signature</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
-    where
-        F: FnMut(B, Self::Item) -&gt; B
-#}</code></pre></pre>
-<p>It takes something that implements the <code>Iterator</code> trait, a initial value called
-<code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
-first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
-produces. After that it accepts the previous call to <code>f</code> return value with the
-next value of the iterator. A fold returns the final return value of the
-function <code>f</code>.</p>
-<p>We can use it to calculate the sum of all the brightness values. If we have our
-raw <code>f64</code> values in the variable <code>raw</code>, we can determine the sum with</p>
+sleeve. The <code>Iter</code> trait has a <code>sum</code> method. We can use it to calculate the sum
+of all the brightness values. If we have our raw <code>f64</code> values in the variable
+<code>raw</code>, we can determine the sum with</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
 let sum: f64 = raw
     .iter()
-    .fold(0f64, |acc, v| acc+v);
+    .sum();
 #}</code></pre></pre>
-<p>In this case we instead could use the <code>sum</code> method instead. <code>fold</code> will come in
-handy other situations.</p>
 <a class="header" href="print.html#removing background" id="removing background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
 <p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
@@ -1321,9 +1319,9 @@ provided in the workshop resources.</p>
 <p>If you want to graph some of the intermediate results, a graphing tool will be
 useful. We would recommend <a href="http://www.gnuplot.info/">gnuplot</a>.</p>
 <a class="header" href="print.html#cargo_home" id="cargo_home"><h2>$CARGO_HOME</h2></a>
-<p>The project does relies on some crates. In order to go easy on the conference
-network we als downloaded the dependencies we envisioned. In order to make use
-of this feature these downloaded crates it is necessary to set the <code>$CARGO_HOME</code>
+<p>The project relies on some crates. In order to go easy on the conference
+network we have provided the dependencies we envisioned. In order to make use
+of these downloaded crates it is necessary to set the <code>$CARGO_HOME</code>
 environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
 
                 </div>

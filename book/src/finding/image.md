@@ -103,6 +103,21 @@ let data: Vec<u8> = raw
     .collect();
 ```
 
+It uses a method `fold` with the following signature
+
+```rust
+fn fold<B, F>(self, init: B, f: F) -> B
+    where
+        F: FnMut(B, Self::Item) -> B
+```
+
+It takes something that implements the `Iterator` trait, a initial value called
+`init` and repeatedly calls `f`. The function `f` accepts two arguments. At
+first it accepts the initial `init` value and the first element the `Iterator`
+produces. After that it accepts the previous call to `f` return value with the
+next value of the iterator. A fold returns the final return value of the
+function `f`.
+
 ## Writing data
 Now that we have the gray-scale data, it is time to write it as an image. For
 this we will use the `png` crate. Before we can use it add

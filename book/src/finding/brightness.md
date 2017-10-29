@@ -20,34 +20,15 @@ details for the conversion.
 
 The summation of all the values can be written down very succinctly because the
 [`Iterator`](https://doc.rust-lang.org/std/iter/) trait has a trick up it's
-sleeve.
-
-It defines a method `fold` with the following signature
-
-```rust
-fn fold<B, F>(self, init: B, f: F) -> B
-    where
-        F: FnMut(B, Self::Item) -> B
-```
-
-It takes something that implements the `Iterator` trait, a initial value called
-`init` and repeatedly calls `f`. The function `f` accepts two arguments. At
-first it accepts the initial `init` value and the first element the `Iterator`
-produces. After that it accepts the previous call to `f` return value with the
-next value of the iterator. A fold returns the final return value of the
-function `f`.
-
-We can use it to calculate the sum of all the brightness values. If we have our
-raw `f64` values in the variable `raw`, we can determine the sum with
+sleeve. The `Iter` trait has a `sum` method. We can use it to calculate the sum
+of all the brightness values. If we have our raw `f64` values in the variable
+`raw`, we can determine the sum with 
 
 ```rust
 let sum: f64 = raw
     .iter()
-    .fold(0f64, |acc, v| acc+v);
+    .sum();
 ```
-
-In this case we instead could use the `sum` method instead. `fold` will come in
-handy other situations.
 
 ### Removing Background
 If we take a look at one of the images

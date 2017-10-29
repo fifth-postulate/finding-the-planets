@@ -182,6 +182,20 @@ let data: Vec&lt;u8&gt; = raw
     .map(|s| s.floor() as u8)
     .collect();
 #}</code></pre></pre>
+<p>It uses a method <code>fold</code> with the following signature</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
+    where
+        F: FnMut(B, Self::Item) -&gt; B
+#}</code></pre></pre>
+<p>It takes something that implements the <code>Iterator</code> trait, a initial value called
+<code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
+first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
+produces. After that it accepts the previous call to <code>f</code> return value with the
+next value of the iterator. A fold returns the final return value of the
+function <code>f</code>.</p>
 <a class="header" href="image.html#writing data" id="writing data"><h2>Writing data</h2></a>
 <p>Now that we have the gray-scale data, it is time to write it as an image. For
 this we will use the <code>png</code> crate. Before we can use it add</p>
