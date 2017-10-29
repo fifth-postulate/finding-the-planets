@@ -38,6 +38,11 @@ collage, the `X`-offset will be
 let offset_X = row_index % 61;
 ```
 
+The `Iter` trait has a very nice method: 
+[`enumerate`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate).
+What it does is besides iterating over the `row`, it also provides us with the
+`row_index`. We should keep this in mind when we are putting things together.
+
 After 61 rows, we need to increase the `Y`-offset with one. This amounts to
 
 ```rust
