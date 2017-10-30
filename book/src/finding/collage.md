@@ -28,14 +28,37 @@ The interesting thing about 3599 is that is 61x59. So we could make our collage
 almost a square with 61 columns and 59 rows of single images. With 11x11 images
 as base our collage will come in at 61x11 = 671 by 59x11 = 649.
 
-There are two factors that determine the position of the pixel. The which row
-that data is from, and which column the data is in.
+Let's start by giving names to things. We start out with the tile base size,
+i.e. the size of the original image. We are going to call that `BASE`. Next we
+want 61 of our tiles to go horizontally, and we want 59 of our tiles to go
+vertically. We will call these `HORIZONTAL_TILES` and `VERTICAL_TILES`
+respectively.
+
+```rust
+const BASE: usize = 11;
+const HORIZONTAL_TILES: usize = 61;
+const VERTICAL_TILES: usize = 59;
+```
+
+Now we can express all the other dimensions in terms of our `BASE` and
+`HORIZONTAL_TILES` and `VERTICAL_TILES`.
+
+```rust
+const WIDTH: usize = HORIZONTAL_TILES * BASE;
+const HEIGHT: usize = VERTICAL_TILES * BASE;
+const SIZE: usize = WIDTH * HEIGHT;
+```
+
+For example, `SIZE` is the number of pixels in our base tile. Let's continue and
+figure out where the pixels go. There are two factors that determine the
+position of the pixel. The which row that data is from, and which column the
+data is in. 
 
 We will start with the row. Because we have 61 images along the x-axis of our
 collage, the `X`-offset will be
 
 ```rust
-let offset_X = row_index % 61;
+let offset_X = row_index % HORIZONTAL_TILES;
 ```
 
 The `Iter` trait has a very nice method: 
@@ -43,30 +66,31 @@ The `Iter` trait has a very nice method:
 What it does is besides iterating over the `row`, it also provides us with the
 `row_index`. We should keep this in mind when we are putting things together.
 
-After 61 rows, we need to increase the `Y`-offset with one. This amounts to
+After `HORIZONAL_TILES` rows, we need to increase the `Y`-offset with one. This amounts to
 
 ```rust
-let offset_Y = row_index / 61;
+let offset_Y = row_index / HORIZONTAL_TILES;
 ```
 
-Now for the offset within the image. The image is 11x11. So given an original
+Now for the offset within the image. The image is `BASE`x`BASE`. So given an original
 index in the row, we have for the 
 
 ```rust
-let offset_x = original_index % 11;
-let offset_y = original_index / 11;
+let offset_x = original_index % BASE;
+let offset_y = original_index / BASE;
 ```
 
 Now we can calculate the target index. For each `offset_Y` we need to go down an
-entire 11 rows in our collage. This is 11x61x11 = 7381. For each `offset_X` we
-need to shift 11 pixels down. For each `offset_y` we need to go down an entire
-row. This is 61x11 = 671. Finally, for each `offset_x` we need to shift 1 pixel
+entire `BASE` rows in our collage. This is `BASE`x`HORIZONTAL_TILES`x`BASE` (=
+7381). For each `offset_X` we need to shift `BASE` pixels down. For each
+`offset_y` we need to go down an entire row. This is `HORIZONTAL_TILES`x`BASE`
+(= 671). Finally, for each `offset_x` we need to shift 1 pixel 
 down. All together this is
 
 ```rust
-let target_index = offset_Y * 7381 +
-                   offset_X * 11 +
-                   offset_y * 671 +
+let target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
+                   offset_X * BASE +
+                   offset_y * (HORIZONTAL_TILES * BASE) +
                    offset_x
 ```
 
