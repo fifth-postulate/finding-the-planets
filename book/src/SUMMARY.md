@@ -23,3 +23,4 @@
     - [Fitting](./finding/fitting.md)
 - [Reflection](./reflection.md)
 [Setup](./setup.md)
+[Showcase](./showcase.md)

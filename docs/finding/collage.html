@@ -69,7 +69,7 @@
         </script>
 
         <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html" class="active"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./reflection.html"><strong>5.</strong> Reflection</a></li><li class="affix"><a href="./setup.html">Setup</a></li></ul>
+            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html" class="active"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./reflection.html"><strong>5.</strong> Reflection</a></li><li class="affix"><a href="./setup.html">Setup</a></li><li class="affix"><a href="./showcase.html">Showcase</a></li></ul>
         </div>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -114,40 +114,68 @@ explicitly. Because we want to make a collage we have some work to do.</p>
 <p>The interesting thing about 3599 is that is 61x59. So we could make our collage
 almost a square with 61 columns and 59 rows of single images. With 11x11 images
 as base our collage will come in at 61x11 = 671 by 59x11 = 649.</p>
-<p>There are two factors that determine the position of the pixel. The which row
-that data is from, and which column the data is in.</p>
+<p>Let's start by giving names to things. We start out with the tile base size,
+i.e. the size of the original image. We are going to call that <code>BASE</code>. Next we
+want 61 of our tiles to go horizontally, and we want 59 of our tiles to go
+vertically. We will call these <code>HORIZONTAL_TILES</code> and <code>VERTICAL_TILES</code>
+respectively.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+const BASE: usize = 11;
+const HORIZONTAL_TILES: usize = 61;
+const VERTICAL_TILES: usize = 59;
+#}</code></pre></pre>
+<p>Now we can express all the other dimensions in terms of our <code>BASE</code> and
+<code>HORIZONTAL_TILES</code> and <code>VERTICAL_TILES</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+const WIDTH: usize = HORIZONTAL_TILES * BASE;
+const HEIGHT: usize = VERTICAL_TILES * BASE;
+const SIZE: usize = WIDTH * HEIGHT;
+#}</code></pre></pre>
+<p>For example, <code>SIZE</code> is the number of pixels in our base tile. Let's continue and
+figure out where the pixels go. There are two factors that determine the
+position of the pixel. The which row that data is from, and which column the
+data is in.</p>
 <p>We will start with the row. Because we have 61 images along the x-axis of our
 collage, the <code>X</code>-offset will be</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let offset_X = row_index % 61;
+let offset_X = row_index % HORIZONTAL_TILES;
 #}</code></pre></pre>
-<p>After 61 rows, we need to increase the <code>Y</code>-offset with one. This amounts to</p>
+<p>The <code>Iter</code> trait has a very nice method:
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate"><code>enumerate</code></a>.
+What it does is besides iterating over the <code>row</code>, it also provides us with the
+<code>row_index</code>. We should keep this in mind when we are putting things together.</p>
+<p>After <code>HORIZONAL_TILES</code> rows, we need to increase the <code>Y</code>-offset with one. This amounts to</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let offset_Y = row_index / 61;
+let offset_Y = row_index / HORIZONTAL_TILES;
 #}</code></pre></pre>
-<p>Now for the offset within the image. The image is 11x11. So given an original
+<p>Now for the offset within the image. The image is <code>BASE</code>x<code>BASE</code>. So given an original
 index in the row, we have for the</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let offset_x = original_index % 11;
-let offset_y = original_index / 11;
+let offset_x = original_index % BASE;
+let offset_y = original_index / BASE;
 #}</code></pre></pre>
 <p>Now we can calculate the target index. For each <code>offset_Y</code> we need to go down an
-entire 11 rows in our collage. This is 11x61x11 = 7381. For each <code>offset_X</code> we
-need to shift 11 pixels down. For each <code>offset_y</code> we need to go down an entire
-row. This is 61x11 = 671. Finally, for each <code>offset_x</code> we need to shift 1 pixel
+entire <code>BASE</code> rows in our collage. This is <code>BASE</code>x<code>HORIZONTAL_TILES</code>x<code>BASE</code> (=
+7381). For each <code>offset_X</code> we need to shift <code>BASE</code> pixels down. For each
+<code>offset_y</code> we need to go down an entire row. This is <code>HORIZONTAL_TILES</code>x<code>BASE</code>
+(= 671). Finally, for each <code>offset_x</code> we need to shift 1 pixel
 down. All together this is</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let target_index = offset_Y * 7381 +
-                   offset_X * 11 +
-                   offset_y * 671 +
+let target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
+                   offset_X * BASE +
+                   offset_y * (HORIZONTAL_TILES * BASE) +
                    offset_x
 #}</code></pre></pre>
 <p>With these calculations we know where to paint the image pixel.</p>
