@@ -10,7 +10,8 @@ workshop:
 	mkdir -p workshop
 	cp *.fits workshop
 	cp -r docs workshop/book
-	cp -r rust-starter workshop/rust-starter
+	cp -r rust-starter workshop/starter
+	cp -r rust-showcase workshop/showcase
 	cp *.csv workshop
 
 data: $(DATA-FILES)
