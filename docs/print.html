@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title> - Finding the Planets</title>
+        <title>Finding the Planets</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
 
         <base href="">
 
@@ -38,61 +39,94 @@
             }
         </script>
 
-        <!-- Fetch JQuery from CDN but have a local fallback -->
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script>
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
-        <script src="store.js"></script>
-
-        <!-- Custom JS script -->
-        
-
     </head>
     <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('theme');
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
-            $('body').removeClass().addClass(theme);
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('sidebar');
-            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
-            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
         </script>
 
-        <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./reflection.html"><strong>5.</strong> Reflection</a></li><li class="affix"><a href="./setup.html">Setup</a></li><li class="affix"><a href="./showcase.html">Showcase</a></li></ul>
-        </div>
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/fits.html"><strong aria-hidden="true">4.1.</strong> FITS</a></li><li><a href="finding/csv.html"><strong aria-hidden="true">4.2.</strong> CSV</a></li><li><a href="finding/image.html"><strong aria-hidden="true">4.3.</strong> Image</a></li><li><a href="finding/collage.html"><strong aria-hidden="true">4.4.</strong> Collage</a></li><li><a href="finding/brightness.html"><strong aria-hidden="true">4.5.</strong> Brightness</a></li><li><a href="finding/detrend.html"><strong aria-hidden="true">4.6.</strong> Detrend</a></li><li><a href="finding/filter.html"><strong aria-hidden="true">4.7.</strong> Filter</a></li><li><a href="finding/median.html"><strong aria-hidden="true">4.8.</strong> Median</a></li><li><a href="finding/fitting.html"><strong aria-hidden="true">4.9.</strong> Fitting</a></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+        </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
-            <div class="page" tabindex="-1">
+            <div class="page">
+                
                 <div id="menu-bar" class="menu-bar">
-                    <div class="left-buttons">
-                        <i id="sidebar-toggle" class="fa fa-bars"></i>
-                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
-                    </div>
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
 
-                    <h1 class="menu-title">Finding the Planets</h1>
+                        <h1 class="menu-title">Finding the Planets</h1>
 
-                    <div class="right-buttons">
-                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
                 <div id="content" class="content">
-                    <a class="header" href="print.html#finding the planets" id="finding the planets"><h1>Finding The Planets</h1></a>
+                    <main>
+                        <a class="header" href="print.html#finding-the-planets" id="finding-the-planets"><h1>Finding The Planets</h1></a>
 <p>Exo-planets, planets that orbits distant stars, are a scientific marvel that appeal to our adventurous mind. In artist’s impressions they are portrayed as beautiful alien worlds dancing around their host star. The real world is not so visual but far more interesting.</p>
 <p>During this workshop, you will learn the tricks and develop the tools with which you can analyse real-outer-world data in search of exo-planets. You will get your amateur astronomer merit badge when you find the hidden worlds.</p>
-<a class="header" href="print.html#what is this book about" id="what is this book about"><h1>What is this book about</h1></a>
+<a class="header" href="print.html#what-is-this-book-about" id="what-is-this-book-about"><h1>What is this book about</h1></a>
 <p>This book is an compendium to the workshop <em>Finding the Planets</em>. The workshop
 walks you through various techniques and teaches you how to detect planets in
 photo-metric data.</p>
@@ -113,7 +147,7 @@ discovered and the data that we will use to find its planets.</p>
 distance light travels in one year. That is approximately 369 trillion
 kilometers. Even though this seems an astronomically large distance, on a
 galactic scale, Trappist-1 and the sun are close neighbors.</p>
-<a class="header" href="print.html#kepler spacecraft" id="kepler spacecraft"><h1>Kepler Spacecraft</h1></a>
+<a class="header" href="print.html#kepler-spacecraft" id="kepler-spacecraft"><h1>Kepler Spacecraft</h1></a>
 <p>The Kepler spacecraft is a satellite that orbits the sun and acts as an
 telescope observing the universe without earths atmosphere interfering.</p>
 <p>It was launched by NASA, as part of the Discovery Program. A program which
@@ -122,34 +156,34 @@ focused on a series of lower-cost, highly focused space missions.</p>
 <p>In this part we will explore the science behind exo-planet discovery. We will
 detail the different methods of detecting exo-planets, and do some calculations
 on what the expect.</p>
-<a class="header" href="print.html#exo-planet discovery" id="exo-planet discovery"><h1>Exo-planet Discovery</h1></a>
-<a class="header" href="print.html#observing position" id="observing position"><h1>Observing Position</h1></a>
+<a class="header" href="print.html#exo-planet-discovery" id="exo-planet-discovery"><h1>Exo-planet Discovery</h1></a>
+<a class="header" href="print.html#observing-position" id="observing-position"><h1>Observing Position</h1></a>
 <p>Similar with direct observation, we could try to observe the wobble of a star
 directly. This method faces the same problems, i.e. the distances of the stars
 are so immense, the wobble becomes all but undetectable.</p>
 <p>So we will quickly move on to other methods.</p>
-<a class="header" href="print.html#doppler effect" id="doppler effect"><h1>Doppler Effect</h1></a>
+<a class="header" href="print.html#doppler-effect" id="doppler-effect"><h1>Doppler Effect</h1></a>
 <p>Just like a blaring whistle of a train drops pitch when it rushes by, light
 changes color depending if the light emitter is moving towards us or away
 from us. This is called the Doppler effect.</p>
 <p>By careful measurement of the Doppler effect in star light one could discover
 regularities and infer the existence of planets. Even though this technique is
 used to discover exo-planets, we will be making use of a different technique.</p>
-<a class="header" href="print.html#transit method" id="transit method"><h1>Transit Method</h1></a>
+<a class="header" href="print.html#transit-method" id="transit-method"><h1>Transit Method</h1></a>
 <p>When a planet moves in between its star and the Earth, it will make the star
 appear dimmer because it obscures some of the light rays. Despite planets often
 being very much smaller than their companion star, this effect is certainly
 measurable.</p>
 <p>It is the transit method that we will use in this workshop to detect the planets
 around Trappist-1.</p>
-<a class="header" href="print.html#what to look for" id="what to look for"><h1>What To Look For</h1></a>
+<a class="header" href="print.html#what-to-look-for" id="what-to-look-for"><h1>What To Look For</h1></a>
 <p>We are forming a model of a planet transit in order to make some calculations
 what to expect. Our model will be fairly crude, but it will suffices for
 understanding key characteristics of light curves.</p>
 <p>This section has some math in it. It is used to understand how a light curve
 will look when a planet transits. Feel free to skip to the result if you feel
 inclined.</p>
-<a class="header" href="print.html#light curve" id="light curve"><h2>Light Curve</h2></a>
+<a class="header" href="print.html#light-curve" id="light-curve"><h2>Light Curve</h2></a>
 <p>A <a href="https://en.wikipedia.org/wiki/Light_curve">light curve</a> is</p>
 <blockquote>
 <p>a graph of light intensity of a celestial object or region, as a function of
@@ -174,7 +208,7 @@ diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
 \]</p>
 <p>So the entire light curve looks something like this.</p>
 <p><img src="image/light-curve.png" alt="A light curve for a planet transition" /></p>
-<a class="header" href="print.html#finding planets" id="finding planets"><h1>Finding Planets</h1></a>
+<a class="header" href="print.html#finding-planets" id="finding-planets"><h1>Finding Planets</h1></a>
 <p>The following chapters will guide you in writing software that will detects
 planets around Trappist-1.</p>
 <p>Two things will go hand in hand. Explaining what to do followed by you
@@ -199,7 +233,7 @@ analyzing or fitting. Now processing will be generating image data.</p>
 <p>This could be your first encounter with some of the libraries we use. When we
 start using a library for the first time, we are going to be very specific. Once
 you get to know the library we leave you to fill in the blanks.</p>
-<a class="header" href="print.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>Almost every chapter encourages you to play with what you have created. We hope
 too give you some food for thought that might spark your interested. But feel
 free to come up with your own questions and observations and don't forget to
@@ -208,7 +242,7 @@ share them.</p>
 <p>The results of the NASA Kepler mission on observing Trappist-1 are
 <a href="https://keplerscience.arc.nasa.gov/raw-data-for-k2-campaign-12-and-trappist-1-now-available.html">available</a>
 to the public. For your ease of use we downloaded the FITS files before hand.</p>
-<a class="header" href="print.html#what are fits files" id="what are fits files"><h2>What are FITS files</h2></a>
+<a class="header" href="print.html#what-are-fits-files" id="what-are-fits-files"><h2>What are FITS files</h2></a>
 <p>A <a href="https://en.wikipedia.org/wiki/FITS">FITS</a> file is a</p>
 <blockquote>
 <p>open standard defining a digital file format useful for storage,
@@ -257,7 +291,7 @@ a other libraries, not included in the workshop material.</p>
 <a class="header" href="print.html#image" id="image"><h1>Image</h1></a>
 <p>Now that we have our data in a CSV file, we are operating on it. The first thing
 that we should do is make an image.</p>
-<a class="header" href="print.html#artist impression" id="artist impression"><h2>Artist Impression</h2></a>
+<a class="header" href="print.html#artist-impression" id="artist-impression"><h2>Artist Impression</h2></a>
 <p><img src="image/artist-impression.jpg" alt="An artist impression of Trappist-1" /></p>
 <p>Often artists are commissioned to create a stunning visualization of new findings.
 This is also the case with the Trappist-1 news. Above you find an artist
@@ -265,10 +299,10 @@ impression of Trappist-1.</p>
 <p>The downside of this is that we could loose track of the actual data that is
 used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.</p>
-<a class="header" href="print.html#creating an image" id="creating an image"><h2>Creating an image</h2></a>
+<a class="header" href="print.html#creating-an-image" id="creating-an-image"><h2>Creating an image</h2></a>
 <p>So go ahead and start a new Rust file named <code>image.rs</code> in the <code>src/bin</code>
 directory of your project.</p>
-<a class="header" href="print.html#reading data" id="reading data"><h3>Reading Data</h3></a>
+<a class="header" href="print.html#reading-data" id="reading-data"><h3>Reading Data</h3></a>
 <p>We will be reading our data from CSV. We will use the crate <code>simple_csv</code> for
 that. In order to use it include the following lines in <code>image.rs</code>.</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -308,7 +342,7 @@ way <code>simple_csv</code> parses lines from CSV files into a <code>Result</cod
 <code>unwrap</code> unwraps the <code>Option</code>, the second <code>unwrap</code> unwraps the <code>Result</code>.</p>
 <p>We should make a mental note when working with the <code>simple_csv</code> crate, we should
 mind our <code>unwrap</code>s.</p>
-<a class="header" href="print.html#processing data" id="processing data"><h3>Processing Data</h3></a>
+<a class="header" href="print.html#processing-data" id="processing-data"><h3>Processing Data</h3></a>
 <p>Our CSV file contains rows of floating point numbers. But the <code>simple_csv</code> crate
 returns a slice of Strings. We will need to turn those Strings into floating
 point numbers before we can properly process them.</p>
@@ -363,7 +397,7 @@ first it accepts the initial <code>init</code> value and the first element the <
 produces. After that it accepts the previous call to <code>f</code> return value with the
 next value of the iterator. A fold returns the final return value of the
 function <code>f</code>.</p>
-<a class="header" href="print.html#writing data" id="writing data"><h2>Writing data</h2></a>
+<a class="header" href="print.html#writing-data" id="writing-data"><h2>Writing data</h2></a>
 <p>Now that we have the gray-scale data, it is time to write it as an image. For
 this we will use the <code>png</code> crate. Before we can use it add</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -406,7 +440,7 @@ encoder.set(png::ColorType::Grayscale).set(png::BitDepth::Eight);
 let mut writer = encoder.write_header().unwrap();
 writer.write_image_data(data.as_slice()).unwrap();
 #}</code></pre></pre>
-<a class="header" href="print.html#our image" id="our image"><h2>Our Image</h2></a>
+<a class="header" href="print.html#our-image" id="our-image"><h2>Our Image</h2></a>
 <p>It is finally time to make our own impression of Trappist-1. Use <code>cargo</code> to
 build and run your code.</p>
 <pre><code class="language-shell">&gt; cargo build
@@ -414,14 +448,14 @@ build and run your code.</p>
 </code></pre>
 <p>Which creates</p>
 <p><img src="image/trappist-1.0.png" alt="Actual Trappist-1 photo" /></p>
-<a class="header" href="print.html#appreciate the image" id="appreciate the image"><h2>Appreciate the Image</h2></a>
+<a class="header" href="print.html#appreciate-the-image" id="appreciate-the-image"><h2>Appreciate the Image</h2></a>
 <p>At first glance the image can be a little underwhelming. But it is precisely
 this image that blew my mind! Being accustomed to the marvelous artist
 impression, when I learned about the actual data was 11x11 pixels I was hooked.
 How could anyone extract so much information from so little data?</p>
 <p><img src="image/trappist-1.0.large.png" alt="10 times enlargement of actual Trappist-1 photo" /></p>
 <p>I had to know and I hope you want to know too!</p>
-<a class="header" href="print.html#further considerations-1" id="further considerations-1"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-1" id="further-considerations-1"><h2>Further Considerations</h2></a>
 <ul>
 <li>Make a bigger image with larger &quot;pixels&quot;.</li>
 <li>Make an entire series of images, one for each row.</li>
@@ -525,7 +559,7 @@ that we want to use the same scale for each image.</p>
 should divide by the global maximum.</p>
 <p>Create a separate executable that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.</p>
-<a class="header" href="print.html#further considerations-2" id="further considerations-2"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-2" id="further-considerations-2"><h2>Further Considerations</h2></a>
 <p>The following suggestions might help your understanding of the problem we
 facing, i.e. detecting planets in our image.</p>
 <p>Take a long good look at your collage. Write down what you notice about the
@@ -561,7 +595,7 @@ let sum: f64 = raw
     .iter()
     .sum();
 #}</code></pre></pre>
-<a class="header" href="print.html#removing background" id="removing background"><h3>Removing Background</h3></a>
+<a class="header" href="print.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
 <p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
 <p>we see that the background is not pitch black. This means that the background
@@ -591,7 +625,7 @@ let filtered: f64 = raw
     .filter(|&amp;v| *v &gt;= average)
     .fold(0f64, |acc, v| acc+v)
 #}</code></pre></pre>
-<a class="header" href="print.html#graphing results" id="graphing results"><h2>Graphing Results</h2></a>
+<a class="header" href="print.html#graphing-results" id="graphing-results"><h2>Graphing Results</h2></a>
 <p>Once you wrote your brightness results to a CSV file, they are ready for the
 following step. But if you are like me you probably want to see your results.
 This is where gnuplot comes in.</p>
@@ -620,7 +654,7 @@ y-coordinate.</p>
 <p>If you have gone to the trouble of outputting the brightness with and without
 the background, your plot could look like the one below.</p>
 <p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
-<a class="header" href="print.html#further considerations-3" id="further considerations-3"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-3" id="further-considerations-3"><h2>Further Considerations</h2></a>
 <p>Take a look at your data and write down what stands out to you. Discuss this
 with a neighbor.</p>
 <p>Why is the average taken as a cut-off value? What are other options?</p>
@@ -691,7 +725,7 @@ t(1), \ldots, y_{n} - t(n)\). Here \(t\) is our approximation for the trend.</p>
 <p>We shall do this by providing the values of our approximation.</p>
 <p>There are numerous strategies for determining the trend in a sequence of data.
 Below you can find a strategy we have selected for this workshop.</p>
-<a class="header" href="print.html#weighted trend" id="weighted trend"><h4>Weighted Trend</h4></a>
+<a class="header" href="print.html#weighted-trend" id="weighted-trend"><h4>Weighted Trend</h4></a>
 <p>With the notations from the preceding section the weighted trend algorithm is as
 follows. First you pick a parameter \(\alpha\) such that it lies between zero
 and one, i.e. \(0 \le \alpha \le 1\).</p>
@@ -784,7 +818,7 @@ for candidate in raw {
     }
 }
 #}</code></pre></pre>
-<a class="header" href="print.html#further considerations-4" id="further considerations-4"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-4" id="further-considerations-4"><h2>Further Considerations</h2></a>
 <p>How does the weighted detrend behave for known functions? Try to plot an step
 function, i.e. a series that starts out 0 and than is 1 through out, and detrend
 it.</p>
@@ -820,7 +854,7 @@ let result: Vec&lt;(f64, f64)&gt; = reader
     .collect();
 #}</code></pre></pre>
 <p>The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.</p>
-<a class="header" href="print.html#further considerations-5" id="further considerations-5"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-5" id="further-considerations-5"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
 Try some different values and try to get a feel for what works. Discuss your
 choices with somebody else.</p>
@@ -848,7 +882,7 @@ take the average of the middle two.</li>
 <p>Because there are an even number of values, we should take the average of the of
 the two middle values. The average of \(53\) and \(58\) is
 \(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
-<a class="header" href="print.html#make a library" id="make a library"><h2>Make a library.</h2></a>
+<a class="header" href="print.html#make-a-library" id="make-a-library"><h2>Make a library.</h2></a>
 <p>Because we are going to use the median several times, we are going to create a
 library. Let's start with our <code>lib.rs</code>.</p>
 <p>In our <code>lib.rs</code> we are announcing a module called <code>median</code>.</p>
@@ -877,7 +911,7 @@ let median = if n % 2 == 1 {
 }
 #}</code></pre></pre>
 <p>But how do we sort the original data?</p>
-<a class="header" href="print.html#sorting side-quest" id="sorting side-quest"><h3>Sorting side-quest</h3></a>
+<a class="header" href="print.html#sorting-side-quest" id="sorting-side-quest"><h3>Sorting side-quest</h3></a>
 <p>There are a few interesting tidbits when sorting a <code>Vec&lt;f64&gt;</code> that we are going
 to make a side-quest out of it. While looking into <code>Vec&lt;T&gt;</code>
 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort">documentation</a>,
@@ -944,7 +978,7 @@ println!(&quot;{:?}&quot;, vs);
 <p>This correctly sorts our vector. But notice that the <code>vs</code> variable is declared
 mutable. Our signature doesn't expect to have a mutable reference, so we need to
 copy our <code>data</code> first.</p>
-<a class="header" href="print.html#copying data" id="copying data"><h3>Copying Data</h3></a>
+<a class="header" href="print.html#copying-data" id="copying-data"><h3>Copying Data</h3></a>
 <p>We need a mutable copy of our <code>data</code>. Luckily the <code>Vec&lt;T&gt;</code> API provides an other
 method; <code>copy_from_slice</code>. We use it as</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -956,7 +990,7 @@ copy.copy_from_slice(&amp;data);
 #}</code></pre></pre>
 <p>This is the final piece in the median puzzle. We are able to put everything
 together and write our <code>median_of</code> function.</p>
-<a class="header" href="print.html#form groups" id="form groups"><h3>Form Groups</h3></a>
+<a class="header" href="print.html#form-groups" id="form-groups"><h3>Form Groups</h3></a>
 <p>We do not want to calculate the median of our entire sequence. Instead we want
 to move a <a href="https://en.wikipedia.org/wiki/Streaming_algorithm"><em>sliding window</em></a>
 over our data and calculate the median of that specific window.</p>
@@ -978,7 +1012,7 @@ fn groups(data: &amp;Vec&lt;f64&gt;, group_size: usize) -&gt; Vec&lt;Vec&lt;f64&
     groups
 }
 #}</code></pre></pre>
-<a class="header" href="print.html#median filter" id="median filter"><h3>Median Filter</h3></a>
+<a class="header" href="print.html#median-filter" id="median-filter"><h3>Median Filter</h3></a>
 <p>We are now in the position to create a <code>median_filter</code> function. I.e. a function
 that calculates the median of a sliding window over our data. With all of our
 preparations it writes itself as</p>
@@ -1028,7 +1062,7 @@ let median_values = median_filter(&amp;values, window_size);
 let result = median_times.iter().zip(median_values);
 #}</code></pre></pre>
 <p>Storing this into a CSV file makes it available for the next step.</p>
-<a class="header" href="print.html#further considerations-6" id="further considerations-6"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-6" id="further-considerations-6"><h2>Further Considerations</h2></a>
 <p>You have created a library that contains some functions. How do you know that
 they are implemented correctly? Try to add some
 <a href="https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html">tests</a>
@@ -1047,7 +1081,7 @@ following sub-tasks.</p>
 <li>Scoring each candidate transit curve and selecting the best</li>
 </ol>
 <p>Let us create a module for this as well. We will call it <code>fit</code>.</p>
-<a class="header" href="print.html#transit curves" id="transit curves"><h2>Transit Curves</h2></a>
+<a class="header" href="print.html#transit-curves" id="transit-curves"><h2>Transit Curves</h2></a>
 <p><img src="image/period.png" alt="Multiple periods of a transit curves" /></p>
 <p>The above image shows a typical transit curve where the planet transits the host
 star multiple times. From this diagram we can learn about the parameters that
@@ -1103,7 +1137,7 @@ corresponding value of this transit curve. For that we are going to implement a
 <li>After the transit. The value should be <code>base</code>.</li>
 </ol>
 <p>Implement the above logic into a <code>value</code> method for <code>Transit</code>.</p>
-<a class="header" href="print.html#iterate parameters" id="iterate parameters"><h2>Iterate Parameters</h2></a>
+<a class="header" href="print.html#iterate-parameters" id="iterate-parameters"><h2>Iterate Parameters</h2></a>
 <p>Our transit curve has five parameters. We would like to generate candidate
 transit curves and check how well they fit our data. This can be accomplished by
 iterating over the five parameters, and mapping them into a transit curve.</p>
@@ -1148,7 +1182,7 @@ impl Iterator for FloatIterator {
 }
 #}</code></pre></pre>
 <p>This wraps up our <code>FloatIterator</code>.</p>
-<a class="header" href="print.html#exemplar tupleiterator" id="exemplar tupleiterator"><h3>Exemplar TupleIterator</h3></a>
+<a class="header" href="print.html#exemplar-tupleiterator" id="exemplar-tupleiterator"><h3>Exemplar TupleIterator</h3></a>
 <p>Next we are going to create a <code>TupleIterator</code>. It is going to show all the
 necessary tools to create the actual <code>TupleIterator</code> we want, without getting
 distracted by the tedious details.</p>
@@ -1327,7 +1361,7 @@ println!(&quot;{:?}&quot;, best_transit);
 let result = times.iter().zip(best_transit_values);
 #}</code></pre></pre>
 <p>Lets fly through our candidates and see what planet you can find.</p>
-<a class="header" href="print.html#further considerations-7" id="further considerations-7"><h2>Further Considerations</h2></a>
+<a class="header" href="print.html#further-considerations-7" id="further-considerations-7"><h2>Further Considerations</h2></a>
 <p>How do you know that you implemented the various libraries correctly? Have you tested them?</p>
 <p>The way that we generate our transit parameters is going through all possible values. This seems a bit wastefull. Can you come up with a better way? Discussing your thoughts with somebody.</p>
 <p>We used the method of least squares to score a transit curve. What other scoring mechanism can you think of. What difference would it make?</p>
@@ -1337,77 +1371,61 @@ let result = times.iter().zip(best_transit_values);
 <a class="header" href="print.html#improvements" id="improvements"><h2>Improvements</h2></a>
 <p>In this workshop we demonstrated in a very crude way how one can detect planets. The science of exo-planets is a very rich and interesting field. The models they use to routinely scan for planets is far more elaborate.</p>
 <p>None-the-less, with our simple understanding gives us a lot of insight into the study of exo-planets.</p>
-<a class="header" href="print.html#most important" id="most important"><h2>Most Important</h2></a>
+<a class="header" href="print.html#most-important" id="most-important"><h2>Most Important</h2></a>
 <p>Most Importantly, I hope you had fun.</p>
-<a class="header" href="print.html#setup" id="setup"><h1>Setup</h1></a>
-<p>In this chapter we will setup everything so that you can start working on the
-workshop.</p>
-<a class="header" href="print.html#prerequisites" id="prerequisites"><h2>Prerequisites</h2></a>
-<p>The only real prerequisite is that you have a working
-<a href="https://www.rust-lang.org">Rust</a> tool chain. Everything else should be be
-provided in the workshop resources.</p>
-<p>If you want to graph some of the intermediate results, a graphing tool will be
-useful. We would recommend <a href="http://www.gnuplot.info/">gnuplot</a>.</p>
-<a class="header" href="print.html#cargo_home" id="cargo_home"><h2>$CARGO_HOME</h2></a>
-<p>The project relies on some crates. In order to go easy on the conference
-network we have provided the dependencies we envisioned. In order to make use
-of these downloaded crates it is necessary to set the <code>$CARGO_HOME</code>
-environment variable to <code>&lt;PROJECT_RESOURCES&gt;/cargo_home</code>.</p>
-<a class="header" href="print.html#showcase" id="showcase"><h1>Showcase</h1></a>
-<p>I for one am not fond of spoilers. But I do recognize that you sometimes want to
-reflect on your work by looking at the implementation of somebody else. If you
-are in the lucky position to attend a workshop at the moment, take the effort to
-introduce yourself to your neighbor. They will provide an excellent partner in
-your mutual exploration.</p>
-<p>If you find yourself working on this one your own, you can find a showcase of
-an implementation in the resources. Don't take it as an absolute truth. It is
-merely there to show a way to start finding planets.</p>
 
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
                 </div>
-
-                <!-- Mobile navigation buttons -->
-                
-
-                
-
             </div>
 
-            
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
 
-            
+                
+            </nav>
 
         </div>
 
 
         <!-- Local fallback for Font Awesome -->
         <script>
-            if ($(".fa").css("font-family") !== "FontAwesome") {
-                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
             }
         </script>
 
-        <!-- Livereload script (if served using the cli tool) -->
         
-    <script type="text/javascript">
-        var socket = new WebSocket("ws://localhost:3001");
-        socket.onmessage = function (event) {
-            if (event.data === "reload") {
-                socket.close();
-                location.reload(true); // force reload from server (not from cache)
-            }
-        };
-
-        window.onbeforeunload = function() {
-            socket.close();
-        }
-    </script>
-
 
         
 
+        
+
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.print();
+            })
+        </script>
         
 
         <script src="highlight.js"></script>
         <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
     </body>
 </html>

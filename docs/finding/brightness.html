@@ -6,6 +6,7 @@
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
 
         <base href="../">
 
@@ -38,64 +39,97 @@
             }
         </script>
 
-        <!-- Fetch JQuery from CDN but have a local fallback -->
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script>
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
-        <script src="store.js"></script>
-
-        <!-- Custom JS script -->
-        
-
     </head>
     <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('theme');
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
-            $('body').removeClass().addClass(theme);
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('sidebar');
-            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
-            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
         </script>
 
-        <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./title.html">Finding The Planets</a></li><li class="affix"><a href="./about.html">What is this book about</a></li><li><a href="./background.html"><strong>1.</strong> Background</a></li><li><ul class="section"><li><a href="./background/trappist-1.html"><strong>1.1.</strong> Trappist-1</a></li><li><a href="./background/kepler.html"><strong>1.2.</strong> Kepler Spacecraft</a></li></ul></li><li><a href="./science.html"><strong>2.</strong> Science</a></li><li><ul class="section"><li><a href="./science/discovery.html"><strong>2.1.</strong> Exo-planet Discovery</a></li><li><a href="./science/position.html"><strong>2.2.</strong> Observing Position</a></li><li><a href="./science/doppler.html"><strong>2.3.</strong> Doppler Effect</a></li></ul></li><li><a href="./transit.html"><strong>3.</strong> Transit Method</a></li><li><ul class="section"><li><a href="./transit/light_curve.html"><strong>3.1.</strong> What To Look For</a></li></ul></li><li><a href="./finding.html"><strong>4.</strong> Finding Planets</a></li><li><ul class="section"><li><a href="./finding/fits.html"><strong>4.1.</strong> FITS</a></li><li><a href="./finding/csv.html"><strong>4.2.</strong> CSV</a></li><li><a href="./finding/image.html"><strong>4.3.</strong> Image</a></li><li><a href="./finding/collage.html"><strong>4.4.</strong> Collage</a></li><li><a href="./finding/brightness.html" class="active"><strong>4.5.</strong> Brightness</a></li><li><a href="./finding/detrend.html"><strong>4.6.</strong> Detrend</a></li><li><a href="./finding/filter.html"><strong>4.7.</strong> Filter</a></li><li><a href="./finding/median.html"><strong>4.8.</strong> Median</a></li><li><a href="./finding/fitting.html"><strong>4.9.</strong> Fitting</a></li></ul></li><li><a href="./reflection.html"><strong>5.</strong> Reflection</a></li><li class="affix"><a href="./setup.html">Setup</a></li><li class="affix"><a href="./showcase.html">Showcase</a></li></ul>
-        </div>
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/fits.html"><strong aria-hidden="true">4.1.</strong> FITS</a></li><li><a href="finding/csv.html"><strong aria-hidden="true">4.2.</strong> CSV</a></li><li><a href="finding/image.html"><strong aria-hidden="true">4.3.</strong> Image</a></li><li><a href="finding/collage.html"><strong aria-hidden="true">4.4.</strong> Collage</a></li><li><a href="finding/brightness.html" class="active"><strong aria-hidden="true">4.5.</strong> Brightness</a></li><li><a href="finding/detrend.html"><strong aria-hidden="true">4.6.</strong> Detrend</a></li><li><a href="finding/filter.html"><strong aria-hidden="true">4.7.</strong> Filter</a></li><li><a href="finding/median.html"><strong aria-hidden="true">4.8.</strong> Median</a></li><li><a href="finding/fitting.html"><strong aria-hidden="true">4.9.</strong> Fitting</a></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+        </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
-            <div class="page" tabindex="-1">
+            <div class="page">
+                
                 <div id="menu-bar" class="menu-bar">
-                    <div class="left-buttons">
-                        <i id="sidebar-toggle" class="fa fa-bars"></i>
-                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
-                    </div>
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
 
-                    <h1 class="menu-title">Finding the Planets</h1>
+                        <h1 class="menu-title">Finding the Planets</h1>
 
-                    <div class="right-buttons">
-                        <i id="print-button" class="fa fa-print" title="Print this book"></i>
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
                 <div id="content" class="content">
-                    <a class="header" href="brightness.html#brightness" id="brightness"><h1>Brightness</h1></a>
+                    <main>
+                        <a class="header" href="finding/brightness.html#brightness" id="brightness"><h1>Brightness</h1></a>
 <p>We are going to detect the planets by observing drops in overall brightness.
 Before we are able to do this, we need to calculate the brightness. That is
 precisely the objective in this chapter.</p>
 <p>We are going to create a CSV file with the first column the time of the
 measurement and the second column the brightness at that time.</p>
-<a class="header" href="brightness.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="finding/brightness.html#processing" id="processing"><h2>Processing</h2></a>
 <p>For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.</p>
 <p>Take a row of data and</p>
@@ -117,7 +151,7 @@ let sum: f64 = raw
     .iter()
     .sum();
 #}</code></pre></pre>
-<a class="header" href="brightness.html#removing background" id="removing background"><h3>Removing Background</h3></a>
+<a class="header" href="finding/brightness.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
 <p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
 <p>we see that the background is not pitch black. This means that the background
@@ -147,7 +181,7 @@ let filtered: f64 = raw
     .filter(|&amp;v| *v &gt;= average)
     .fold(0f64, |acc, v| acc+v)
 #}</code></pre></pre>
-<a class="header" href="brightness.html#graphing results" id="graphing results"><h2>Graphing Results</h2></a>
+<a class="header" href="finding/brightness.html#graphing-results" id="graphing-results"><h2>Graphing Results</h2></a>
 <p>Once you wrote your brightness results to a CSV file, they are ready for the
 following step. But if you are like me you probably want to see your results.
 This is where gnuplot comes in.</p>
@@ -176,7 +210,7 @@ y-coordinate.</p>
 <p>If you have gone to the trouble of outputting the brightness with and without
 the background, your plot could look like the one below.</p>
 <p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
-<a class="header" href="brightness.html#further considerations" id="further considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="finding/brightness.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>Take a look at your data and write down what stands out to you. Discuss this
 with a neighbor.</p>
 <p>Why is the average taken as a cut-off value? What are other options?</p>
@@ -187,61 +221,58 @@ Although the data was lost, the satellite still operates nominally.</p>
 data with the background. This is also seen in our collage. We will have to
 smooth out that trend and that is precisely what we will in one of the next chapters.</p>
 
-                </div>
+                    </main>
 
-                <!-- Mobile navigation buttons -->
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="finding/collage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="finding/detrend.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="./finding/collage.html" class="mobile-nav-chapters previous">
+                    <a href="finding/collage.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="./finding/detrend.html" class="mobile-nav-chapters next">
+                    <a href="finding/detrend.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
-
-            </div>
-
-            
-                <a href="./finding/collage.html" class="nav-chapters previous" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-            
-
-            
-                <a href="./finding/detrend.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            
+            </nav>
 
         </div>
 
 
         <!-- Local fallback for Font Awesome -->
         <script>
-            if ($(".fa").css("font-family") !== "FontAwesome") {
-                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
             }
         </script>
 
-        <!-- Livereload script (if served using the cli tool) -->
         
-    <script type="text/javascript">
-        var socket = new WebSocket("ws://localhost:3001");
-        socket.onmessage = function (event) {
-            if (event.data === "reload") {
-                socket.close();
-                location.reload(true); // force reload from server (not from cache)
-            }
-        };
 
-        window.onbeforeunload = function() {
-            socket.close();
-        }
-    </script>
-
+        
 
         
 
@@ -249,5 +280,9 @@ smooth out that trend and that is precisely what we will in one of the next chap
 
         <script src="highlight.js"></script>
         <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
     </body>
 </html>
