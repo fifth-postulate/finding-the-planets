@@ -124,6 +124,18 @@
                 <div id="content" class="content">
                     <main>
                         <a class="header" href="science/discovery.html#exo-planet-discovery" id="exo-planet-discovery"><h1>Exo-planet Discovery</h1></a>
+<a class="header" href="science/discovery.html#direct-observation" id="direct-observation"><h2>Direct Observation</h2></a>
+<p>One way of discovering exo-planets is by direct observations. You take a
+telescope point it in the right direction, this involves a lot of luck, and hope
+to spot a planet orbiting around a distant star.</p>
+<p>This technique can be used to discover the moons of Jupiter, but because most of
+the stars are so far away, it quickly becomes impossible. Instead we should use
+our knowledge to infer the existence of exo-planets.</p>
+<a class="header" href="science/discovery.html#indirect-observation" id="indirect-observation"><h2>Indirect Observation</h2></a>
+<p>With direct observations out of the window, the alternative is indirect
+observation. This entails to take measurements of a star, analyze the data and
+infer the existence of exo-planets.</p>
+<p>The following sections and chapters will provide some examples of this method.</p>
 
                     </main>
 
@@ -174,6 +186,21 @@
             }
         </script>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         
