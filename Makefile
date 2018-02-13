@@ -2,18 +2,19 @@
 
 DATA-FILES := $(patsubst %,k2-trappist1-unofficial-tpf-%-cadence.fits,short long)
 COMPRESSED-FILES := $(patsubst %,%.gz,DATA-FILES)
+TARGET = workshop
 
-workshop.tar.gz: workshop
-	tar cvfz workshop.tar.gz workshop/
+$(TARGET).tar.gz: $(TARGET)
+	tar cvfz $(TARGET).tar.gz $(TARGET)/
 
-workshop:
-	mkdir -p workshop
-	mkdir -p workshop/rust
-	cp *.fits workshop
-	cp -r docs workshop/book
-	cp -r rust-starter workshop/rust/starter
-	cp -r rust-showcase workshop/rust/showcase
-	cp *.csv workshop
+$(TARGET):
+	mkdir -p $(TARGET)
+	mkdir -p $(TARGET)/rust
+	cp *.fits $(TARGET)
+	cp -r docs $(TARGET)/book
+	cp -r rust-starter $(TARGET)/rust/starter
+	cp -r rust-showcase $(TARGET)/rust/showcase
+	cp *.csv $(TARGET)
 
 data: $(DATA-FILES)
 
@@ -27,4 +28,4 @@ data: $(DATA-FILES)
 
 clean:
 	rm -f *.fits.gz
-	rm -rf workshop*
+	rm -rf $(TARGET)*
