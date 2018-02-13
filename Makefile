@@ -8,10 +8,11 @@ workshop.tar.gz: workshop
 
 workshop:
 	mkdir -p workshop
+	mkdir -p workshop/rust
 	cp *.fits workshop
 	cp -r docs workshop/book
-	cp -r rust-starter workshop/starter
-	cp -r rust-showcase workshop/showcase
+	cp -r rust-starter workshop/rust/starter
+	cp -r rust-showcase workshop/rust/showcase
 	cp *.csv workshop
 
 data: $(DATA-FILES)
