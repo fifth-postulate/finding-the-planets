@@ -38,3 +38,33 @@ We are interested in the relative drop in luminosity so we will divide
 So the entire light curve looks something like this.
 
 ![A light curve for a planet transition](image/light-curve.png)
+
+## Characteristics
+Even though our model is crude it does portrait important characteristics. We
+expect to find a dip in the luminosity when a planet transits its star. When a
+bigger planets transits a star we expect the dip to be more pronounced, since
+more of the star light is blocked from our view. Our model predicts this as
+well.
+
+Astronomers have made far better models of planets, but our model will do just
+fine in finding the period of exo-planets. 
+
+## How big dip to expect
+Let's plug in some values of a star and a planet we know to see how big a dip we
+would expect. Jupiter orbits our Sun, so a distant observer could try to infer
+Jupiter's existence by observing the sun's luminosity. We will calculate the dip
+they can expect.
+
+| Celestial Object | Radius (km) |          Area |
+|------------------|-------------|---------------|
+| Sun              |      696392 | 1.5235525e+12 |
+| Jupiter          |       69911 | 1.5354684e+10 |
+
+The table above lists the radius and area of the sun and Jupiter. Plugging this
+into our model we determine that
+
+\\[
+1 - \frac{a}{A} = 1 - \frac{1.5\mathrm{e}{+10}}{1.5\mathrm{e}{+12}} = 1 - 1\mathrm{e}{-2} \approx 0.99
+\\]
+
+That is only a one percentage drop!

@@ -223,6 +223,29 @@ diminishing the luminosity to \(I_{t} = \rho \left(A - a\right)\), where
 \]</p>
 <p>So the entire light curve looks something like this.</p>
 <p><img src="image/light-curve.png" alt="A light curve for a planet transition" /></p>
+<a class="header" href="print.html#characteristics" id="characteristics"><h2>Characteristics</h2></a>
+<p>Even though our model is crude it does portrait important characteristics. We
+expect to find a dip in the luminosity when a planet transits its star. When a
+bigger planets transits a star we expect the dip to be more pronounced, since
+more of the star light is blocked from our view. Our model predicts this as
+well.</p>
+<p>Astronomers have made far better models of planets, but our model will do just
+fine in finding the period of exo-planets.</p>
+<a class="header" href="print.html#how-big-dip-to-expect" id="how-big-dip-to-expect"><h2>How big dip to expect</h2></a>
+<p>Let's plug in some values of a star and a planet we know to see how big a dip we
+would expect. Jupiter orbits our Sun, so a distant observer could try to infer
+Jupiter's existence by observing the sun's luminosity. We will calculate the dip
+they can expect.</p>
+<table><thead><tr><th> Celestial Object </th><th> Radius (km) </th><th>          Area </th></tr></thead><tbody>
+<tr><td> Sun              </td><td>      696392 </td><td> 1.5235525e+12 </td></tr>
+<tr><td> Jupiter          </td><td>       69911 </td><td> 1.5354684e+10 </td></tr>
+</tbody></table>
+<p>The table above lists the radius and area of the sun and Jupiter. Plugging this
+into our model we determine that</p>
+<p>\[
+1 - \frac{a}{A} = 1 - \frac{1.5\mathrm{e}{+10}}{1.5\mathrm{e}{+12}} = 1 - 1\mathrm{e}{-2} \approx 0.99
+\]</p>
+<p>That is only a one percentage drop!</p>
 <a class="header" href="print.html#finding-planets" id="finding-planets"><h1>Finding Planets</h1></a>
 <p>The following chapters will guide you in writing software that will detects
 planets around Trappist-1.</p>
