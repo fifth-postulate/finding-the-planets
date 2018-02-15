@@ -1,7 +1,8 @@
 /*.fits.gz
 /*.fits
 /java/.idea/workspace.xml
-/java/target
 /workshop
 /workshop.tar.gz
 /cargo_home
+/**/Cargo.lock
+/**/target
