@@ -5,3 +5,4 @@ authors = ["Daan van Berkel <daan.v.berkel.1980@gmail.com>"]
 publish = false
 
 [dependencies]
+mdbook = "0.1.2"
