@@ -29,6 +29,12 @@ This could be your first encounter with some of the libraries we use. When we
 start using a library for the first time, we are going to be very specific. Once
 you get to know the library we leave you to fill in the blanks.
 
+## Tools
+This workshop can be done in a variety of tools. We provide examples in
+different languages, but feel free to use your own tools. If you want to use a
+spreadsheet go for it. In principle you could use pen and paper, so think
+outside of the box. 
+
 ## Further Considerations
 Almost every chapter encourages you to play with what you have created. We hope
 too give you some food for thought that might spark your interested. But feel
