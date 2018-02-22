@@ -23,6 +23,7 @@
         - [Filter](./finding/rust/filter.md)
         - [Median](./finding/rust/median.md)
         - [Fitting](./finding/rust/fitting.md)
+    - [JavaScript](./finding/javascript.md)
 - [Reflection](./reflection.md)
 [Setup](./setup.md)
 [Showcase](./showcase.md)
