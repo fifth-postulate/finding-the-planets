@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <base href="../">
+        <base href="../../">
 
         <link rel="stylesheet" href="book.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -77,7 +77,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/fits.html"><strong aria-hidden="true">4.1.</strong> FITS</a></li><li><a href="finding/csv.html"><strong aria-hidden="true">4.2.</strong> CSV</a></li><li><a href="finding/image.html"><strong aria-hidden="true">4.3.</strong> Image</a></li><li><a href="finding/collage.html" class="active"><strong aria-hidden="true">4.4.</strong> Collage</a></li><li><a href="finding/brightness.html"><strong aria-hidden="true">4.5.</strong> Brightness</a></li><li><a href="finding/detrend.html"><strong aria-hidden="true">4.6.</strong> Detrend</a></li><li><a href="finding/filter.html"><strong aria-hidden="true">4.7.</strong> Filter</a></li><li><a href="finding/median.html"><strong aria-hidden="true">4.8.</strong> Median</a></li><li><a href="finding/fitting.html"><strong aria-hidden="true">4.9.</strong> Fitting</a></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/languages.html"><strong aria-hidden="true">4.1.</strong> Languages</a></li><li><a href="finding/rust.html"><strong aria-hidden="true">4.2.</strong> Rust</a></li><li><ol class="section"><li><a href="finding/rust/fits.html"><strong aria-hidden="true">4.2.1.</strong> FITS</a></li><li><a href="finding/rust/csv.html"><strong aria-hidden="true">4.2.2.</strong> CSV</a></li><li><a href="finding/rust/image.html"><strong aria-hidden="true">4.2.3.</strong> Image</a></li><li><a href="finding/rust/collage.html" class="active"><strong aria-hidden="true">4.2.4.</strong> Collage</a></li><li><a href="finding/rust/brightness.html"><strong aria-hidden="true">4.2.5.</strong> Brightness</a></li><li><a href="finding/rust/detrend.html"><strong aria-hidden="true">4.2.6.</strong> Detrend</a></li><li><a href="finding/rust/filter.html"><strong aria-hidden="true">4.2.7.</strong> Filter</a></li><li><a href="finding/rust/median.html"><strong aria-hidden="true">4.2.8.</strong> Median</a></li><li><a href="finding/rust/fitting.html"><strong aria-hidden="true">4.2.9.</strong> Fitting</a></li></ol></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -123,7 +123,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="finding/collage.html#collage" id="collage"><h1>Collage</h1></a>
+                        <a class="header" href="finding/rust/collage.html#collage" id="collage"><h1>Collage</h1></a>
 <p>In this chapter we will create a Collage of all the image in the long cadence
 file. Although it is a bit of a side-track, we will learn valuable things by
 looking at the image.</p>
@@ -131,13 +131,13 @@ looking at the image.</p>
 <p>We will not go into details of reading the data and writing the transformed
 data. We assume that the previous chapters have given enough examples to learn
 from. Instead we are going to focus on processing the data.</p>
-<a class="header" href="finding/collage.html#processing" id="processing"><h2>Processing</h2></a>
+<a class="header" href="finding/rust/collage.html#processing" id="processing"><h2>Processing</h2></a>
 <p>There are a few questions we need to answer before we can create our collage.</p>
 <ol>
 <li>For a row of data and a column in that row, which pixel should we paint?</li>
 <li>What color should we paint that pixel?</li>
 </ol>
-<a class="header" href="finding/collage.html#position" id="position"><h3>Position</h3></a>
+<a class="header" href="finding/rust/collage.html#position" id="position"><h3>Position</h3></a>
 <p>When we created the single image, we did not have to think about positioning
 explicitly. Because we want to make a collage we have some work to do.</p>
 <p>First of all, lets state some facts.</p>
@@ -213,7 +213,7 @@ let target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
                    offset_x
 #}</code></pre></pre>
 <p>With these calculations we know where to paint the image pixel.</p>
-<a class="header" href="finding/collage.html#color" id="color"><h3>Color</h3></a>
+<a class="header" href="finding/rust/collage.html#color" id="color"><h3>Color</h3></a>
 <p>From our experience from creating an image we have a fairly good idea which
 color to use. The only difference between the collage and the single image is
 that we want to use the same scale for each image.</p>
@@ -221,7 +221,7 @@ that we want to use the same scale for each image.</p>
 should divide by the global maximum.</p>
 <p>Create a separate executable that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.</p>
-<a class="header" href="finding/collage.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<a class="header" href="finding/rust/collage.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>The following suggestions might help your understanding of the problem we
 facing, i.e. detecting planets in our image.</p>
 <p>Take a long good look at your collage. Write down what you notice about the
@@ -235,13 +235,13 @@ maximum per image? What would that look like, and what would it tell you?</p>
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="finding/image.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="finding/rust/image.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="finding/brightness.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="finding/rust/brightness.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -253,13 +253,13 @@ maximum per image? What would that look like, and what would it tell you?</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="finding/image.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="finding/rust/image.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="finding/brightness.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="finding/rust/brightness.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
