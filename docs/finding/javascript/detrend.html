@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Detrend - Finding the Planets</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/languages.html"><strong aria-hidden="true">4.1.</strong> Languages</a></li><li><a href="finding/rust.html"><strong aria-hidden="true">4.2.</strong> Rust</a></li><li><ol class="section"><li><a href="finding/rust/fits.html"><strong aria-hidden="true">4.2.1.</strong> FITS</a></li><li><a href="finding/rust/csv.html"><strong aria-hidden="true">4.2.2.</strong> CSV</a></li><li><a href="finding/rust/image.html"><strong aria-hidden="true">4.2.3.</strong> Image</a></li><li><a href="finding/rust/collage.html"><strong aria-hidden="true">4.2.4.</strong> Collage</a></li><li><a href="finding/rust/brightness.html"><strong aria-hidden="true">4.2.5.</strong> Brightness</a></li><li><a href="finding/rust/detrend.html"><strong aria-hidden="true">4.2.6.</strong> Detrend</a></li><li><a href="finding/rust/filter.html"><strong aria-hidden="true">4.2.7.</strong> Filter</a></li><li><a href="finding/rust/median.html"><strong aria-hidden="true">4.2.8.</strong> Median</a></li><li><a href="finding/rust/fitting.html"><strong aria-hidden="true">4.2.9.</strong> Fitting</a></li></ol></li><li><a href="finding/javascript.html"><strong aria-hidden="true">4.3.</strong> JavaScript</a></li><li><ol class="section"><li><a href="finding/javascript/fits.html"><strong aria-hidden="true">4.3.1.</strong> FITS</a></li><li><a href="finding/javascript/csv.html"><strong aria-hidden="true">4.3.2.</strong> CSV</a></li><li><a href="finding/javascript/image.html"><strong aria-hidden="true">4.3.3.</strong> Image</a></li><li><a href="finding/javascript/collage.html"><strong aria-hidden="true">4.3.4.</strong> Collage</a></li><li><a href="finding/javascript/brightness.html"><strong aria-hidden="true">4.3.5.</strong> Brightness</a></li><li><a href="finding/javascript/detrend.html" class="active"><strong aria-hidden="true">4.3.6.</strong> Detrend</a></li><li><a href="finding/javascript/filter.html"><strong aria-hidden="true">4.3.7.</strong> Filter</a></li><li><a href="finding/javascript/median.html"><strong aria-hidden="true">4.3.8.</strong> Median</a></li><li><a href="finding/javascript/fitting.html"><strong aria-hidden="true">4.3.9.</strong> Fitting</a></li></ol></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">Finding the Planets</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="finding/javascript/detrend.html#detrend" id="detrend"><h1>Detrend</h1></a>
+<p>Take a look the brightness graph you made in the preceding chapter.</p>
+<p><img src="image/brightness-nobackground.png" alt="Brightness of Trappist-1" /></p>
+<p>Notice how the graph tends to flare up. This is a systemic problem that we
+should correct. We are going to do that by finding what trend the graph is
+following, and adjusting for that.</p>
+<a class="header" href="finding/javascript/detrend.html#processing" id="processing"><h2>Processing</h2></a>
+<p>Before, we processed each row individually. Now we need to operate on the entire
+sequence. So instead iterating over each row, we are going to transform it
+directly.</p>
+<p>Because a <code>SimpleCsvReader</code> is an <code>Iterator</code> we can use our tricks on it. The
+idiosyncrasies of the <code>SimpleCsvReader</code> make that we first need to unwrap a row.
+Next we can map over the row of data and collect into a vector of tuples, the
+entry being the time and the second entry being the brightness.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let raw: Vec&lt;(f64, f64)&gt; = reader
+    .map(|r| r.unwrap())
+    .map(data)
+    .collect();
+#}</code></pre></pre>
+<p>The function <code>data</code> has the following signature</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn data(row: Vec&lt;String&gt;) -&gt; (f64, f64)
+#}</code></pre></pre>
+<p><code>data</code> is responsible for turning the raw columns of our CSV into <code>f64</code> brightness values,
+and selecting the correct ones.</p>
+<p>Up until now we never returned more than two or three values. For our current
+plan we are going to return more. In order to keep track of our data, we are
+going to create a <code>struct</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+struct DetrendData {
+    time: f64,
+    brightness: f64,
+    trend: f64,
+    difference: f64,
+}
+#}</code></pre></pre>
+<p>We have created a few entries, some familiar, some unfamiliar. <code>time</code> and
+<code>brightness</code> are pretty self-explanatory. <code>difference</code> is intended to hold the
+difference between the <code>brightness</code> and the <code>trend</code>.</p>
+<p>But how do we calculate the trend?</p>
+<a class="header" href="finding/javascript/detrend.html#strategies" id="strategies"><h3>Strategies</h3></a>
+<p>Let us reflect on what we are trying to achieve. We have some data points
+\(y_{0}, y_{1}, \ldots, y_{n}\). We have a model that predicts that these
+values fluctuate around a given mean \(Y\), but for some reason or another, it
+doesn't.</p>
+<p>Instead the values fluctuate around some function \(f\), for which we don't
+now the shape or form. This is called the <em>trend</em>.</p>
+<p>Our goal is to approximate the trend function \(f\) by a function that we can
+calculate from the data. Next we can analyze the actual signal by removing the
+trend. In effect we will look at the de-trended signal \(y_{0} - t(0), y_{1} -
+t(1), \ldots, y_{n} - t(n)\). Here \(t\) is our approximation for the trend.</p>
+<p>We shall do this by providing the values of our approximation.</p>
+<p>There are numerous strategies for determining the trend in a sequence of data.
+Below you can find a strategy we have selected for this workshop.</p>
+<a class="header" href="finding/javascript/detrend.html#weighted-trend" id="weighted-trend"><h4>Weighted Trend</h4></a>
+<p>With the notations from the preceding section the weighted trend algorithm is as
+follows. First you pick a parameter \(\alpha\) such that it lies between zero
+and one, i.e. \(0 \le \alpha \le 1\).</p>
+<p>Next we will explain how to calculate each point of our approximation to the
+trend.</p>
+<ul>
+<li>\(t_{0} = y_{0}\). I.e. our first approximation is the first value of our
+sequence of data.</li>
+<li>\(t_{i} = \alpha y_{i} + (1-\alpha) t_{i-1}\). I.e. our trend tends towards
+the new value of our sequence, but is a but reluctant. It tends to stick to
+the previous values.</li>
+</ul>
+<p>Let's implement this algorithm. With our <code>DetrendData</code> structure, we have an
+opportunity to directly implement the different branches of our algorithm. We
+start an <code>impl</code> block for <code>DetrendData</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+impl DetrendData {
+
+}
+#}</code></pre></pre>
+<p>Next we are going to translate the first branch of the algorithm. Since our data
+gets delivered to us in the form of a <code>(f64, f64)</code> pair, we better accept it as
+an argument.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn initial((time, brightness): (f64, f64)) -&gt; DetrendData {
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: brightness,
+        difference: 0f64,
+    }
+}
+#}</code></pre></pre>
+<p>It is little more than putting things in the right place. Next we will use the
+current <code>DetrendData</code> that we have, and use it to determine what the next
+<code>DetrendData</code> should be. Because this depends on the new data and the parameter
+\(\alpha\), we better accept them both.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn next(&amp;self, (time, brightness): (f64, f64), alpha: f64) -&gt; DetrendData {
+    let trend = alpha * brightness + (1f64 - alpha) * self.trend;
+    DetrendData {
+        time: time,
+        brightness: brightness,
+        trend: trend,
+        difference: brightness - trend,
+    }
+}
+#}</code></pre></pre>
+<p>We calculate the <code>trend</code> as described in the algorithm, and calculate the
+difference from the brightness and the freshly calculated trend. With a
+convenience method that turns the <code>DetrendData</code> into a <code>Vec&lt;String&gt;</code> we are
+ready to calculate our entire trend.</p>
+<p>We will collect our data in a vector of <code>DetrendData</code>. Because we are going to
+incrementally add new entries to it, it needs to be mutable.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut sequence: Vec&lt;DetrendData&gt; = vec!();
+#}</code></pre></pre>
+<p>We also keep track of the last calculated <code>DetrendData</code> in a mutable variable
+called <code>data</code>. Because we haven't calculated any value yet, its type is
+<code>Option&lt;DetrendData&gt;</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut data: Option&lt;DetrendData&gt; = None
+#}</code></pre></pre>
+<p>This has the added benefit that we can differentiate between when to initialize
+data, and when to calculate the next data, during our iteration over our raw data.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+for candidate in raw {
+    match data {
+        None =&gt; {
+            data = Some(DetrendData::initial(candidate))
+        } 
+        
+        Some(previous) =&gt; {
+            let next = previous.next(candidate, alpha);
+            sequence.push(previous);
+            data = Some(next)
+        }
+    }
+}
+#}</code></pre></pre>
+<a class="header" href="finding/javascript/detrend.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<p>How does the weighted detrend behave for known functions? Try to plot an step
+function, i.e. a series that starts out 0 and than is 1 through out, and detrend
+it.</p>
+<p>What other kind of detrend strategies can you come up with?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="finding/javascript/brightness.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="finding/javascript/filter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="finding/javascript/brightness.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="finding/javascript/filter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

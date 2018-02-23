@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Brightness - Finding the Planets</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/languages.html"><strong aria-hidden="true">4.1.</strong> Languages</a></li><li><a href="finding/rust.html"><strong aria-hidden="true">4.2.</strong> Rust</a></li><li><ol class="section"><li><a href="finding/rust/fits.html"><strong aria-hidden="true">4.2.1.</strong> FITS</a></li><li><a href="finding/rust/csv.html"><strong aria-hidden="true">4.2.2.</strong> CSV</a></li><li><a href="finding/rust/image.html"><strong aria-hidden="true">4.2.3.</strong> Image</a></li><li><a href="finding/rust/collage.html"><strong aria-hidden="true">4.2.4.</strong> Collage</a></li><li><a href="finding/rust/brightness.html"><strong aria-hidden="true">4.2.5.</strong> Brightness</a></li><li><a href="finding/rust/detrend.html"><strong aria-hidden="true">4.2.6.</strong> Detrend</a></li><li><a href="finding/rust/filter.html"><strong aria-hidden="true">4.2.7.</strong> Filter</a></li><li><a href="finding/rust/median.html"><strong aria-hidden="true">4.2.8.</strong> Median</a></li><li><a href="finding/rust/fitting.html"><strong aria-hidden="true">4.2.9.</strong> Fitting</a></li></ol></li><li><a href="finding/javascript.html"><strong aria-hidden="true">4.3.</strong> JavaScript</a></li><li><ol class="section"><li><a href="finding/javascript/fits.html"><strong aria-hidden="true">4.3.1.</strong> FITS</a></li><li><a href="finding/javascript/csv.html"><strong aria-hidden="true">4.3.2.</strong> CSV</a></li><li><a href="finding/javascript/image.html"><strong aria-hidden="true">4.3.3.</strong> Image</a></li><li><a href="finding/javascript/collage.html"><strong aria-hidden="true">4.3.4.</strong> Collage</a></li><li><a href="finding/javascript/brightness.html" class="active"><strong aria-hidden="true">4.3.5.</strong> Brightness</a></li><li><a href="finding/javascript/detrend.html"><strong aria-hidden="true">4.3.6.</strong> Detrend</a></li><li><a href="finding/javascript/filter.html"><strong aria-hidden="true">4.3.7.</strong> Filter</a></li><li><a href="finding/javascript/median.html"><strong aria-hidden="true">4.3.8.</strong> Median</a></li><li><a href="finding/javascript/fitting.html"><strong aria-hidden="true">4.3.9.</strong> Fitting</a></li></ol></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">Finding the Planets</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="finding/javascript/brightness.html#brightness" id="brightness"><h1>Brightness</h1></a>
+<p>We are going to detect the planets by observing drops in overall brightness.
+Before we are able to do this, we need to calculate the brightness. That is
+precisely the objective in this chapter.</p>
+<p>We are going to create a CSV file with the first column the time of the
+measurement and the second column the brightness at that time.</p>
+<a class="header" href="finding/javascript/brightness.html#processing" id="processing"><h2>Processing</h2></a>
+<p>For each row of data we would like to know how much Trappist-1 is radiating.
+What we are going to do is the following.</p>
+<p>Take a row of data and</p>
+<ol>
+<li>Convert each value to a <code>f64</code>.</li>
+<li>Sum all the values to get the overall brightness.</li>
+</ol>
+<p>Converting values to a <code>f64</code> is something we did before. We are not going into
+details for the conversion.</p>
+<p>The summation of all the values can be written down very succinctly because the
+<a href="https://doc.rust-lang.org/std/iter/"><code>Iterator</code></a> trait has a trick up it's
+sleeve. The <code>Iter</code> trait has a <code>sum</code> method. We can use it to calculate the sum
+of all the brightness values. If we have our raw <code>f64</code> values in the variable
+<code>raw</code>, we can determine the sum with</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let sum: f64 = raw
+    .iter()
+    .sum();
+#}</code></pre></pre>
+<a class="header" href="finding/javascript/brightness.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
+<p>If we take a look at one of the images</p>
+<p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
+<p>we see that the background is not pitch black. This means that the background
+adds to the brightness, even though it does not contribute to the signal. So we
+start our journey with something we will come very familiar with, we will clean
+up our data.</p>
+<p>What we are going to do is ignore the brightness value of anything below the
+average brightness. This transforms the image from above into the image below.</p>
+<p><img src="image/trappist-1.0.nobg.large.png" alt="Enlargement of an image of Trappist-1 with background removed" /></p>
+<p>Still not perfect, but it is better than nothing.</p>
+<p>In order to filter out the unwanted background we are going to need to know the
+average. We already know the sum, we just calculated it, so the average can be
+determined by</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let average = sum / (row.len() as f64);
+#}</code></pre></pre>
+<p>Calculating the contribution of the values above the average can still be done
+succinctly. What we need to do is filter out the values that we want to sum.
+I.e. the values above the average.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let filtered: f64 = raw
+    .iter().
+    .filter(|&amp;v| *v &gt;= average)
+    .fold(0f64, |acc, v| acc+v)
+#}</code></pre></pre>
+<a class="header" href="finding/javascript/brightness.html#graphing-results" id="graphing-results"><h2>Graphing Results</h2></a>
+<p>Once you wrote your brightness results to a CSV file, they are ready for the
+following step. But if you are like me you probably want to see your results.
+This is where gnuplot comes in.</p>
+<p>If you have saved your results as <code>brightness.csv</code>, the following gnuplot
+session will plot your data.</p>
+<pre><code>set datafile separator ','
+
+plot [2905:2985] &quot;brightness.csv&quot; using 1:2
+</code></pre>
+<p>We will annotate the above example a little, so that you can use gnuplot on your
+own. The <code>simple_csv</code> library outputs CSV files with a comma as separator. This
+difference from the default assumption of gnuplot. Luckily this can be remedied
+with the first line.</p>
+<p>The second line display the core of gnuplot; the <code>plot</code> command. The first
+argument, i.e. <code>[2905:2985]</code>, defines the range on the x-axis. It is optional
+and will be inferred by gnuplot if it isn't present. If there would be a second
+argument of that form, i.e. <code>[min:max]</code>, that would be the range on the y-axis.
+Here it is inferred.</p>
+<p>The <code>&quot;brightness.csv&quot;</code> argument you probably recognize as the file you wrote
+your data to. The <code>plot</code> command will use data in this file to plot.</p>
+<p>The last refers to columns in the data. <code>using 1:2</code> tells the plot command to
+plot point with the first column as x-coordinate and the second column as
+y-coordinate.</p>
+<p>For a more extensive explanation of gnuplot we refer you to the
+<a href="http://www.gnuplot.info/">gnuplot homepage</a>.</p>
+<p>If you have gone to the trouble of outputting the brightness with and without
+the background, your plot could look like the one below.</p>
+<p><img src="image/brightness-both.png" alt="Plot of brightness, with and without background contribution" /></p>
+<a class="header" href="finding/javascript/brightness.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<p>Take a look at your data and write down what stands out to you. Discuss this
+with a neighbor.</p>
+<p>Why is the average taken as a cut-off value? What are other options?</p>
+<p>There is an obvious gap in our data. This is where the Kepler satellite stopped
+recording data due to a software reboot initiated by a cosmic ray event.
+Although the data was lost, the satellite still operates nominally.</p>
+<p>Furthermore there is a trend in the overall brightness, more pronounced in the
+data with the background. This is also seen in our collage. We will have to
+smooth out that trend and that is precisely what we will in one of the next chapters.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="finding/javascript/collage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="finding/javascript/detrend.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="finding/javascript/collage.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="finding/javascript/detrend.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

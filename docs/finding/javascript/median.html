@@ -1,0 +1,402 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Median - Finding the Planets</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="A book accompanying a workshop to find the planets around Trappist-1.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="title.html">Finding The Planets</a></li><li class="affix"><a href="about.html">What is this book about</a></li><li><a href="background.html"><strong aria-hidden="true">1.</strong> Background</a></li><li><ol class="section"><li><a href="background/trappist-1.html"><strong aria-hidden="true">1.1.</strong> Trappist-1</a></li><li><a href="background/kepler.html"><strong aria-hidden="true">1.2.</strong> Kepler Spacecraft</a></li></ol></li><li><a href="science.html"><strong aria-hidden="true">2.</strong> Science</a></li><li><ol class="section"><li><a href="science/discovery.html"><strong aria-hidden="true">2.1.</strong> Exo-planet Discovery</a></li><li><a href="science/position.html"><strong aria-hidden="true">2.2.</strong> Observing Position</a></li><li><a href="science/doppler.html"><strong aria-hidden="true">2.3.</strong> Doppler Effect</a></li></ol></li><li><a href="transit.html"><strong aria-hidden="true">3.</strong> Transit Method</a></li><li><ol class="section"><li><a href="transit/light_curve.html"><strong aria-hidden="true">3.1.</strong> What To Look For</a></li></ol></li><li><a href="finding.html"><strong aria-hidden="true">4.</strong> Finding Planets</a></li><li><ol class="section"><li><a href="finding/languages.html"><strong aria-hidden="true">4.1.</strong> Languages</a></li><li><a href="finding/rust.html"><strong aria-hidden="true">4.2.</strong> Rust</a></li><li><ol class="section"><li><a href="finding/rust/fits.html"><strong aria-hidden="true">4.2.1.</strong> FITS</a></li><li><a href="finding/rust/csv.html"><strong aria-hidden="true">4.2.2.</strong> CSV</a></li><li><a href="finding/rust/image.html"><strong aria-hidden="true">4.2.3.</strong> Image</a></li><li><a href="finding/rust/collage.html"><strong aria-hidden="true">4.2.4.</strong> Collage</a></li><li><a href="finding/rust/brightness.html"><strong aria-hidden="true">4.2.5.</strong> Brightness</a></li><li><a href="finding/rust/detrend.html"><strong aria-hidden="true">4.2.6.</strong> Detrend</a></li><li><a href="finding/rust/filter.html"><strong aria-hidden="true">4.2.7.</strong> Filter</a></li><li><a href="finding/rust/median.html"><strong aria-hidden="true">4.2.8.</strong> Median</a></li><li><a href="finding/rust/fitting.html"><strong aria-hidden="true">4.2.9.</strong> Fitting</a></li></ol></li><li><a href="finding/javascript.html"><strong aria-hidden="true">4.3.</strong> JavaScript</a></li><li><ol class="section"><li><a href="finding/javascript/fits.html"><strong aria-hidden="true">4.3.1.</strong> FITS</a></li><li><a href="finding/javascript/csv.html"><strong aria-hidden="true">4.3.2.</strong> CSV</a></li><li><a href="finding/javascript/image.html"><strong aria-hidden="true">4.3.3.</strong> Image</a></li><li><a href="finding/javascript/collage.html"><strong aria-hidden="true">4.3.4.</strong> Collage</a></li><li><a href="finding/javascript/brightness.html"><strong aria-hidden="true">4.3.5.</strong> Brightness</a></li><li><a href="finding/javascript/detrend.html"><strong aria-hidden="true">4.3.6.</strong> Detrend</a></li><li><a href="finding/javascript/filter.html"><strong aria-hidden="true">4.3.7.</strong> Filter</a></li><li><a href="finding/javascript/median.html" class="active"><strong aria-hidden="true">4.3.8.</strong> Median</a></li><li><a href="finding/javascript/fitting.html"><strong aria-hidden="true">4.3.9.</strong> Fitting</a></li></ol></li></ol></li><li><a href="reflection.html"><strong aria-hidden="true">5.</strong> Reflection</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">Finding the Planets</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="finding/javascript/median.html#median" id="median"><h1>Median</h1></a>
+<p>We filtered our brightness graph and got something like this.</p>
+<p><img src="image/filter.png" alt="Filtered brightness of Trappist-1" /></p>
+<p>We would like to know around what kind of average these points are fluctuating.
+For that we are calculating the median.</p>
+<a class="header" href="finding/javascript/median.html#calculation" id="calculation"><h2>Calculation</h2></a>
+<p>Let's say we have a sequence of values \(y_{0}, y_{1}, \ldots, y_{n-1}\). The
+median of these numbers is defined as follows.</p>
+<ol>
+<li>Sort the numbers into a sequence \(z_{0}, z_{1}, \dots, z_{n-1}\).</li>
+<li>From this sorted sequence, pick the middle number. If there is no middle,
+take the average of the middle two.</li>
+</ol>
+<p>Lets work out an example. Take a look at the following example</p>
+<p>\[
+31, 41, 59, 26, 53, 58, 97, 93, 23, 84
+\]</p>
+<p>If we sort this sequence we get</p>
+<p>\[
+23, 26, 31, 41, 53, 58, 59, 84, 93, 97
+\]</p>
+<p>Because there are an even number of values, we should take the average of the of
+the two middle values. The average of \(53\) and \(58\) is
+\(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
+<a class="header" href="finding/javascript/median.html#make-a-library" id="make-a-library"><h2>Make a library.</h2></a>
+<p>Because we are going to use the median several times, we are going to create a
+library. Let's start with our <code>lib.rs</code>.</p>
+<p>In our <code>lib.rs</code> we are announcing a module called <code>median</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub mod median;
+#}</code></pre></pre>
+<p>There are different ways to create this module. Either creating a <code>median.rs</code>
+file inside the <code>src</code> directory. Or creating a <code>median</code> directory inside the
+<code>src</code> directory, which contains a <code>mod.rs</code> file. Which every you choose, let's
+implement a <code>median_of</code> function.</p>
+<p>Our <code>median_of</code> function will have a <code>&amp;Vec&lt;f64&gt;</code> as parameter and return the
+median <code>f64</code>. Once we have a sorted copy of the data called <code>copy</code>, getting the
+median comes down to determining if the number of elements is even or odd, and
+performing the right calculation.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let n = data.len();
+let middle: usize = n / 2;
+let median = if n % 2 == 1 {
+    copy[middle]
+} else {
+    (copy[middle] + copy[middle - 1]) / 2.0;
+}
+#}</code></pre></pre>
+<p>But how do we sort the original data?</p>
+<a class="header" href="finding/javascript/median.html#sorting-side-quest" id="sorting-side-quest"><h3>Sorting side-quest</h3></a>
+<p>There are a few interesting tidbits when sorting a <code>Vec&lt;f64&gt;</code> that we are going
+to make a side-quest out of it. While looking into <code>Vec&lt;T&gt;</code>
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort">documentation</a>,
+you can come across the method <code>sort</code>. Let's see if we can use it.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+
+vs.sort();
+#}</code></pre></pre>
+<p>Unfortunately this doesn't compile.</p>
+<pre><code class="language-text">   Compiling playground v0.0.1 (file:///playground)
+error[E0277]: the trait bound `f64: std::cmp::Ord` is not satisfied
+ --&gt; src/main.rs:6:4
+  |
+6 | vs.sort();
+  |    ^^^^ the trait `std::cmp::Ord` is not implemented for `f64`
+
+error: aborting due to previous error
+
+error: Could not compile `playground`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<p>Which could come as a surprise. The <code>Ord</code> trait determines an ordering of
+elements. Certainly we can determine whether `0.0 &lt; 1.0``?</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+assert!(0.0f64 &lt; 1.0f64);
+#}</code></pre></pre>
+<p>Luckily we can. So what is going on? Rust has two related traits for comparison:
+<a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a> and
+<a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a>. The main difference
+is that <code>Ord</code> is supposed to be <em>total</em>. I.e. any type that implements the <code>Ord</code>
+trait should be able to compare any pair of values that have the type.</p>
+<p>In other words, if you implement the <code>Ord</code> trait you should be able to answer
+<strong>yes</strong> to one and only one of the following questions with for values <code>a</code> and
+<code>b</code> in the type:</p>
+<ol>
+<li>Is <code>a &lt; b</code>?</li>
+<li>Is <code>a == b</code>?</li>
+<li>Is <code>a &gt; b</code>?</li>
+</ol>
+<p>The problem with <code>f64</code> is that is implements IEEE-754, the standard for
+arithmetic with floating point numbers. This standard defines a value <code>NaN</code>,
+not a number, which is not comparable with any other value.</p>
+<p>So <code>f64</code> can not be complete and follow the standard at the same time.
+Fortunately <code>PartialOrd</code> is implemented for <code>f64</code>. So as long as we do not
+compare with <code>NaN</code>s, which we don't intend to do, we should be safe.</p>
+<p>Back to sorting, the <code>sort</code> method expects that the <code>Ord</code> is implemented, so we
+can not use it. <code>Vec&lt;T&gt;</code> also has a <code>sort_by</code> method, that allows to pass a <code>compare</code>
+function. We can use this to our advantage by relying on the <code>PartialOrd</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+
+vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+println!(&quot;{:?}&quot;, vs);
+#}</code></pre></pre>
+<p>This correctly sorts our vector. But notice that the <code>vs</code> variable is declared
+mutable. Our signature doesn't expect to have a mutable reference, so we need to
+copy our <code>data</code> first.</p>
+<a class="header" href="finding/javascript/median.html#copying-data" id="copying-data"><h3>Copying Data</h3></a>
+<p>We need a mutable copy of our <code>data</code>. Luckily the <code>Vec&lt;T&gt;</code> API provides an other
+method; <code>copy_from_slice</code>. We use it as</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let n = data.len();
+let mut copy = vec!(0f64; n);
+copy.copy_from_slice(&amp;data);
+#}</code></pre></pre>
+<p>This is the final piece in the median puzzle. We are able to put everything
+together and write our <code>median_of</code> function.</p>
+<a class="header" href="finding/javascript/median.html#form-groups" id="form-groups"><h3>Form Groups</h3></a>
+<p>We do not want to calculate the median of our entire sequence. Instead we want
+to move a <a href="https://en.wikipedia.org/wiki/Streaming_algorithm"><em>sliding window</em></a>
+over our data and calculate the median of that specific window.</p>
+<p>For that we need to group our data. Let's create that function.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn groups(data: &amp;Vec&lt;f64&gt;, group_size: usize) -&gt; Vec&lt;Vec&lt;f64&gt;&gt; {
+    let mut groups: Vec&lt;Vec&lt;f64&gt;&gt; = vec!();
+
+    for end_index in group_size .. data.len() + 1 {
+        let mut group: Vec&lt;f64&gt; = vec!();
+        for index in (end_index - group_size) .. end_index {
+            group.push(data[index])
+        }
+        groups.push(group)
+    }
+
+    groups
+}
+#}</code></pre></pre>
+<a class="header" href="finding/javascript/median.html#median-filter" id="median-filter"><h3>Median Filter</h3></a>
+<p>We are now in the position to create a <code>median_filter</code> function. I.e. a function
+that calculates the median of a sliding window over our data. With all of our
+preparations it writes itself as</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub fn median_filter(data: &amp;Vec&lt;f64&gt;, window: usize) -&gt; Vec&lt;f64&gt; {
+    groups(data, window)
+        .iter()
+        .map(median_of)
+        .collect()
+}
+#}</code></pre></pre>
+<p>With our library all done, we can start out processing proper.</p>
+<a class="header" href="finding/javascript/median.html#processing" id="processing"><h2>Processing</h2></a>
+<p>But wait! Our data arrives as <code>f64</code>-pairs, i.e. <code>(f64, f64)</code>, and we create
+<code>median_filter</code> to operate on a single <code>f64</code> value. Did I lead you down a wrong
+path?</p>
+<p>Not entirely. Once again the standard library, in the form of the <code>Iter</code> trait,
+has a trick up their sleeve. It comes in the pair of methods <code>zip</code> and <code>unzip</code>.
+You can find their signatures below.
+With <code>unzip</code> you can take a sequences of pairs and return a pair of sequences.
+<code>zip</code> goes the other way.</p>
+<p>Let's see how we can use them. After getting the raw data, we can use <code>unzip</code> to
+extract the individual components.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let (times, values): (Vec&lt;f64&gt;, Vec&lt;f64&gt;) = raw
+    .iter()
+    .cloned()
+    .unzip();
+#}</code></pre></pre>
+<p>The <code>cloned</code> call is because we need to take ownership of our data. Next we can
+use our <code>median_filter</code> from our own library. Make sure to reference our own
+external crate and import the correct function.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let median_times = median_filter(&amp;times, window_size);
+let median_values = median_filter(&amp;values, window_size);
+#}</code></pre></pre>
+<p>Finally we can zip together these two vectors again to get our result.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let result = median_times.iter().zip(median_values);
+#}</code></pre></pre>
+<p>Storing this into a CSV file makes it available for the next step.</p>
+<a class="header" href="finding/javascript/median.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
+<p>You have created a library that contains some functions. How do you know that
+they are implemented correctly? Try to add some
+<a href="https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html">tests</a>
+that increases your confidence in your code.</p>
+<p>The <code>median_filter</code> accepts an <code>window_size</code> argument. What is a good value?</p>
+<p>Why haven't we used same the method we used to detrend the data?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="finding/javascript/filter.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="finding/javascript/fitting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="finding/javascript/filter.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="finding/javascript/fitting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
