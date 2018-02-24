@@ -14,5 +14,8 @@
     "csv"
   ],
   "author": "Daan van Berkel",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "fits": "^0.1.3"
+  }
 }
