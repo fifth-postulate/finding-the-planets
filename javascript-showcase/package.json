@@ -1,0 +1,18 @@
+{
+  "name": "find-planets",
+  "version": "0.1.0",
+  "description": "Finding planets in Trappist-1 data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "planet",
+    "orbit",
+    "trappist-1",
+    "data",
+    "csv"
+  ],
+  "author": "Daan van Berkel",
+  "license": "MIT"
+}
