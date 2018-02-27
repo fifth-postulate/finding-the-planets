@@ -13,35 +13,6 @@ A [FITS](https://en.wikipedia.org/wiki/FITS) file is a
 >  provisions for describing photometric and spatial calibration information,
 >  together with image origin metadata. 
 
-We are going to use the [fits-rs](https://crates.io/crates/fits-rs) crate to
-process the FITS files. Unfortunatly the crate is not production ready. Although we can use the crate to read the headers, it doesn't parse the table data just yet. For now the relevant data is converted into Comma Seperated Values (CVS).
-
-For an example of what you can do with that crate see below. Note that it needs
-a other libraries, not included in the workshop material.
-
-```rust
-    let args: Vec<String> = env::args().collect();
-    let filename = &args[1];
-    let header_index = u64::from_str(&args[2]).expect("should be a non-negative number");
-
-    let mut f = File::open(filename).expect("file not found");
-    let mut buffer: Vec<u8> = vec!();
-    let _ = f.read_to_end(&mut buffer);
-
-    let result = fits(&buffer);
-
-    match result {
-        IResult::Done(_, trappist1) => {
-            let header: &Header = if header_index = 0 {
-                &trappist1.primary_hdu.header
-            } else {
-                &trappist1.extensions[header_index].header
-            }
-
-            for record in header.keyword_records {
-                println!("{:?}", record);
-            }
-        },
-        _ => panic!("Whoops, something went wrong")
-    }
-```
+We would like to use the FITS files directly, but unfortunately the
+[library](https://crates.io/crates/fits-rs) is not production ready yet. We
+created a Comma Seperated Values (CSV) file with the relevant data. 
