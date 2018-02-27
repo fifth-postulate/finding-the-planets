@@ -16,6 +16,5 @@
   "author": "Daan van Berkel",
   "license": "MIT",
   "dependencies": {
-    "fits": "^0.1.3"
   }
 }
