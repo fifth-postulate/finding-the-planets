@@ -34,19 +34,19 @@ want 61 of our tiles to go horizontally, and we want 59 of our tiles to go
 vertically. We will call these `HORIZONTAL_TILES` and `VERTICAL_TILES`
 respectively.
 
-```rust
-const BASE: usize = 11;
-const HORIZONTAL_TILES: usize = 61;
-const VERTICAL_TILES: usize = 59;
+```javascript
+const BASE = 11;
+const HORIZONTAL_TILES = 61;
+const VERTICAL_TILES = 59;
 ```
 
 Now we can express all the other dimensions in terms of our `BASE` and
 `HORIZONTAL_TILES` and `VERTICAL_TILES`.
 
 ```rust
-const WIDTH: usize = HORIZONTAL_TILES * BASE;
-const HEIGHT: usize = VERTICAL_TILES * BASE;
-const SIZE: usize = WIDTH * HEIGHT;
+const WIDTH = HORIZONTAL_TILES * BASE;
+const HEIGHT = VERTICAL_TILES * BASE;
+const SIZE = WIDTH * HEIGHT;
 ```
 
 For example, `SIZE` is the number of pixels in our base tile. Let's continue and
@@ -57,27 +57,24 @@ data is in.
 We will start with the row. Because we have 61 images along the x-axis of our
 collage, the `X`-offset will be
 
-```rust
-let offset_X = row_index % HORIZONTAL_TILES;
+```javascript
+var offset_X = row_index % HORIZONTAL_TILES;
 ```
 
-The `Iter` trait has a very nice method: 
-[`enumerate`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate).
-What it does is besides iterating over the `row`, it also provides us with the
-`row_index`. We should keep this in mind when we are putting things together.
+We keep track of the `row_index` manually.
 
 After `HORIZONAL_TILES` rows, we need to increase the `Y`-offset with one. This amounts to
 
-```rust
-let offset_Y = row_index / HORIZONTAL_TILES;
+```javascript
+var offset_Y = Math.floor(row_index / HORIZONTAL_TILES);
 ```
 
 Now for the offset within the image. The image is `BASE`x`BASE`. So given an original
 index in the row, we have for the 
 
 ```rust
-let offset_x = original_index % BASE;
-let offset_y = original_index / BASE;
+var offset_x = original_index % BASE;
+var offset_y = Math.floor(original_index / BASE);
 ```
 
 Now we can calculate the target index. For each `offset_Y` we need to go down an
@@ -87,8 +84,8 @@ entire `BASE` rows in our collage. This is `BASE`x`HORIZONTAL_TILES`x`BASE` (=
 (= 671). Finally, for each `offset_x` we need to shift 1 pixel 
 down. All together this is
 
-```rust
-let target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
+```javascript
+var target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
                    offset_X * BASE +
                    offset_y * (HORIZONTAL_TILES * BASE) +
                    offset_x
@@ -104,7 +101,7 @@ that we want to use the same scale for each image.
 So instead of dividing our value by the maximum value of a single image, we
 should divide by the global maximum.
 
-Create a separate executable that will determine the global maximum of all the
+Create a separate script that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.
 
 ## Further Considerations

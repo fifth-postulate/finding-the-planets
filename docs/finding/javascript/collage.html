@@ -153,21 +153,18 @@ i.e. the size of the original image. We are going to call that <code>BASE</code>
 want 61 of our tiles to go horizontally, and we want 59 of our tiles to go
 vertically. We will call these <code>HORIZONTAL_TILES</code> and <code>VERTICAL_TILES</code>
 respectively.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-const BASE: usize = 11;
-const HORIZONTAL_TILES: usize = 61;
-const VERTICAL_TILES: usize = 59;
-#}</code></pre></pre>
+<pre><code class="language-javascript">const BASE = 11;
+const HORIZONTAL_TILES = 61;
+const VERTICAL_TILES = 59;
+</code></pre>
 <p>Now we can express all the other dimensions in terms of our <code>BASE</code> and
 <code>HORIZONTAL_TILES</code> and <code>VERTICAL_TILES</code>.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-const WIDTH: usize = HORIZONTAL_TILES * BASE;
-const HEIGHT: usize = VERTICAL_TILES * BASE;
-const SIZE: usize = WIDTH * HEIGHT;
+const WIDTH = HORIZONTAL_TILES * BASE;
+const HEIGHT = VERTICAL_TILES * BASE;
+const SIZE = WIDTH * HEIGHT;
 #}</code></pre></pre>
 <p>For example, <code>SIZE</code> is the number of pixels in our base tile. Let's continue and
 figure out where the pixels go. There are two factors that determine the
@@ -175,28 +172,19 @@ position of the pixel. The which row that data is from, and which column the
 data is in.</p>
 <p>We will start with the row. Because we have 61 images along the x-axis of our
 collage, the <code>X</code>-offset will be</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let offset_X = row_index % HORIZONTAL_TILES;
-#}</code></pre></pre>
-<p>The <code>Iter</code> trait has a very nice method:
-<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate"><code>enumerate</code></a>.
-What it does is besides iterating over the <code>row</code>, it also provides us with the
-<code>row_index</code>. We should keep this in mind when we are putting things together.</p>
+<pre><code class="language-javascript">var offset_X = row_index % HORIZONTAL_TILES;
+</code></pre>
+<p>We keep track of the <code>row_index</code> manually.</p>
 <p>After <code>HORIZONAL_TILES</code> rows, we need to increase the <code>Y</code>-offset with one. This amounts to</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let offset_Y = row_index / HORIZONTAL_TILES;
-#}</code></pre></pre>
+<pre><code class="language-javascript">var offset_Y = Math.floor(row_index / HORIZONTAL_TILES);
+</code></pre>
 <p>Now for the offset within the image. The image is <code>BASE</code>x<code>BASE</code>. So given an original
 index in the row, we have for the</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let offset_x = original_index % BASE;
-let offset_y = original_index / BASE;
+var offset_x = original_index % BASE;
+var offset_y = Math.floor(original_index / BASE);
 #}</code></pre></pre>
 <p>Now we can calculate the target index. For each <code>offset_Y</code> we need to go down an
 entire <code>BASE</code> rows in our collage. This is <code>BASE</code>x<code>HORIZONTAL_TILES</code>x<code>BASE</code> (=
@@ -204,14 +192,11 @@ entire <code>BASE</code> rows in our collage. This is <code>BASE</code>x<code>HO
 <code>offset_y</code> we need to go down an entire row. This is <code>HORIZONTAL_TILES</code>x<code>BASE</code>
 (= 671). Finally, for each <code>offset_x</code> we need to shift 1 pixel
 down. All together this is</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
+<pre><code class="language-javascript">var target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
                    offset_X * BASE +
                    offset_y * (HORIZONTAL_TILES * BASE) +
                    offset_x
-#}</code></pre></pre>
+</code></pre>
 <p>With these calculations we know where to paint the image pixel.</p>
 <a class="header" href="finding/javascript/collage.html#color" id="color"><h3>Color</h3></a>
 <p>From our experience from creating an image we have a fairly good idea which
@@ -219,7 +204,7 @@ color to use. The only difference between the collage and the single image is
 that we want to use the same scale for each image.</p>
 <p>So instead of dividing our value by the maximum value of a single image, we
 should divide by the global maximum.</p>
-<p>Create a separate executable that will determine the global maximum of all the
+<p>Create a separate script that will determine the global maximum of all the
 measurements that we can use in determining the color of the pixel.</p>
 <a class="header" href="finding/javascript/collage.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>The following suggestions might help your understanding of the problem we
