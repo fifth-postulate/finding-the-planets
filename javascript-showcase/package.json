@@ -16,6 +16,7 @@
   "author": "Daan van Berkel",
   "license": "MIT",
   "dependencies": {
-    "csv": "^2.0.0"
+    "csv": "^2.0.0",
+    "node-png": "^0.4.3"
   }
 }
