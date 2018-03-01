@@ -7,4 +7,4 @@
 /**/Cargo.lock
 /**/target
 /**/out.csv
-/javascript-showcase/resources/image-*.png
+/javascript-showcase/resources/*.png

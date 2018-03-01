@@ -88,7 +88,7 @@ down. All together this is
 var target_index = offset_Y * (BASE * HORIZONTAL_TILES * BASE) +
                    offset_X * BASE +
                    offset_y * (HORIZONTAL_TILES * BASE) +
-                   offset_x
+                   offset_x;
 ```
 
 With these calculations we know where to paint the image pixel.
