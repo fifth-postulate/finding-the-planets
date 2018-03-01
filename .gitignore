@@ -6,3 +6,4 @@
 /cargo_home
 /**/Cargo.lock
 /**/target
+/**/out.csv
