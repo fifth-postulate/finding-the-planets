@@ -32,7 +32,7 @@ transformer.on('readable', function(){
             png.data[4*index + 3] = 0xff;
         });
 
-        png.pack().pipe(fs.createWriteStream('resources/image-' + image_index + '.png'));
+        png.pack().pipe(fs.createWriteStream('resources/image-' + pad(image_index, 4) + '.png'));
         image_index++;
     }
 });
@@ -42,3 +42,9 @@ input
     .pipe(transformer)
     .pipe(stringifier)
     .pipe(output);
+
+function pad(number, width, padding) {
+    padding = padding || '0';
+    number = number + '';
+    return number.length >= width ? number : new Array(width - number.length + 1).join(padding) + number;
+}
