@@ -135,151 +135,92 @@ impression of Trappist-1.</p>
 used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.</p>
 <a class="header" href="finding/javascript/image.html#creating-an-image" id="creating-an-image"><h2>Creating an image</h2></a>
-<p>So go ahead and start a new Rust file named <code>image.rs</code> in the <code>src/bin</code>
+<p>So go ahead and start a new JavaScript file named <code>image.js</code> in the <code>bin</code>
 directory of your project.</p>
 <a class="header" href="finding/javascript/image.html#reading-data" id="reading-data"><h3>Reading Data</h3></a>
-<p>We will be reading our data from CSV. We will use the crate <code>simple_csv</code> for
-that. In order to use it include the following lines in <code>image.rs</code>.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-extern crate simple_csv;
+<p>We will be reading our data from CSV. We will use the <code>csv</code> packege for
+that. In order to use it include the following lines in <code>image.js</code>.</p>
+<pre><code class="language-javascript">const parse = require('csv-parse');
+const stringify = require('csv-stringify');
+const transform = require('stream-transform');
 
-use simple_csv::SimpleCsvReader;
-#}</code></pre></pre>
-<p>The <code>SimpleCsvReader</code> expects some sort of <code>BufReader</code>, a buffered reader. We
-can create one from a <code>File</code>. So include the following modules.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-use std::fs::File;
-use std::io::BufReader;
-#}</code></pre></pre>
-<p>And in the main function add.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let f = File::open(&quot;../long-cadence.csv&quot;).expect(&quot;input CSV to exist.&quot;);
-let buf = BufReader::new(f);
-#}</code></pre></pre>
+var parser = parse();
+var stringifier = stringify();
+var transformer = transform(function(data){
+    return data;
+});
+</code></pre>
+<p>The <code>parser</code>, <code>transformer</code> and <code>stringifier</code> can be piped together. So we need
+something to act as a source and a drain. We are going to read from file and
+write to file so we include de <code>fs</code> module.</p>
+<pre><code class="language-javascript">const fs = require('fs');
+</code></pre>
+<p>And in the script we add.</p>
+<pre><code class="language-javascript">var input = fs.createReadStream('../long-cadence.csv');
+var output = fs.createWriteStream('out.csv');
+</code></pre>
 <p>Notice that we are not handling errors in a graceful way. We are just going to
 arrange everything correctly and hope for the best.</p>
-<p>With the <code>buf</code> we can create a CSV reader and read the first row of our data.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap().unwrap();
-#}</code></pre></pre>
-<p>The unsightly double <code>unwrap</code> at the end comes from the interplay of the
-<code>Iterator</code> trait that has a <code>next</code> function that returns an <code>Option</code>, and the
-way <code>simple_csv</code> parses lines from CSV files into a <code>Result</code>. So the first
-<code>unwrap</code> unwraps the <code>Option</code>, the second <code>unwrap</code> unwraps the <code>Result</code>.</p>
-<p>We should make a mental note when working with the <code>simple_csv</code> crate, we should
-mind our <code>unwrap</code>s.</p>
+<p>We now can pipe the input, via our chain into the output.</p>
+<pre><code class="language-javascript">input
+    .pipe(parser)
+    .pipe(transformer)
+    .pipe(stringifier)
+    .pipe(output);
+</code></pre>
+<p>This is our processing pipeline. You will probably use it for a lot, so make
+sure that you understand what is going on. If you run it, nothing really
+interesting is going on. Basically we just copied the original data. Let's
+change that.</p>
 <a class="header" href="finding/javascript/image.html#processing-data" id="processing-data"><h3>Processing Data</h3></a>
-<p>Our CSV file contains rows of floating point numbers. But the <code>simple_csv</code> crate
-returns a slice of Strings. We will need to turn those Strings into floating
-point numbers before we can properly process them.</p>
-<p>We do this by iterating over the <code>row</code>. Remember how the first column
-contained the time? We don't need it now so we will drop it for the moment.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut current_row = row.iter();
-current_row.next(); // dropping time
-#}</code></pre></pre>
-<p>Next we can transform all the measurements in floating point numbers. We can do
-that by using the <code>FromStr</code> trait. Import it with <code>use std::str::FromStr</code>. It
-provides a method <code>from_str</code> that transforms <code>&amp;str</code> into an other type.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let raw: Vec&lt;f64&gt; = current_row
-    .map(|s| f64::from_str(s).unwrap())
-    .collect();
-#}</code></pre></pre>
-<p>Note we need to include a <code>use std::str::FromStr;</code> line at the top of our file.</p>
-<p>What we are going to do is map these measurements onto a gray scale that we can
-save as an image. We do this by determining the maximum measurement, determining
-the relative measurement compared to the maximum, and scaling it the an integer
-range from 0 to 255.</p>
-<p>The following lines achieve this.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let maximum = raw
-    .iter()
-    .fold(std::f64::MIN, |acc, v| acc.max(*v));
-let data: Vec&lt;u8&gt; = raw
-    .iter()
-    .map(|s| s/maximum)
-    .map(|s| 255.0 * s)
-    .map(|s| s.floor() as u8)
-    .collect();
-#}</code></pre></pre>
-<p>It uses a method <code>fold</code> with the following signature</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn fold&lt;B, F&gt;(self, init: B, f: F) -&gt; B
-    where
-        F: FnMut(B, Self::Item) -&gt; B
-#}</code></pre></pre>
-<p>It takes something that implements the <code>Iterator</code> trait, a initial value called
-<code>init</code> and repeatedly calls <code>f</code>. The function <code>f</code> accepts two arguments. At
-first it accepts the initial <code>init</code> value and the first element the <code>Iterator</code>
-produces. After that it accepts the previous call to <code>f</code> return value with the
-next value of the iterator. A fold returns the final return value of the
-function <code>f</code>.</p>
-<a class="header" href="finding/javascript/image.html#writing-data" id="writing-data"><h2>Writing data</h2></a>
-<p>Now that we have the gray-scale data, it is time to write it as an image. For
-this we will use the <code>png</code> crate. Before we can use it add</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-extern crate png;
-#}</code></pre></pre>
-<p>To the top of the source file. We also need to include an import statement that
-makes our live working with PNGs easier.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-use png::HasParameters;
-#}</code></pre></pre>
-<p>We are going to save the PNG into our working directory. Because the <code>png</code> crate
-expects a <code>BufWriter</code> we will have to include the following modules.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-use std::env;
-use std::io::{BufWriter, BufReader};
-#}</code></pre></pre>
-<p>Notice that we already had imported the <code>BufReader</code> module. With these imports
-we can create a <code>BufWriter</code> in one fell swoop.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut path = env::current_dir().unwrap();
-path.push(format!(&quot;trappist-1.{}.png&quot;, 0));
-let file = File::create(path).unwrap();
-let ref mut w = BufWriter::new(file);
-#}</code></pre></pre>
-<p>Now we can hand over this <code>BufWriter</code> to a PNG <code>Encoder</code>, configure it to our
-liking, create a PNG <code>Writer</code> and write the data.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut encoder = png::Encoder::new(w, 11, 11);
-encoder.set(png::ColorType::Grayscale).set(png::BitDepth::Eight);
-let mut writer = encoder.write_header().unwrap();
-writer.write_image_data(data.as_slice()).unwrap();
-#}</code></pre></pre>
+<p>The transformer can be used to change the data but we are not going to do that
+just now. Instead we want to operate on each row that gets piped through our
+pipeline.</p>
+<p>We can do that with the following lines of code.</p>
+<pre><code class="language-javascript">transformer.on('readable', function(){
+    var row;
+    while (row = transformer.read()) {
+        // process a row
+    }
+});
+
+</code></pre>
+<p>Our CSV file contains rows of floating point numbers. The first value is the
+time of the recording and the rest are image values, one for each pixel of a
+11x11 image.</p>
+<p>So inside the transformer while loop, i.e. where we process a row, we are going
+to create a PNG file. Before we can do that we need to require the <code>node-png</code>
+module.</p>
+<pre><code class="language-javascript">const PNG = require('node-png').PNG;
+</code></pre>
+<p>Creating the PNG file by calling the constructor with the correct options.</p>
+<pre><code class="language-javascript">var png = new PNG({
+    width: 11,
+    height: 11,
+    filter: -1
+});
+</code></pre>
+<p>Now we are ready to process our row. What we are going to do is map these
+measurements onto a gray scale that we can save as an image. We do this by
+determining the maximum measurement, determining the relative measurement
+compared to the maximum, and scaling it the an integer range from 0 to 255.</p>
+<pre><code class="language-javascript">var data = row.slice(1);
+var max = Math.max(...data);
+data.forEach(function(value, index){
+    var gray = value/max * 255;
+    png.data[4*index + 0] = gray;
+    png.data[4*index + 1] = gray;
+    png.data[4*index + 2] = gray;
+    png.data[4*index + 3] = 0xff;
+});
+</code></pre>
+<p>Finally, we write our image.</p>
+<pre><code class="language-javascript">png.pack().pipe(fs.createWriteStream('out.png'));
+</code></pre>
 <a class="header" href="finding/javascript/image.html#our-image" id="our-image"><h2>Our Image</h2></a>
-<p>It is finally time to make our own impression of Trappist-1. Use <code>cargo</code> to
-build and run your code.</p>
-<pre><code class="language-shell">&gt; cargo build
-&gt; cargo run --bin image
+<p>It is finally time to make our own impression of Trappist-1. Use <code>node</code> to run
+your code.</p>
+<pre><code class="language-shell">&gt; node bin/image.js
 </code></pre>
 <p>Which creates</p>
 <p><img src="image/trappist-1.0.png" alt="Actual Trappist-1 photo" /></p>

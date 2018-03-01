@@ -14,163 +14,125 @@ used. In order to get a sense of awe for the search of exo-planets, we are
 creating our own impression.
 
 ## Creating an image
-So go ahead and start a new Rust file named `image.rs` in the `src/bin`
+So go ahead and start a new JavaScript file named `image.js` in the `bin`
 directory of your project.
 
 ### Reading Data
-We will be reading our data from CSV. We will use the crate `simple_csv` for
-that. In order to use it include the following lines in `image.rs`.
+We will be reading our data from CSV. We will use the `csv` packege for
+that. In order to use it include the following lines in `image.js`.
 
-```rust
-extern crate simple_csv;
+```javascript
+const parse = require('csv-parse');
+const stringify = require('csv-stringify');
+const transform = require('stream-transform');
 
-use simple_csv::SimpleCsvReader;
+var parser = parse();
+var stringifier = stringify();
+var transformer = transform(function(data){
+    return data;
+});
 ```
 
-The `SimpleCsvReader` expects some sort of `BufReader`, a buffered reader. We
-can create one from a `File`. So include the following modules.
+The `parser`, `transformer` and `stringifier` can be piped together. So we need
+something to act as a source and a drain. We are going to read from file and
+write to file so we include de `fs` module.
 
-
-```rust
-use std::fs::File;
-use std::io::BufReader;
+```javascript
+const fs = require('fs');
 ```
 
-And in the main function add.
+And in the script we add.
 
-```rust
-let f = File::open("../long-cadence.csv").expect("input CSV to exist.");
-let buf = BufReader::new(f);
+```javascript
+var input = fs.createReadStream('../long-cadence.csv');
+var output = fs.createWriteStream('out.csv');
 ```
 
 Notice that we are not handling errors in a graceful way. We are just going to
 arrange everything correctly and hope for the best.
 
-With the `buf` we can create a CSV reader and read the first row of our data.
+We now can pipe the input, via our chain into the output.
 
-```rust
-let mut reader = SimpleCsvReader::new(buf);
-let row = reader.next_row().unwrap().unwrap();
+```javascript
+input
+    .pipe(parser)
+    .pipe(transformer)
+    .pipe(stringifier)
+    .pipe(output);
 ```
 
-The unsightly double `unwrap` at the end comes from the interplay of the
-`Iterator` trait that has a `next` function that returns an `Option`, and the
-way `simple_csv` parses lines from CSV files into a `Result`. So the first
-`unwrap` unwraps the `Option`, the second `unwrap` unwraps the `Result`.
-
-We should make a mental note when working with the `simple_csv` crate, we should
-mind our `unwrap`s.
+This is our processing pipeline. You will probably use it for a lot, so make
+sure that you understand what is going on. If you run it, nothing really
+interesting is going on. Basically we just copied the original data. Let's
+change that.
 
 ### Processing Data
-Our CSV file contains rows of floating point numbers. But the `simple_csv` crate
-returns a slice of Strings. We will need to turn those Strings into floating
-point numbers before we can properly process them.
+The transformer can be used to change the data but we are not going to do that
+just now. Instead we want to operate on each row that gets piped through our
+pipeline.
 
-We do this by iterating over the `row`. Remember how the first column
-contained the time? We don't need it now so we will drop it for the moment.
+We can do that with the following lines of code.
 
-```rust
-let mut current_row = row.iter();
-current_row.next(); // dropping time
+```javascript
+transformer.on('readable', function(){
+    var row;
+    while (row = transformer.read()) {
+        // process a row
+    }
+});
+
 ```
 
-Next we can transform all the measurements in floating point numbers. We can do
-that by using the `FromStr` trait. Import it with `use std::str::FromStr`. It
-provides a method `from_str` that transforms `&str` into an other type. 
+Our CSV file contains rows of floating point numbers. The first value is the
+time of the recording and the rest are image values, one for each pixel of a
+11x11 image.
 
+So inside the transformer while loop, i.e. where we process a row, we are going
+to create a PNG file. Before we can do that we need to require the `node-png`
+module.
 
-```rust
-let raw: Vec<f64> = current_row
-    .map(|s| f64::from_str(s).unwrap())
-    .collect();
+```javascript
+const PNG = require('node-png').PNG;
 ```
 
-Note we need to include a `use std::str::FromStr;` line at the top of our file.
+Creating the PNG file by calling the constructor with the correct options.
 
-What we are going to do is map these measurements onto a gray scale that we can
-save as an image. We do this by determining the maximum measurement, determining
-the relative measurement compared to the maximum, and scaling it the an integer
-range from 0 to 255.
-
-The following lines achieve this.
-
-```rust
-let maximum = raw
-    .iter()
-    .fold(std::f64::MIN, |acc, v| acc.max(*v));
-let data: Vec<u8> = raw
-    .iter()
-    .map(|s| s/maximum)
-    .map(|s| 255.0 * s)
-    .map(|s| s.floor() as u8)
-    .collect();
+```javascript
+var png = new PNG({
+    width: 11,
+    height: 11,
+    filter: -1
+});
 ```
 
-It uses a method `fold` with the following signature
+Now we are ready to process our row. What we are going to do is map these
+measurements onto a gray scale that we can save as an image. We do this by
+determining the maximum measurement, determining the relative measurement
+compared to the maximum, and scaling it the an integer range from 0 to 255.
 
-```rust
-fn fold<B, F>(self, init: B, f: F) -> B
-    where
-        F: FnMut(B, Self::Item) -> B
+```javascript
+var data = row.slice(1);
+var max = Math.max(...data);
+data.forEach(function(value, index){
+    var gray = value/max * 255;
+    png.data[4*index + 0] = gray;
+    png.data[4*index + 1] = gray;
+    png.data[4*index + 2] = gray;
+    png.data[4*index + 3] = 0xff;
+});
 ```
+Finally, we write our image.
 
-It takes something that implements the `Iterator` trait, a initial value called
-`init` and repeatedly calls `f`. The function `f` accepts two arguments. At
-first it accepts the initial `init` value and the first element the `Iterator`
-produces. After that it accepts the previous call to `f` return value with the
-next value of the iterator. A fold returns the final return value of the
-function `f`.
-
-## Writing data
-Now that we have the gray-scale data, it is time to write it as an image. For
-this we will use the `png` crate. Before we can use it add
-
-```rust
-extern crate png;
-```
-
-To the top of the source file. We also need to include an import statement that
-makes our live working with PNGs easier.
-
-```rust
-use png::HasParameters;
-```
-
-We are going to save the PNG into our working directory. Because the `png` crate
-expects a `BufWriter` we will have to include the following modules.
-
-```rust
-use std::env;
-use std::io::{BufWriter, BufReader};
-```
-
-Notice that we already had imported the `BufReader` module. With these imports
-we can create a `BufWriter` in one fell swoop.
-
-```rust
-let mut path = env::current_dir().unwrap();
-path.push(format!("trappist-1.{}.png", 0));
-let file = File::create(path).unwrap();
-let ref mut w = BufWriter::new(file);
-```
-
-Now we can hand over this `BufWriter` to a PNG `Encoder`, configure it to our
-liking, create a PNG `Writer` and write the data.
-
-```rust
-let mut encoder = png::Encoder::new(w, 11, 11);
-encoder.set(png::ColorType::Grayscale).set(png::BitDepth::Eight);
-let mut writer = encoder.write_header().unwrap();
-writer.write_image_data(data.as_slice()).unwrap();
+```javascript
+png.pack().pipe(fs.createWriteStream('out.png'));
 ```
 
 ## Our Image
-It is finally time to make our own impression of Trappist-1. Use `cargo` to
-build and run your code.
+It is finally time to make our own impression of Trappist-1. Use `node` to run
+your code.
 
 ```shell
-> cargo build
-> cargo run --bin image
+> node bin/image.js
 ```
 
 Which creates
