@@ -1,0 +1,22 @@
+{
+  "name": "find-planets-workshop",
+  "version": "0.1.0",
+  "description": "Finding planets in Trappist-1 data",
+  "main": "bin/start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "planet",
+    "orbit",
+    "trappist-1",
+    "data",
+    "csv"
+  ],
+  "author": "you@awesometown",
+  "license": "MIT",
+  "dependencies": {
+    "csv": "^2.0.0",
+    "node-png": "^0.4.3"
+  }
+}
