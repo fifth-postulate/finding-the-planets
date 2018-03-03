@@ -6,5 +6,5 @@
 /cargo_home
 /**/Cargo.lock
 /**/target
-/**/out.csv
+/**/*.csv
 /javascript-showcase/resources/*.png
