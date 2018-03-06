@@ -10,24 +10,19 @@ measurement and the second column the brightness at that time.
 For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.
 
-Take a row of data and
-
-1. Convert each value to a `f64`.
-2. Sum all the values to get the overall brightness.
-
-Converting values to a `f64` is something we did before. We are not going into
-details for the conversion.
+Take a row of data and sum all the values to get the overall brightness.
 
 The summation of all the values can be written down very succinctly because the
-[`Iterator`](https://doc.rust-lang.org/std/iter/) trait has a trick up it's
-sleeve. The `Iter` trait has a `sum` method. We can use it to calculate the sum
-of all the brightness values. If we have our raw `f64` values in the variable
-`raw`, we can determine the sum with 
+[`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype)
+prototype has a trick up it's sleeve. The `Array.prototype` has a `reduce` method. We
+can use it to calculate the sum of all the brightness values. If we have our values
+in the variable `brightness`, we can determine the sum with 
 
-```rust
-let sum: f64 = raw
-    .iter()
-    .sum();
+```javascript
+const sum = brightness.
+    reduce(function(partial_sum, value){
+        return partial_sum + value;
+    });
 ```
 
 ### Removing Background
@@ -51,19 +46,26 @@ In order to filter out the unwanted background we are going to need to know the
 average. We already know the sum, we just calculated it, so the average can be
 determined by
 
-```rust
-let average = sum / (row.len() as f64);
+```javascript
+const average = sum / brightness.length;
 ```
 
 Calculating the contribution of the values above the average can still be done
 succinctly. What we need to do is filter out the values that we want to sum.
 I.e. the values above the average.
 
-```rust
-let filtered: f64 = raw
-    .iter().
-    .filter(|&v| *v >= average)
-    .fold(0f64, |acc, v| acc+v)
+```javascript
+const filtered_sum_= brightness
+    .filter(function(value){ return value >= average; })
+    .reduce(function(partial_sum, value){ return partial_sum + value; });
+```
+
+What we want to return in our transformer is the pair of the `time`, we is the
+first value of our row of data i.e. `const time = data[0]`, and our
+`filtered_sum`.
+
+```javascript
+return [time, filtered_sum];
 ```
 
 ## Graphing Results
