@@ -12,6 +12,17 @@ What we are going to do is the following.
 
 Take a row of data and sum all the values to get the overall brightness.
 
+the first thing that we need to do is transform our data in to floating point
+numbers. When our `csv` module reads in a row of data, it is a piece of text.
+The
+[`map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+function helps in this regard. 
+
+```javascript
+brightness
+    .map(function(values){ return parseFloat(values; )})
+```
+
 The summation of all the values can be written down very succinctly because the
 [`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype)
 prototype has a trick up it's sleeve. The `Array.prototype` has a `reduce` method. We
@@ -19,10 +30,11 @@ can use it to calculate the sum of all the brightness values. If we have our val
 in the variable `brightness`, we can determine the sum with 
 
 ```javascript
-const sum = brightness.
-    reduce(function(partial_sum, value){
+const sum = brightness
+    .map(function(values){ return parseFloat(values; )})
+    .reduce(function(partial_sum, value){
         return partial_sum + value;
-    });
+    }, 0);
 ```
 
 ### Removing Background
@@ -57,7 +69,7 @@ I.e. the values above the average.
 ```javascript
 const filtered_sum_= brightness
     .filter(function(value){ return value >= average; })
-    .reduce(function(partial_sum, value){ return partial_sum + value; });
+    .reduce(function(partial_sum, value){ return partial_sum + value; }, 0);
 ```
 
 What we want to return in our transformer is the pair of the `time`, we is the
