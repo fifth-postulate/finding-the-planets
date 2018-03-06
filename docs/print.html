@@ -1645,15 +1645,24 @@ measurement and the second column the brightness at that time.</p>
 <p>For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.</p>
 <p>Take a row of data and sum all the values to get the overall brightness.</p>
+<p>the first thing that we need to do is transform our data in to floating point
+numbers. When our <code>csv</code> module reads in a row of data, it is a piece of text.
+The
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map"><code>map</code></a>
+function helps in this regard.</p>
+<pre><code class="language-javascript">brightness
+    .map(function(values){ return parseFloat(values; )})
+</code></pre>
 <p>The summation of all the values can be written down very succinctly because the
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype"><code>Array</code></a>
 prototype has a trick up it's sleeve. The <code>Array.prototype</code> has a <code>reduce</code> method. We
 can use it to calculate the sum of all the brightness values. If we have our values
 in the variable <code>brightness</code>, we can determine the sum with</p>
-<pre><code class="language-javascript">const sum = brightness.
-    reduce(function(partial_sum, value){
+<pre><code class="language-javascript">const sum = brightness
+    .map(function(values){ return parseFloat(values; )})
+    .reduce(function(partial_sum, value){
         return partial_sum + value;
-    });
+    }, 0);
 </code></pre>
 <a class="header" href="print.html#removing-background-1" id="removing-background-1"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
@@ -1676,7 +1685,7 @@ succinctly. What we need to do is filter out the values that we want to sum.
 I.e. the values above the average.</p>
 <pre><code class="language-javascript">const filtered_sum_= brightness
     .filter(function(value){ return value &gt;= average; })
-    .reduce(function(partial_sum, value){ return partial_sum + value; });
+    .reduce(function(partial_sum, value){ return partial_sum + value; }, 0);
 </code></pre>
 <p>What we want to return in our transformer is the pair of the <code>time</code>, we is the
 first value of our row of data i.e. <code>const time = data[0]</code>, and our
@@ -1732,39 +1741,19 @@ following, and adjusting for that.</p>
 <p>Before, we processed each row individually. Now we need to operate on the entire
 sequence. So instead iterating over each row, we are going to transform it
 directly.</p>
-<p>Because a <code>SimpleCsvReader</code> is an <code>Iterator</code> we can use our tricks on it. The
-idiosyncrasies of the <code>SimpleCsvReader</code> make that we first need to unwrap a row.
-Next we can map over the row of data and collect into a vector of tuples, the
-entry being the time and the second entry being the brightness.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let raw: Vec&lt;(f64, f64)&gt; = reader
-    .map(|r| r.unwrap())
-    .map(data)
-    .collect();
-#}</code></pre></pre>
-<p>The function <code>data</code> has the following signature</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn data(row: Vec&lt;String&gt;) -&gt; (f64, f64)
-#}</code></pre></pre>
-<p><code>data</code> is responsible for turning the raw columns of our CSV into <code>f64</code> brightness values,
-and selecting the correct ones.</p>
+<p>Our data has two values, one for time and one for the brightness. We our
+responsible for turning the raw columns of our CSV into floating point values,
+perform our calculation and selecting the correct ones.</p>
 <p>Up until now we never returned more than two or three values. For our current
 plan we are going to return more. In order to keep track of our data, we are
-going to create a <code>struct</code>.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-struct DetrendData {
-    time: f64,
-    brightness: f64,
-    trend: f64,
-    difference: f64,
+going to create a datastructure.</p>
+<pre><code class="language-javascript">var detrend_data {
+    time: 0.0,
+    brightness: 0.0,
+    trend: 0.0,
+    difference: 0.0,
 }
-#}</code></pre></pre>
+</code></pre>
 <p>We have created a few entries, some familiar, some unfamiliar. <code>time</code> and
 <code>brightness</code> are pretty self-explanatory. <code>difference</code> is intended to hold the
 difference between the <code>brightness</code> and the <code>trend</code>.</p>
@@ -1796,86 +1785,58 @@ sequence of data.</li>
 the new value of our sequence, but is a but reluctant. It tends to stick to
 the previous values.</li>
 </ul>
-<p>Let's implement this algorithm. With our <code>DetrendData</code> structure, we have an
-opportunity to directly implement the different branches of our algorithm. We
-start an <code>impl</code> block for <code>DetrendData</code>.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-impl DetrendData {
-
-}
-#}</code></pre></pre>
-<p>Next we are going to translate the first branch of the algorithm. Since our data
-gets delivered to us in the form of a <code>(f64, f64)</code> pair, we better accept it as
-an argument.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn initial((time, brightness): (f64, f64)) -&gt; DetrendData {
-    DetrendData {
-        time: time,
-        brightness: brightness,
-        trend: brightness,
-        difference: 0f64,
-    }
-}
-#}</code></pre></pre>
-<p>It is little more than putting things in the right place. Next we will use the
-current <code>DetrendData</code> that we have, and use it to determine what the next
-<code>DetrendData</code> should be. Because this depends on the new data and the parameter
-\(\alpha\), we better accept them both.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn next(&amp;self, (time, brightness): (f64, f64), alpha: f64) -&gt; DetrendData {
-    let trend = alpha * brightness + (1f64 - alpha) * self.trend;
-    DetrendData {
-        time: time,
-        brightness: brightness,
-        trend: trend,
-        difference: brightness - trend,
-    }
-}
-#}</code></pre></pre>
+<p>Let's implement this algorithm. With our <code>detrend_data</code> structure, we have an
+opportunity to directly implement the different branches of our algorithm. Since
+our data gets delivered to us in as a pair of floating point values, we better accept it as
+an argument in our transformer and pick the pair apart.</p>
+<pre><code class="language-javascript">const time = parseFloat(data[0]);
+const brightness = parseFloat(data[1]);
+</code></pre>
+<p>It is little more than giving things in the name. Next we will use the
+previous <code>detrend_data</code> that we have, and use it to determine what the next
+<code>detrend_data</code> should be. Because this depends on the new data and the parameter
+\(\alpha\), we better use them both.</p>
+<pre><code class="language-javascript">const trend = alpha * brightness + (1 - alpha) * previous_detrend_data.trend;
+const difference = brightness - trend;
+detrend_data = {
+    'time': time,
+    'brightness': brightness,
+    'trend': trend,
+    'difference': difference
+};
+</code></pre>
 <p>We calculate the <code>trend</code> as described in the algorithm, and calculate the
-difference from the brightness and the freshly calculated trend. With a
-convenience method that turns the <code>DetrendData</code> into a <code>Vec&lt;String&gt;</code> we are
-ready to calculate our entire trend.</p>
-<p>We will collect our data in a vector of <code>DetrendData</code>. Because we are going to
-incrementally add new entries to it, it needs to be mutable.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut sequence: Vec&lt;DetrendData&gt; = vec!();
-#}</code></pre></pre>
-<p>We also keep track of the last calculated <code>DetrendData</code> in a mutable variable
-called <code>data</code>. Because we haven't calculated any value yet, its type is
-<code>Option&lt;DetrendData&gt;</code>.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut data: Option&lt;DetrendData&gt; = None
-#}</code></pre></pre>
-<p>This has the added benefit that we can differentiate between when to initialize
-data, and when to calculate the next data, during our iteration over our raw data.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-for candidate in raw {
-    match data {
-        None =&gt; {
-            data = Some(DetrendData::initial(candidate))
-        } 
-        
-        Some(previous) =&gt; {
-            let next = previous.next(candidate, alpha);
-            sequence.push(previous);
-            data = Some(next)
-        }
-    }
+difference from the brightness and the freshly calculated trend.</p>
+<p>But where does the <code>previous_detrend_data</code> come from? We initialize it outside
+the transformer to <code>undefined</code>, and check if we processed a
+<code>previous_detrend_data</code> or that we need to initialize it</p>
+<pre><code class="language-javascript">var detrend_data;
+if (previous_detrend_data) {
+    /* calculate the detrend_data  */
+} else {
+    /* initialize detrend_data */
 }
-#}</code></pre></pre>
+previous_detrend_data = detrend_data;
+</code></pre>
+<p>We initialize the <code>detrend_data</code> by assign sane values to it.</p>
+<pre><code class="language-javascript">detrend_data = {
+    'time': time,
+    'brightness': brightness,
+    'trend': brightness,
+    'difference': 0
+};
+</code></pre>
+<p>In either way, we set the <code>previous_detrend_data</code> to our current <code>detrend_data</code>
+so that it is ready for the next row.</p>
+<p>Now that we have our data, we can let our csv pipeline process it. We only need
+to return an array of the data we are interested in.</p>
+<pre><code class="language-javascript">return [
+    detrend_data.time, 
+    detrend_data.brightness, 
+    detrend_data.trend, 
+    detrend_data.difference
+];
+</code></pre>
 <a class="header" href="print.html#further-considerations-11" id="further-considerations-11"><h2>Further Considerations</h2></a>
 <p>How does the weighted detrend behave for known functions? Try to plot an step
 function, i.e. a series that starts out 0 and than is 1 through out, and detrend

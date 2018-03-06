@@ -12,37 +12,20 @@ Before, we processed each row individually. Now we need to operate on the entire
 sequence. So instead iterating over each row, we are going to transform it
 directly.
 
-Because a `SimpleCsvReader` is an `Iterator` we can use our tricks on it. The
-idiosyncrasies of the `SimpleCsvReader` make that we first need to unwrap a row.
-Next we can map over the row of data and collect into a vector of tuples, the
-entry being the time and the second entry being the brightness.
-
-```rust
-let raw: Vec<(f64, f64)> = reader
-    .map(|r| r.unwrap())
-    .map(data)
-    .collect();
-```
-
-The function `data` has the following signature
-
-```rust
-fn data(row: Vec<String>) -> (f64, f64)
-```
-
-`data` is responsible for turning the raw columns of our CSV into `f64` brightness values,
-and selecting the correct ones.
+Our data has two values, one for time and one for the brightness. We our
+responsible for turning the raw columns of our CSV into floating point values, 
+perform our calculation and selecting the correct ones.
 
 Up until now we never returned more than two or three values. For our current
 plan we are going to return more. In order to keep track of our data, we are
-going to create a `struct`.
+going to create a datastructure.
 
-```rust
-struct DetrendData {
-    time: f64,
-    brightness: f64,
-    trend: f64,
-    difference: f64,
+```javascript
+var detrend_data {
+    time: 0.0,
+    brightness: 0.0,
+    trend: 0.0,
+    difference: 0.0,
 }
 ```
 
@@ -85,85 +68,73 @@ trend.
   the new value of our sequence, but is a but reluctant. It tends to stick to
   the previous values.
  
-Let's implement this algorithm. With our `DetrendData` structure, we have an
-opportunity to directly implement the different branches of our algorithm. We
-start an `impl` block for `DetrendData`.
+Let's implement this algorithm. With our `detrend_data` structure, we have an
+opportunity to directly implement the different branches of our algorithm. Since
+our data gets delivered to us in as a pair of floating point values, we better accept it as
+an argument in our transformer and pick the pair apart.
 
-```rust
-impl DetrendData {
-
-}
+```javascript
+const time = parseFloat(data[0]);
+const brightness = parseFloat(data[1]);
 ```
 
-Next we are going to translate the first branch of the algorithm. Since our data
-gets delivered to us in the form of a `(f64, f64)` pair, we better accept it as
-an argument.
+It is little more than giving things in the name. Next we will use the
+previous `detrend_data` that we have, and use it to determine what the next
+`detrend_data` should be. Because this depends on the new data and the parameter
+\\(\alpha\\), we better use them both.
 
-```rust
-fn initial((time, brightness): (f64, f64)) -> DetrendData {
-    DetrendData {
-        time: time,
-        brightness: brightness,
-        trend: brightness,
-        difference: 0f64,
-    }
-}
-```
-
-It is little more than putting things in the right place. Next we will use the
-current `DetrendData` that we have, and use it to determine what the next
-`DetrendData` should be. Because this depends on the new data and the parameter
-\\(\alpha\\), we better accept them both.
-
-```rust
-fn next(&self, (time, brightness): (f64, f64), alpha: f64) -> DetrendData {
-    let trend = alpha * brightness + (1f64 - alpha) * self.trend;
-    DetrendData {
-        time: time,
-        brightness: brightness,
-        trend: trend,
-        difference: brightness - trend,
-    }
-}
+```javascript
+const trend = alpha * brightness + (1 - alpha) * previous_detrend_data.trend;
+const difference = brightness - trend;
+detrend_data = {
+    'time': time,
+    'brightness': brightness,
+    'trend': trend,
+    'difference': difference
+};
 ```
 
 We calculate the `trend` as described in the algorithm, and calculate the
-difference from the brightness and the freshly calculated trend. With a
-convenience method that turns the `DetrendData` into a `Vec<String>` we are
-ready to calculate our entire trend.
+difference from the brightness and the freshly calculated trend.
 
-We will collect our data in a vector of `DetrendData`. Because we are going to
-incrementally add new entries to it, it needs to be mutable.
+But where does the `previous_detrend_data` come from? We initialize it outside
+the transformer to `undefined`, and check if we processed a
+`previous_detrend_data` or that we need to initialize it
 
-```rust
-let mut sequence: Vec<DetrendData> = vec!();
-```
-
-We also keep track of the last calculated `DetrendData` in a mutable variable
-called `data`. Because we haven't calculated any value yet, its type is
-`Option<DetrendData>`.
-
-```rust
-let mut data: Option<DetrendData> = None
-```
-
-This has the added benefit that we can differentiate between when to initialize
-data, and when to calculate the next data, during our iteration over our raw data.
-
-```rust
-for candidate in raw {
-    match data {
-        None => {
-            data = Some(DetrendData::initial(candidate))
-        } 
-        
-        Some(previous) => {
-            let next = previous.next(candidate, alpha);
-            sequence.push(previous);
-            data = Some(next)
-        }
-    }
+```javascript
+var detrend_data;
+if (previous_detrend_data) {
+    /* calculate the detrend_data  */
+} else {
+    /* initialize detrend_data */
 }
+previous_detrend_data = detrend_data;
+```
+
+We initialize the `detrend_data` by assign sane values to it.
+
+```javascript
+detrend_data = {
+    'time': time,
+    'brightness': brightness,
+    'trend': brightness,
+    'difference': 0
+};
+```
+
+In either way, we set the `previous_detrend_data` to our current `detrend_data`
+so that it is ready for the next row.
+
+Now that we have our data, we can let our csv pipeline process it. We only need
+to return an array of the data we are interested in.
+
+```javascript
+return [
+    detrend_data.time, 
+    detrend_data.brightness, 
+    detrend_data.trend, 
+    detrend_data.difference
+];
 ```
 
 ## Further Considerations

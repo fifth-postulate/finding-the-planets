@@ -133,15 +133,24 @@ measurement and the second column the brightness at that time.</p>
 <p>For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.</p>
 <p>Take a row of data and sum all the values to get the overall brightness.</p>
+<p>the first thing that we need to do is transform our data in to floating point
+numbers. When our <code>csv</code> module reads in a row of data, it is a piece of text.
+The
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map"><code>map</code></a>
+function helps in this regard.</p>
+<pre><code class="language-javascript">brightness
+    .map(function(values){ return parseFloat(values; )})
+</code></pre>
 <p>The summation of all the values can be written down very succinctly because the
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype"><code>Array</code></a>
 prototype has a trick up it's sleeve. The <code>Array.prototype</code> has a <code>reduce</code> method. We
 can use it to calculate the sum of all the brightness values. If we have our values
 in the variable <code>brightness</code>, we can determine the sum with</p>
-<pre><code class="language-javascript">const sum = brightness.
-    reduce(function(partial_sum, value){
+<pre><code class="language-javascript">const sum = brightness
+    .map(function(values){ return parseFloat(values; )})
+    .reduce(function(partial_sum, value){
         return partial_sum + value;
-    });
+    }, 0);
 </code></pre>
 <a class="header" href="finding/javascript/brightness.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
@@ -164,7 +173,7 @@ succinctly. What we need to do is filter out the values that we want to sum.
 I.e. the values above the average.</p>
 <pre><code class="language-javascript">const filtered_sum_= brightness
     .filter(function(value){ return value &gt;= average; })
-    .reduce(function(partial_sum, value){ return partial_sum + value; });
+    .reduce(function(partial_sum, value){ return partial_sum + value; }, 0);
 </code></pre>
 <p>What we want to return in our transformer is the pair of the <code>time</code>, we is the
 first value of our row of data i.e. <code>const time = data[0]</code>, and our
