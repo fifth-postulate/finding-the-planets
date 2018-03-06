@@ -132,25 +132,17 @@ measurement and the second column the brightness at that time.</p>
 <a class="header" href="finding/javascript/brightness.html#processing" id="processing"><h2>Processing</h2></a>
 <p>For each row of data we would like to know how much Trappist-1 is radiating.
 What we are going to do is the following.</p>
-<p>Take a row of data and</p>
-<ol>
-<li>Convert each value to a <code>f64</code>.</li>
-<li>Sum all the values to get the overall brightness.</li>
-</ol>
-<p>Converting values to a <code>f64</code> is something we did before. We are not going into
-details for the conversion.</p>
+<p>Take a row of data and sum all the values to get the overall brightness.</p>
 <p>The summation of all the values can be written down very succinctly because the
-<a href="https://doc.rust-lang.org/std/iter/"><code>Iterator</code></a> trait has a trick up it's
-sleeve. The <code>Iter</code> trait has a <code>sum</code> method. We can use it to calculate the sum
-of all the brightness values. If we have our raw <code>f64</code> values in the variable
-<code>raw</code>, we can determine the sum with</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let sum: f64 = raw
-    .iter()
-    .sum();
-#}</code></pre></pre>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype"><code>Array</code></a>
+prototype has a trick up it's sleeve. The <code>Array.prototype</code> has a <code>reduce</code> method. We
+can use it to calculate the sum of all the brightness values. If we have our values
+in the variable <code>brightness</code>, we can determine the sum with</p>
+<pre><code class="language-javascript">const sum = brightness.
+    reduce(function(partial_sum, value){
+        return partial_sum + value;
+    });
+</code></pre>
 <a class="header" href="finding/javascript/brightness.html#removing-background" id="removing-background"><h3>Removing Background</h3></a>
 <p>If we take a look at one of the images</p>
 <p><img src="image/trappist-1.0.large.png" alt="Enlargement of an image of Trappist-1" /></p>
@@ -165,22 +157,20 @@ average brightness. This transforms the image from above into the image below.</
 <p>In order to filter out the unwanted background we are going to need to know the
 average. We already know the sum, we just calculated it, so the average can be
 determined by</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let average = sum / (row.len() as f64);
-#}</code></pre></pre>
+<pre><code class="language-javascript">const average = sum / brightness.length;
+</code></pre>
 <p>Calculating the contribution of the values above the average can still be done
 succinctly. What we need to do is filter out the values that we want to sum.
 I.e. the values above the average.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let filtered: f64 = raw
-    .iter().
-    .filter(|&amp;v| *v &gt;= average)
-    .fold(0f64, |acc, v| acc+v)
-#}</code></pre></pre>
+<pre><code class="language-javascript">const filtered_sum_= brightness
+    .filter(function(value){ return value &gt;= average; })
+    .reduce(function(partial_sum, value){ return partial_sum + value; });
+</code></pre>
+<p>What we want to return in our transformer is the pair of the <code>time</code>, we is the
+first value of our row of data i.e. <code>const time = data[0]</code>, and our
+<code>filtered_sum</code>.</p>
+<pre><code class="language-javascript">return [time, filtered_sum];
+</code></pre>
 <a class="header" href="finding/javascript/brightness.html#graphing-results" id="graphing-results"><h2>Graphing Results</h2></a>
 <p>Once you wrote your brightness results to a CSV file, they are ready for the
 following step. But if you are like me you probably want to see your results.
