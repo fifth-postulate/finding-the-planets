@@ -14,25 +14,27 @@ satellite maneuvers. What ever there origin, in this chapter we will filter
 those outliers. 
 
 ## Processing
-We are going to rely on our `data` function again. Remeber the `data` function
-is responsible for:
+We are defining a threshold beyond which we will discard our data.
 
-> turning the raw columns of our CSV into `f64` values, and selecting the
-> correct ones. 
-
-Now that we have our data, we can filter it in one swoop. `Iter` still has a
-trick up it's sleeve. It sports a `filter` method that fits our needs. Study the
-code below.
-
-```rust
-let result: Vec<(f64, f64)> = reader
-    .map (|r| r.unwrap())
-    .map(data)
-    .filter(|&(_,difference)| difference.abs() <= threshold)
-    .collect();
+```javascript
+const threshold = 200.00;
 ```
 
-The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.
+Next we will use that threshold to in our data to discard our actual data.
+Discarding can be achieved by return `null` instead of an array of data.
+
+```javascript
+const time = parseFloat(data[0]);
+const brightness = parseFloat(data[1]);
+const trend = parseFloat(data[2]);
+const difference = parseFloat(data[3]);
+
+if (Math.abs(difference) <= threshold) {
+    return data;
+} else {
+    return null;
+}
+```
 
 ## Further Considerations
 The algorithm above depends on a certain threshold. What value should we use?
