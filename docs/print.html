@@ -1854,25 +1854,22 @@ erroneous.</p>
 satellite maneuvers. What ever there origin, in this chapter we will filter
 those outliers.</p>
 <a class="header" href="print.html#processing-9" id="processing-9"><h2>Processing</h2></a>
-<p>We are going to rely on our <code>data</code> function again. Remeber the <code>data</code> function
-is responsible for:</p>
-<blockquote>
-<p>turning the raw columns of our CSV into <code>f64</code> values, and selecting the
-correct ones.</p>
-</blockquote>
-<p>Now that we have our data, we can filter it in one swoop. <code>Iter</code> still has a
-trick up it's sleeve. It sports a <code>filter</code> method that fits our needs. Study the
-code below.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let result: Vec&lt;(f64, f64)&gt; = reader
-    .map (|r| r.unwrap())
-    .map(data)
-    .filter(|&amp;(_,difference)| difference.abs() &lt;= threshold)
-    .collect();
-#}</code></pre></pre>
-<p>The code above is depending on a threshold. Once chosen, the result can be written to a CSV file.</p>
+<p>We are defining a threshold beyond which we will discard our data.</p>
+<pre><code class="language-javascript">const threshold = 200.00;
+</code></pre>
+<p>Next we will use that threshold to in our data to discard our actual data.
+Discarding can be achieved by return <code>null</code> instead of an array of data.</p>
+<pre><code class="language-javascript">const time = parseFloat(data[0]);
+const brightness = parseFloat(data[1]);
+const trend = parseFloat(data[2]);
+const difference = parseFloat(data[3]);
+
+if (Math.abs(difference) &lt;= threshold) {
+    return data;
+} else {
+    return null;
+}
+</code></pre>
 <a class="header" href="print.html#further-considerations-12" id="further-considerations-12"><h2>Further Considerations</h2></a>
 <p>The algorithm above depends on a certain threshold. What value should we use?
 Try some different values and try to get a feel for what works. Discuss your
