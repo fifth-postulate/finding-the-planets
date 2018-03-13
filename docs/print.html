@@ -1900,109 +1900,56 @@ the two middle values. The average of \(53\) and \(58\) is
 \(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
 <a class="header" href="print.html#make-a-library-1" id="make-a-library-1"><h2>Make a library.</h2></a>
 <p>Because we are going to use the median several times, we are going to create a
-library. Let's start with our <code>lib.rs</code>.</p>
-<p>In our <code>lib.rs</code> we are announcing a module called <code>median</code>.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-pub mod median;
-#}</code></pre></pre>
-<p>There are different ways to create this module. Either creating a <code>median.rs</code>
-file inside the <code>src</code> directory. Or creating a <code>median</code> directory inside the
-<code>src</code> directory, which contains a <code>mod.rs</code> file. Which every you choose, let's
-implement a <code>median_of</code> function.</p>
-<p>Our <code>median_of</code> function will have a <code>&amp;Vec&lt;f64&gt;</code> as parameter and return the
-median <code>f64</code>. Once we have a sorted copy of the data called <code>copy</code>, getting the
+library. Let's start with our <code>median.js</code>.</p>
+<p>In our <code>median.js</code> we are <code>module.export</code> will be a function <code>median_of</code>.</p>
+<pre><code class="language-javascript">module.export = median_of;
+</code></pre>
+<p>Our <code>median_of</code> function will have an array as parameter and return the
+median. Once we have a sorted copy of the data called <code>copy</code>, getting the
 median comes down to determining if the number of elements is even or odd, and
 performing the right calculation.</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let n = data.len();
-let middle: usize = n / 2;
-let median = if n % 2 == 1 {
-    copy[middle]
+const n = data.length;
+const middle = Math.floor(n / 2);
+var median;
+if (n % 2 == 1) {
+    return data[middle]
 } else {
-    (copy[middle] + copy[middle - 1]) / 2.0;
+    return (data[middle] + data[middle - 1]) / 2.0;
 }
 #}</code></pre></pre>
 <p>But how do we sort the original data?</p>
 <a class="header" href="print.html#sorting-side-quest-1" id="sorting-side-quest-1"><h3>Sorting side-quest</h3></a>
-<p>There are a few interesting tidbits when sorting a <code>Vec&lt;f64&gt;</code> that we are going
-to make a side-quest out of it. While looking into <code>Vec&lt;T&gt;</code>
-<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.sort">documentation</a>,
+<p>There are a few interesting tidbits about sorting an array of floating point
+values that we are going to make a side-quest out of it. While looking into
+<code>Array.prototype</code>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype">documentation</a>,
 you can come across the method <code>sort</code>. Let's see if we can use it.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+<pre><code class="language-javascript">const vs = [3.0, 2.0, 1.0, 11.0];
 
 vs.sort();
-#}</code></pre></pre>
-<p>Unfortunately this doesn't compile.</p>
-<pre><code class="language-text">   Compiling playground v0.0.1 (file:///playground)
-error[E0277]: the trait bound `f64: std::cmp::Ord` is not satisfied
- --&gt; src/main.rs:6:4
-  |
-6 | vs.sort();
-  |    ^^^^ the trait `std::cmp::Ord` is not implemented for `f64`
-
-error: aborting due to previous error
-
-error: Could not compile `playground`.
-
-To learn more, run the command again with --verbose.
 </code></pre>
-<p>Which could come as a surprise. The <code>Ord</code> trait determines an ordering of
-elements. Certainly we can determine whether `0.0 &lt; 1.0``?</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-assert!(0.0f64 &lt; 1.0f64);
-#}</code></pre></pre>
-<p>Luckily we can. So what is going on? Rust has two related traits for comparison:
-<a href="https://doc.rust-lang.org/std/cmp/trait.PartialOrd.html"><code>PartialOrd</code></a> and
-<a href="https://doc.rust-lang.org/std/cmp/trait.Ord.html"><code>Ord</code></a>. The main difference
-is that <code>Ord</code> is supposed to be <em>total</em>. I.e. any type that implements the <code>Ord</code>
-trait should be able to compare any pair of values that have the type.</p>
-<p>In other words, if you implement the <code>Ord</code> trait you should be able to answer
-<strong>yes</strong> to one and only one of the following questions with for values <code>a</code> and
-<code>b</code> in the type:</p>
-<ol>
-<li>Is <code>a &lt; b</code>?</li>
-<li>Is <code>a == b</code>?</li>
-<li>Is <code>a &gt; b</code>?</li>
-</ol>
-<p>The problem with <code>f64</code> is that is implements IEEE-754, the standard for
-arithmetic with floating point numbers. This standard defines a value <code>NaN</code>,
-not a number, which is not comparable with any other value.</p>
-<p>So <code>f64</code> can not be complete and follow the standard at the same time.
-Fortunately <code>PartialOrd</code> is implemented for <code>f64</code>. So as long as we do not
-compare with <code>NaN</code>s, which we don't intend to do, we should be safe.</p>
-<p>Back to sorting, the <code>sort</code> method expects that the <code>Ord</code> is implemented, so we
-can not use it. <code>Vec&lt;T&gt;</code> also has a <code>sort_by</code> method, that allows to pass a <code>compare</code>
-function. We can use this to our advantage by relying on the <code>PartialOrd</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let mut vs: Vec&lt;f64&gt; = vec!(3.0, 2.0, 1.0);
+<p>Unfortunately this doesn't work as expected.</p>
+<pre><code class="language-text">[ 1, 11, 2, 3 ]
+</code></pre>
+<p>Which could come as a surprise.  The sort function first transforms the values
+to string and then sorts them as Unicode source point.</p>
+<p>Luckily we can solve that. We just have to pass a function with which we will
+sort the values.</p>
+<pre><code class="language-javascript">const vs = [3.0, 2.0, 1.0. 11.0];
 
-vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
-println!(&quot;{:?}&quot;, vs);
-#}</code></pre></pre>
-<p>This correctly sorts our vector. But notice that the <code>vs</code> variable is declared
-mutable. Our signature doesn't expect to have a mutable reference, so we need to
-copy our <code>data</code> first.</p>
+vs.sort(function(a, b){ return b &gt; a; });
+</code></pre>
+<p>This correctly sorts our array. But it also alters our original data.</p>
 <a class="header" href="print.html#copying-data-1" id="copying-data-1"><h3>Copying Data</h3></a>
-<p>We need a mutable copy of our <code>data</code>. Luckily the <code>Vec&lt;T&gt;</code> API provides an other
-method; <code>copy_from_slice</code>. We use it as</p>
+<p>We need a copy of our <code>data</code>. Luckily the <code>slice</code> provides an easy
+method to copy. We use it as</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-let n = data.len();
-let mut copy = vec!(0f64; n);
-copy.copy_from_slice(&amp;data);
+const data = values.slice();
 #}</code></pre></pre>
 <p>This is the final piece in the median puzzle. We are able to put everything
 together and write our <code>median_of</code> function.</p>
