@@ -1,17 +1,7 @@
 # Median
 We filtered our brightness graph and got something like this.
 
-![Filtered brightness of Trappist-1](image/filter.png)
-
-We would like to know around what kind of average these points are fluctuating.
-For that we are calculating the median.
-
-## Calculation
-Let's say we have a sequence of values \\(y_{0}, y_{1}, \ldots, y_{n-1}\\). The
-median of these numbers is defined as follows.
-
-1. Sort the numbers into a sequence \\(z_{0}, z_{1}, \dots, z_{n-1}\\).
-2. From this sorted sequence, pick the middle number. If there is no middle,
+, pick the middle number. If there is no middle,
    take the average of the middle two.
 
 Lets work out an example. Take a look at the following example
@@ -32,12 +22,14 @@ the two middle values. The average of \\(53\\) and \\(58\\) is
 
 ## Make a library.
 Because we are going to use the median several times, we are going to create a
-library. Let's start with our `median.js`.
+library. Let's start with our `lib.js`.
 
-In our `median.js` we are `module.export` will be a function `median_of`. 
+In our `median.js` we are `module.exports` will be a function object. 
 
 ```javascript
-module.export = median_of;
+module.exports = {
+    median_of: median_of
+};
 ```
 Our `median_of` function will have an array as parameter and return the
 median. Once we have a sorted copy of the data called `copy`, getting the
@@ -147,6 +139,8 @@ SlidingWindow.prototype.result = function(){
 The `result` method will return the current window, if it has grown enough to
 have the correct `size`. Otherwise it will return `null`, which will signal the
 `csv` module that there is no data.
+
+Make sure to add the `SlidingWindow` to the `module.exports`.
 
 ### Median Filter
 We are now in the position to create a `median_filter` function. I.e. a function
