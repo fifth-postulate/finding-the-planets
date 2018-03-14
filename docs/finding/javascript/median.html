@@ -125,17 +125,8 @@
                     <main>
                         <a class="header" href="finding/javascript/median.html#median" id="median"><h1>Median</h1></a>
 <p>We filtered our brightness graph and got something like this.</p>
-<p><img src="image/filter.png" alt="Filtered brightness of Trappist-1" /></p>
-<p>We would like to know around what kind of average these points are fluctuating.
-For that we are calculating the median.</p>
-<a class="header" href="finding/javascript/median.html#calculation" id="calculation"><h2>Calculation</h2></a>
-<p>Let's say we have a sequence of values \(y_{0}, y_{1}, \ldots, y_{n-1}\). The
-median of these numbers is defined as follows.</p>
-<ol>
-<li>Sort the numbers into a sequence \(z_{0}, z_{1}, \dots, z_{n-1}\).</li>
-<li>From this sorted sequence, pick the middle number. If there is no middle,
-take the average of the middle two.</li>
-</ol>
+<p>, pick the middle number. If there is no middle,
+take the average of the middle two.</p>
 <p>Lets work out an example. Take a look at the following example</p>
 <p>\[
 31, 41, 59, 26, 53, 58, 97, 93, 23, 84
@@ -149,9 +140,11 @@ the two middle values. The average of \(53\) and \(58\) is
 \(\frac{53 + 58}{2} = \frac{111}{2} \approx 55.5\).</p>
 <a class="header" href="finding/javascript/median.html#make-a-library" id="make-a-library"><h2>Make a library.</h2></a>
 <p>Because we are going to use the median several times, we are going to create a
-library. Let's start with our <code>median.js</code>.</p>
-<p>In our <code>median.js</code> we are <code>module.export</code> will be a function <code>median_of</code>.</p>
-<pre><code class="language-javascript">module.export = median_of;
+library. Let's start with our <code>lib.js</code>.</p>
+<p>In our <code>median.js</code> we are <code>module.exports</code> will be a function object.</p>
+<pre><code class="language-javascript">module.exports = {
+    median_of: median_of
+};
 </code></pre>
 <p>Our <code>median_of</code> function will have an array as parameter and return the
 median. Once we have a sorted copy of the data called <code>copy</code>, getting the
@@ -189,97 +182,86 @@ to string and then sorts them as Unicode source point.</p>
 sort the values.</p>
 <pre><code class="language-javascript">const vs = [3.0, 2.0, 1.0. 11.0];
 
-vs.sort(function(a, b){ return b &gt; a; });
+vs.sort(function(a, b){ return b &lt; a; });
 </code></pre>
 <p>This correctly sorts our array. But it also alters our original data.</p>
 <a class="header" href="finding/javascript/median.html#copying-data" id="copying-data"><h3>Copying Data</h3></a>
 <p>We need a copy of our <code>data</code>. Luckily the <code>slice</code> provides an easy
 method to copy. We use it as</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-const data = values.slice();
-#}</code></pre></pre>
+<pre><code class="language-javascript">const data = values.slice();
+</code></pre>
 <p>This is the final piece in the median puzzle. We are able to put everything
 together and write our <code>median_of</code> function.</p>
 <a class="header" href="finding/javascript/median.html#form-groups" id="form-groups"><h3>Form Groups</h3></a>
 <p>We do not want to calculate the median of our entire sequence. Instead we want
 to move a <a href="https://en.wikipedia.org/wiki/Streaming_algorithm"><em>sliding window</em></a>
 over our data and calculate the median of that specific window.</p>
-<p>For that we need to group our data. Let's create that function.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn groups(data: &amp;Vec&lt;f64&gt;, group_size: usize) -&gt; Vec&lt;Vec&lt;f64&gt;&gt; {
-    let mut groups: Vec&lt;Vec&lt;f64&gt;&gt; = vec!();
-
-    for end_index in group_size .. data.len() + 1 {
-        let mut group: Vec&lt;f64&gt; = vec!();
-        for index in (end_index - group_size) .. end_index {
-            group.push(data[index])
-        }
-        groups.push(group)
+<p>For that we need to group our data. Let's create that an object.</p>
+<pre><code class="language-javascript">const SlidingWindow = function(size){
+    this.size = size;
+    this.window = [];
+};
+</code></pre>
+<p>We are creating a <code>SlidingWindow</code> constructor. This object will keep track of
+two things. The size of the sliding window, and the values that it will have
+seen. Together with two prototype functions this will provide our intended
+functionality.</p>
+<pre><code class="language-javascript">SlidingWindow.prototype.push = function(value){
+    this.window.push(value);
+    if (this.window.length &gt; this.size) {
+        this.window = this.window.slice(1);
     }
-
-    groups
-}
-#}</code></pre></pre>
-<a class="header" href="finding/javascript/median.html#median-filter" id="median-filter"><h3>Median Filter</h3></a>
-<p>We are now in the position to create a <code>median_filter</code> function. I.e. a function
-that calculates the median of a sliding window over our data. With all of our
-preparations it writes itself as</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-pub fn median_filter(data: &amp;Vec&lt;f64&gt;, window: usize) -&gt; Vec&lt;f64&gt; {
-    groups(data, window)
-        .iter()
-        .map(median_of)
-        .collect()
-}
-#}</code></pre></pre>
-<p>With our library all done, we can start out processing proper.</p>
+};
+</code></pre>
+<p>The <code>push</code> method will be used to add a new value to the window, maintaining the
+invariant of maximum of <code>size</code> values. Whenever the window grows to large, we
+slice off a value.</p>
+<pre><code class="language-javascript">SlidingWindow.prototype.result = function(){
+    if (this.window.length === this.size) {
+        return this.window.slice();
+    } else {
+        return null;
+    }
+};
+</code></pre>
+<p>The <code>result</code> method will return the current window, if it has grown enough to
+have the correct <code>size</code>. Otherwise it will return <code>null</code>, which will signal the
+<code>csv</code> module that there is no data.</p>
+<p>Make sure to add the <code>SlidingWindow</code> to the <code>module.exports</code>.</p>
 <a class="header" href="finding/javascript/median.html#processing" id="processing"><h2>Processing</h2></a>
-<p>But wait! Our data arrives as <code>f64</code>-pairs, i.e. <code>(f64, f64)</code>, and we create
-<code>median_filter</code> to operate on a single <code>f64</code> value. Did I lead you down a wrong
-path?</p>
-<p>Not entirely. Once again the standard library, in the form of the <code>Iter</code> trait,
-has a trick up their sleeve. It comes in the pair of methods <code>zip</code> and <code>unzip</code>.
-You can find their signatures below.
-With <code>unzip</code> you can take a sequences of pairs and return a pair of sequences.
-<code>zip</code> goes the other way.</p>
-<p>Let's see how we can use them. After getting the raw data, we can use <code>unzip</code> to
-extract the individual components.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let (times, values): (Vec&lt;f64&gt;, Vec&lt;f64&gt;) = raw
-    .iter()
-    .cloned()
-    .unzip();
-#}</code></pre></pre>
-<p>The <code>cloned</code> call is because we need to take ownership of our data. Next we can
-use our <code>median_filter</code> from our own library. Make sure to reference our own
-external crate and import the correct function.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let median_times = median_filter(&amp;times, window_size);
-let median_values = median_filter(&amp;values, window_size);
-#}</code></pre></pre>
-<p>Finally we can zip together these two vectors again to get our result.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-let result = median_times.iter().zip(median_values);
-#}</code></pre></pre>
-<p>Storing this into a CSV file makes it available for the next step.</p>
+<p>We are now ready to create a tranformation for our data. In our data we should
+keep track of two sliding windows. One for the time measurement and one for the
+brightness measurements.</p>
+<p>We collect the median of both and combine them in an array to produce the
+output of our pipeline. Maybe something like this.</p>
+<pre><code class="language-javascript">var size = 10;
+var times = new SlidingWindow(size);
+var values = new SlidingWindow(size);
+var transformer = transform(function(data){
+    const time = parseFloat(data[0]);
+    const value = parseFloat(data[3]);
+
+    times.push(time);
+    values.push(value);
+
+    var tw = times.result();
+    var vw = value.result();
+    if (tw != null &amp;&amp; vw != null) {
+        var tm = median_of(tw);
+        var vm = median_of(vw);
+
+        return [tm, vm];
+    } else {
+        return null;
+    }
+});
+</code></pre>
 <a class="header" href="finding/javascript/median.html#further-considerations" id="further-considerations"><h2>Further Considerations</h2></a>
 <p>You have created a library that contains some functions. How do you know that
 they are implemented correctly? Try to add some
-<a href="https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html">tests</a>
+<a href="https://mochajs.org/">tests</a>
 that increases your confidence in your code.</p>
-<p>The <code>median_filter</code> accepts an <code>window_size</code> argument. What is a good value?</p>
+<p>The <code>SlidingWindow</code> accepts an <code>window_size</code> argument. What is a good value?</p>
 <p>Why haven't we used same the method we used to detrend the data?</p>
 
                     </main>

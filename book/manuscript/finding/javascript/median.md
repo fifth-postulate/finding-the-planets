@@ -142,66 +142,44 @@ have the correct `size`. Otherwise it will return `null`, which will signal the
 
 Make sure to add the `SlidingWindow` to the `module.exports`.
 
-### Median Filter
-We are now in the position to create a `median_filter` function. I.e. a function
-that calculates the median of a sliding window over our data. With all of our
-preparations it writes itself as
-
-```rust
-pub fn median_filter(data: &Vec<f64>, window: usize) -> Vec<f64> {
-    groups(data, window)
-        .iter()
-        .map(median_of)
-        .collect()
-}
-```
-
-With our library all done, we can start out processing proper.
-
 ## Processing
-But wait! Our data arrives as `f64`-pairs, i.e. `(f64, f64)`, and we create
-`median_filter` to operate on a single `f64` value. Did I lead you down a wrong
-path?
+We are now ready to create a tranformation for our data. In our data we should
+keep track of two sliding windows. One for the time measurement and one for the
+brightness measurements.
 
-Not entirely. Once again the standard library, in the form of the `Iter` trait,
-has a trick up their sleeve. It comes in the pair of methods `zip` and `unzip`.
-You can find their signatures below.
-With `unzip` you can take a sequences of pairs and return a pair of sequences.
-`zip` goes the other way.
+We collect the median of both and combine them in an array to produce the
+output of our pipeline. Maybe something like this.
 
-Let's see how we can use them. After getting the raw data, we can use `unzip` to
-extract the individual components.
+```javascript
+var size = 10;
+var times = new SlidingWindow(size);
+var values = new SlidingWindow(size);
+var transformer = transform(function(data){
+    const time = parseFloat(data[0]);
+    const value = parseFloat(data[3]);
 
-```rust
-let (times, values): (Vec<f64>, Vec<f64>) = raw
-    .iter()
-    .cloned()
-    .unzip();
+    times.push(time);
+    values.push(value);
+
+    var tw = times.result();
+    var vw = value.result();
+    if (tw != null && vw != null) {
+        var tm = median_of(tw);
+        var vm = median_of(vw);
+
+        return [tm, vm];
+    } else {
+        return null;
+    }
+});
 ```
-
-The `cloned` call is because we need to take ownership of our data. Next we can
-use our `median_filter` from our own library. Make sure to reference our own
-external crate and import the correct function.
-
-```rust
-let median_times = median_filter(&times, window_size);
-let median_values = median_filter(&values, window_size);
-```
-
-Finally we can zip together these two vectors again to get our result.
-
-```rust
-let result = median_times.iter().zip(median_values);
-```
-
-Storing this into a CSV file makes it available for the next step.
 
 ## Further Considerations
 You have created a library that contains some functions. How do you know that
 they are implemented correctly? Try to add some
-[tests](https://doc.rust-lang.org/book/second-edition/ch11-03-test-organization.html)
+[tests](https://mochajs.org/)
 that increases your confidence in your code.
 
-The `median_filter` accepts an `window_size` argument. What is a good value?
+The `SlidingWindow` accepts an `window_size` argument. What is a good value?
 
 Why haven't we used same the method we used to detrend the data?
