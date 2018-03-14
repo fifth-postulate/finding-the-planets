@@ -11,6 +11,25 @@ function median_of(values){
     }
 };
 
+const SlidingWindow = function(size){
+    this.size = size;
+    this.window = [];
+};
+SlidingWindow.prototype.push = function(value){
+    this.window.push(value);
+    if (this.window.length > this.size) {
+        this.window = this.window.slice(1);
+    }
+};
+SlidingWindow.prototype.result = function(){
+    if (this.window.length === this.size) {
+        return this.window.slice();
+    } else {
+        return null;
+    }
+};
+
 module.exports = {
-    median_of: median_of
+    median_of: median_of,
+    sliding_window: SlidingWindow
 };

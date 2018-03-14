@@ -86,7 +86,7 @@ sort the values.
 ```javascript
 const vs = [3.0, 2.0, 1.0. 11.0];
 
-vs.sort(function(a, b){ return b > a; });
+vs.sort(function(a, b){ return b < a; });
 ```
 
 This correctly sorts our array. But it also alters our original data.
@@ -95,7 +95,7 @@ This correctly sorts our array. But it also alters our original data.
 We need a copy of our `data`. Luckily the `slice` provides an easy
 method to copy. We use it as
 
-```rust
+```javascript
 const data = values.slice();
 ```
 
@@ -107,23 +107,46 @@ We do not want to calculate the median of our entire sequence. Instead we want
 to move a [*sliding window*](https://en.wikipedia.org/wiki/Streaming_algorithm)
 over our data and calculate the median of that specific window.
 
-For that we need to group our data. Let's create that function.
+For that we need to group our data. Let's create that an object.
 
-```rust
-fn groups(data: &Vec<f64>, group_size: usize) -> Vec<Vec<f64>> {
-    let mut groups: Vec<Vec<f64>> = vec!();
-
-    for end_index in group_size .. data.len() + 1 {
-        let mut group: Vec<f64> = vec!();
-        for index in (end_index - group_size) .. end_index {
-            group.push(data[index])
-        }
-        groups.push(group)
-    }
-
-    groups
-}
+```javascript
+const SlidingWindow = function(size){
+    this.size = size;
+    this.window = [];
+};
 ```
+
+We are creating a `SlidingWindow` constructor. This object will keep track of
+two things. The size of the sliding window, and the values that it will have
+seen. Together with two prototype functions this will provide our intended
+functionality.
+
+```javascript
+SlidingWindow.prototype.push = function(value){
+    this.window.push(value);
+    if (this.window.length > this.size) {
+        this.window = this.window.slice(1);
+    }
+};
+```
+
+The `push` method will be used to add a new value to the window, maintaining the
+invariant of maximum of `size` values. Whenever the window grows to large, we
+slice off a value.
+
+```javascript
+SlidingWindow.prototype.result = function(){
+    if (this.window.length === this.size) {
+        return this.window.slice();
+    } else {
+        return null;
+    }
+};
+```
+
+The `result` method will return the current window, if it has grown enough to
+have the correct `size`. Otherwise it will return `null`, which will signal the
+`csv` module that there is no data.
 
 ### Median Filter
 We are now in the position to create a `median_filter` function. I.e. a function
