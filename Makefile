@@ -10,10 +10,13 @@ $(TARGET).tar.gz: $(TARGET)
 $(TARGET):
 	mkdir -p $(TARGET)
 	mkdir -p $(TARGET)/rust
+	mkdir -p $(TARGET)/javascript
 	cp *.fits $(TARGET)
 	cp -r docs $(TARGET)/book
 	cp -r rust-starter $(TARGET)/rust/starter
 	cp -r rust-showcase $(TARGET)/rust/showcase
+	cp -r javascript-starter $(TARGET)/javascript/starter
+	cp -r javascript-showcase $(TARGET)/javascript/showcase
 	cp *.csv $(TARGET)
 
 data: $(DATA-FILES)
